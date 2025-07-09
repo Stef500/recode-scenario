@@ -1,2 +1,2 @@
 # recode-scenario
-Creation of clinical scenario for medical document generation
+Creation of clinical scenario for medical documents generation
