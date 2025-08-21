@@ -235,7 +235,7 @@ class generate_scenario:
         To facilitate sample among related diagnosis, we calculate for each sitution the total number of possible related diagnosis.
 
         """
-        self.df_secondary_icd = pd.read_csv(self.path_data + "bn_pmsi_related_diag_20250818.csv",sep=";")
+        self.df_secondary_icd = pd.read_csv(self.path_data + file_name ,sep=";")
 
         if col_names is not None : 
             self.df_secondary_icd.rename(columns = col_names, inplace = True)
@@ -457,6 +457,8 @@ class generate_scenario:
         
         elif case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Outpatient" :
             situa = "Prise en charge en hospitalisation de jour pour cure de chimiothérapie"
+            if case["chemotherapy_regimen"] is not None :
+                situa += ".Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
             code = 1
 
         elif case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Inpatient":
@@ -783,10 +785,10 @@ class generate_scenario:
 
         ICD_ALTERNATIVES =""
 
-        if scenario["icd_primary_code"] not in self.icd_codes_cancer :
-            ICD_ALTERNATIVES +=" - " + scenario["icd_primary_description"] + "("+ scenario["icd_primary_code"] + ") : " 
-            ICD_ALTERNATIVES +=": "+ scenario["icd_primary_description_alternative"] + "\n"
-            ICD_ALTERNATIVES +=  scenario["text_secondary_icd_alternative"]  + "\n"  
+
+        #ICD_ALTERNATIVES +=" - " + scenario["icd_primary_description"] + "("+ scenario["icd_primary_code"] + ") : " 
+        #ICD_ALTERNATIVES +=": "+ scenario["icd_primary_description_alternative"] + "\n"
+        #ICD_ALTERNATIVES +=  scenario["text_secondary_icd_alternative"]  + "\n"  
 
         
         INSTRUCTIONS_CANCER = ""
