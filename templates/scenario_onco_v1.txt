@@ -8,6 +8,8 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compt
 
 **INSTRUCTIONS :**
 
+[INSTRUCTIONS_CANCER here]
+
 - Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
 
 - Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. Pour vous aider nous vous proposons ci-dessous quelques exemples de formulation alternative qui peut être retrouvée dans les comptes rendus d'hospitalisation.
