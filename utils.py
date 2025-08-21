@@ -104,6 +104,15 @@ def interpret_sexe(sexe):
   if sexe == 1: return "Masculin"
   else: return "Féminin"
 
+def prepare_prompt(prompt_path, case):
+  with open(prompt_path, "r", encoding="utf-8") as f:
+      content = f.read()
+  return (content
+          .replace("[SCENARIO here]", case["SCENARIO"])
+          .replace("[INSTRUCTIONS_CANCER here]", case["INSTRUCTIONS_CANCER"])
+          .replace("[ICD_ALTERNATIVES here]", case["ICD_ALTERNATIVES"])
+
+          )
 class generate_scenario:
 
     def __init__(self,
@@ -349,17 +358,14 @@ class generate_scenario:
                 'icd_primary_code_definition': None,
                 'icd_primary_code_definition_alternatives': None,
                 'case_management_type':None,
-                'icd_secondaray_codes':None,
-                'df_icd_secondaray_codes':None,
+                'icd_secondaray_code':[],
                 'admission_mode':None,
                 'discharge_disposition':None,
                 'cancer_stage':None,
                 'TNM_score':None,
                 'histological_type':None,
                 'treatment_recommandation':None,
-                'chemotherapy_regimen':None,
-                'cancer_detail_info':None,
-                'chronic':[],
+                'chemotherapy_regimen':None
                 
              
         }
@@ -585,8 +591,8 @@ class generate_scenario:
         scenario["age"] = get_age(profile.cage)
         scenario["date_entry"],scenario["date_discharge"] = get_dates_of_stay(profile.admission_type,profile.admission_mode,profile.los_mean,profile.los_sd)
         scenario["date_of_birth"] = random_date_between( scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"]+1)) , scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"])))
-        scenario["first_name"] , scenario["laste_name"] = self.get_names(profile.sexe)
-        scenario["first_name_med"] , scenario["laste_name_med"] = self.get_names(random.randint(1, 2))
+        scenario["first_name"] , scenario["last_name"] = self.get_names(profile.sexe)
+        scenario["first_name_med"] , scenario["last_name_med"] = self.get_names(random.randint(1, 2))
 
 
         ### Secondary diagnosis :
@@ -638,11 +644,11 @@ class generate_scenario:
                 scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
                 scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
             
-            scenario["chronic"] = chronic_diseases.icd_secondary_code.to_list()
+            scenario["icd_secondaray_code"] = chronic_diseases.icd_secondary_code.to_list()
 
         ### Is we sampled cancer codes in the chronic disease we will also sample metastasis
-        if len(scenario["chronic"])>0 :
-            if bool(set(scenario["chronic"]) & set(self.icd_codes_cancer)) :
+        if len(scenario["icd_secondaray_code"])>0 :
+            if bool(set(scenario["icd_secondaray_code"]) & set(self.icd_codes_cancer)) :
                 is_cancer = 1
             
 
@@ -659,7 +665,7 @@ class generate_scenario:
                         scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
                         scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                 
-                    scenario["chronic"] = scenario["chronic"] + metastases_ln.icd_secondary_code.to_list()
+                    scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases_ln.icd_secondary_code.to_list()
 
                 if bool(re.search("M[123x+]",scenario["TNM_score"])) :
                     metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary])  
@@ -669,7 +675,7 @@ class generate_scenario:
                             scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
                             scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                         
-                        scenario["chronic"] = scenario["chronic"] + metastases.icd_secondary_code.to_list()
+                        scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
                     
             
             #When TNM is not known, sample metastasis among all possible situations
@@ -681,7 +687,7 @@ class generate_scenario:
                         scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
                         scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                         
-                    scenario["chronic"] = scenario["chronic"] + metastases.icd_secondary_code.to_list()
+                    scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
 
         #For complication drg_parent_code we choose grouping profile only on ICD
         grouping_secondary =["drg_parent_code","icd_secondary_code","cage2","sexe","nb"]
@@ -693,7 +699,7 @@ class generate_scenario:
                 scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
                 scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
             
-        scenario["chronic"] = scenario["chronic"] + complications.icd_secondary_code.to_list()
+        scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + complications.icd_secondary_code.to_list()
 
         ## Actes
 
