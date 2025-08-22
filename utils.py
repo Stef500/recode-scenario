@@ -60,7 +60,10 @@ def get_dates_of_stay(admission_type, admission_mode,mols,sdlos):
         date_entry = date_discharge = random_date(2024,exclude_weekends=False)
 
     else:
-        los = int(np.round(np.random.normal(mols, sdlos, 1))[0])
+        # los can be negative if we do like this
+        #los = int(np.round(np.random.normal(mols, sdlos, 1))[0]) 
+        
+        los = int(np.abs(np.random.normal(mols, sdlos, 1)[0])) 
 
 
         if admission_mode=="URGENCES":
@@ -110,8 +113,7 @@ def prepare_prompt(prompt_path, case):
   return (content
           .replace("[SCENARIO here]", case["SCENARIO"])
           .replace("[INSTRUCTIONS_CANCER here]", case["INSTRUCTIONS_CANCER"])
-          .replace("[ICD_ALTERNATIVES here]", case["ICD_ALTERNATIVES"])
-
+          # .replace("[ICD_ALTERNATIVES here]", case["ICD_ALTERNATIVES"])
           )
 class generate_scenario:
 
@@ -311,12 +313,13 @@ class generate_scenario:
         if nb is not None :
             nb_final_sample = np.minimum(df_sel.shape[0],nb)
         else:
-            nb_final_sample = np.random.randint(nb_sample_max, size=1)[0]
+            nb_final_sample = np.random.randint(nb_sample_max+1, size=1)[0]
 
         if nb_final_sample > 0:
 
             #Codes are from different chapter of ICD10
-            if distinct_chapter == True and "icd_secondary_code" in df_sample.columns:
+            # if distinct_chapter == True and "icd_secondary_code" in df_sample.columns:
+            if distinct_chapter == True and "icd_secondary_code" in df_sel.columns:
 
                 df_sample=None
                 chapter = []
@@ -324,6 +327,7 @@ class generate_scenario:
                 for i in range(1,nb_final_sample+1):
                     df_sample=pd.concat([df_sample,df_sel[~(df_sel.icd_secondary_code.str.slice(0,1).isin(chapter))].sample(1, replace=False, weights = col_weights  )])
                     chapter = df_sample.icd_secondary_code.str.slice(0,1).to_list()
+           
 
             else:
                 df_sample= df_sel.sample(nb_final_sample, replace=False, weights =col_weights)
@@ -331,10 +335,11 @@ class generate_scenario:
             # Add description codes
             if  "icd_secondary_code" in df_sample.columns   :
                 df_sample.drop_duplicates("icd_secondary_code",inplace=True)
-                df_sample["icd_code_description_alternative"] = df_sample.icd_secondary_code.apply(self.get_n_icd_alternative_descriptions)
+                # df_sample["icd_code_description_alternative"] = df_sample.icd_secondary_code.apply(self.get_n_icd_alternative_descriptions)
                 df_sample["icd_code_description_official"] = df_sample.icd_secondary_code.apply(self.get_icd_description)
                 
-                return df_sample[["icd_secondary_code","icd_code_description_official","icd_code_description_alternative"]].reset_index(  drop=True  )
+                # return df_sample[["icd_secondary_code","icd_code_description_official","icd_code_description_alternative"]].reset_index(  drop=True  )
+                return df_sample[["icd_secondary_code","icd_code_description_official"]].reset_index(  drop=True  )
 
             elif "procedure" in df_sample.columns  :
                 df_sample["procedure_description_official"] = df_sample.procedure.apply(self.get_procedure_description)
@@ -353,16 +358,16 @@ class generate_scenario:
                 'date_discharge': None,
                 'date_of_birth':None,
                 'first_name':None,
-                'laste_name':None,
-                'icd_primariry_code':None,
-                'icd_primary_code_definition': None,
-                'icd_primary_code_definition_alternatives': None,
+                'last_name':None,
+                'icd_primary_code':None,
+                # 'icd_primary_code_definition': None,
+                # 'icd_primary_code_definition_alternatives': None,
                 'case_management_type':None,
                 'icd_secondaray_code':[],
                 'admission_mode':None,
                 'discharge_disposition':None,
                 'cancer_stage':None,
-                'TNM_score':None,
+                'score_TNM':None,
                 'histological_type':None,
                 'treatment_recommandation':None,
                 'chemotherapy_regimen':None
@@ -457,14 +462,17 @@ class generate_scenario:
         
         elif case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Outpatient" :
             situa = "Prise en charge en hospitalisation de jour pour cure de chimiothérapie"
+            
+        if case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Outpatient" :
+            situa = "Prise en charge en hospitalisation de jour pour cure de chimiothérapie"
             if case["chemotherapy_regimen"] is not None :
-                situa += ".Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
+                situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
             code = 1
 
         elif case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Inpatient":
             situa = "Prise en charge en hospitalisation complète pour cure de chimiothérapie"
             if case["chemotherapy_regimen"] is not None :
-                situa += ".Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
+                situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
             code = 2
 
         elif case["drg_parent_code"] in self.drg_parent_code_radio and case["admission_type"]  == "Outpatient":
@@ -488,10 +496,7 @@ class generate_scenario:
             code = 7
 
         elif case["drg_parent_code"] in self.drg_parent_code_palliative_care :
-
-            
             situa = "Prise en charge pour soins palliatifs"
-
             code = 8
 
         elif case["drg_parent_code"] in self.drg_parent_code_stomies:
@@ -507,7 +512,7 @@ class generate_scenario:
 
             if case["text_procedure"] != "" :
                 situa += case["text_procedure"].lower()
-
+                
             code = 11
 
         elif case["drg_parent_code"][2:3] in ["C"] and case["admission_type"]  == "Inpatient" :
@@ -517,6 +522,7 @@ class generate_scenario:
                 situa += case["text_procedure"].lower()
 
                 code = 12
+                
         elif case["drg_parent_code"][2:3] in ["K"] and case["admission_type"]  == "Outpatient" :
             situa =  "Prise en charge en ambulatoire pour "
 
@@ -539,16 +545,16 @@ class generate_scenario:
                                      
                     situa =  "Hospitalisation en ambulatoire pour " + case["case_management_type_description"]
                     code = 15
-                    print(code)
+                    # print(code)
                     
                 else:
-                    option = np.random.choice(3, p=[0.6, 0.4])
+                    option = np.random.choice(2, p=[0.6, 0.4])
                     if option == 0:
-                            situa = "Première hospitalisation pour découverte de cancer" # 40%
+                            situa = "Première hospitalisation pour découverte de cancer" # 60%
                             code = 16
 
                     elif option == 1:
-                        situa = "Première diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement" # 30%
+                        situa = "Première diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement" # 40%
                         code = 17
 
   
@@ -558,20 +564,20 @@ class generate_scenario:
                         if case["case_management_type"]  == "DP":
                             situa =  "Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en ambulatoire" # 30%
                             code = 18
-                            print(code)
+                            # print(code)
                         else:
                             situa =  "Hospitalisation en ambulatoire pour " + case["case_management_type_description"]
                             code = 19
-                            print(code)
+                            # print(code)
                     else :
                         if case["case_management_type"]  == "DP":
                             situa =  "Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète" # 30%
                             code = 20
-                            print(code)
+                            # print(code)
                         else:
                             situa =  "Hospitalisation en hospitalisation complète pour " + case["case_management_type_description"]
                             code = 21
-                            print(code)
+                            # print(code)
         return (situa, code)
             
         
@@ -591,7 +597,7 @@ class generate_scenario:
         ### Principals diagnosis
         scenario["icd_primary_description"] = self.get_icd_description(profile.icd_primary_code)
 
-        scenario["icd_primary_description_alternative"] = self.get_icd_alternative_descriptions(profile.icd_primary_code)
+        # scenario["icd_primary_description_alternative"] = self.get_icd_alternative_descriptions(profile.icd_primary_code)
         scenario["case_management_type_description"] = self.get_icd_description(profile.case_management_type)
 
         ### Administratives elements
@@ -608,7 +614,7 @@ class generate_scenario:
         ### - official descriptions
         ### - official : alternatives descripttion
         scenario["text_secondary_icd_official"]=""
-        scenario["text_secondary_icd_alternative"]=""
+        # scenario["text_secondary_icd_alternative"]=""
 
         grouping_secondary =["icd_primary_code","icd_secondary_code","cage2","sexe","nb"] 
 
@@ -641,15 +647,20 @@ class generate_scenario:
 
         ### Treatment recommandations for cancer :
         if is_cancer ==1 :
-            chronic_diseases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary])
+            chronic_diseases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary], distinct_chapter=True)
 
         else :     
-            chronic_diseases =  self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary])  
+            # chronic_diseases =  self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary]) 
+            df_values = self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary]
+            df_secondary_cancer = self.df_secondary_icd[self.df_secondary_icd.icd_secondary_code.isin(self.icd_codes_cancer)][grouping_secondary]
+            
+            df_values = pd.concat([df_values, df_secondary_cancer])
+            chronic_diseases =  self.sample_from_df(profile =profile,df_values=df_values, distinct_chapter=True)  
 
         if chronic_diseases.shape[0] > 0 :
             for index, row in chronic_diseases.iterrows():
-                scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
-                scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
+                scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
+                # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
             
             scenario["icd_secondaray_code"] = chronic_diseases.icd_secondary_code.to_list()
 
@@ -663,26 +674,26 @@ class generate_scenario:
         if is_cancer ==1 :
 
             ##If TNM is know sample metastasis regarding this status
-            if scenario["TNM_score"] is not None :
-                if bool(re.search("N[123x+]",scenario["TNM_score"])) :
+            if scenario["score_TNM"] is not None :
+                if bool(re.search("N[123x+]",scenario["score_TNM"])) :
                     metastases_ln = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis LN'")[grouping_secondary],nb = 1)  
             
-                if metastases_ln.shape[0] > 0 :
-                    for index, row in metastases_ln.iterrows():
-                        scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
-                        scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
-                
-                    scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases_ln.icd_secondary_code.to_list()
+                    if metastases_ln.shape[0] > 0 :
+                        for index, row in metastases_ln.iterrows():
+                            scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
+                            # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
 
-                if bool(re.search("M[123x+]",scenario["TNM_score"])) :
+                        scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases_ln.icd_secondary_code.to_list()
+
+                if bool(re.search("M[123x+]",scenario["score_TNM"])) :
                     metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary])  
             
-                if metastases.shape[0] > 0 :
-                        for index, row in metastases.iterrows():
-                            scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
-                            scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
-                        
-                        scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
+                    if metastases.shape[0] > 0 :
+                            for index, row in metastases.iterrows():
+                                scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
+                                # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
+
+                            scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
                     
             
             #When TNM is not known, sample metastasis among all possible situations
@@ -691,8 +702,8 @@ class generate_scenario:
             
                 if metastases.shape[0] > 0 :
                     for index, row in metastases.iterrows():
-                        scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
-                        scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
+                        scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
+                        # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                         
                     scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
 
@@ -703,8 +714,8 @@ class generate_scenario:
 
         if complications.shape[0] > 0 :
             for index, row in complications.iterrows():
-                scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+")\n"
-                scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
+                scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
+                # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
             
         scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + complications.icd_secondary_code.to_list()
 
@@ -718,7 +729,7 @@ class generate_scenario:
         scenario["text_procedure"] = ""
 
         for index, row in procedures.iterrows():
-                scenario["text_procedure"] += "- " + row.procedure_description_official + "("+ row.procedure+")\n"
+                scenario["text_procedure"] += "- " + row.procedure_description_official + " ("+ row.procedure+")\n"
 
 
         scenario["case_management_type_text"] , scenario["cd_md_pec"] = self.define_cancer_md_pec(scenario)
@@ -734,9 +745,9 @@ class generate_scenario:
 
         for k,v in scenario.items():
             if k == "age" and v is not None:
-                SCENARIO +="- Âge du patient : " + str(v) + "ans\n"
+                SCENARIO +="- Âge du patient : " + str(v) + " ans\n"
             if k == "sexe" and v is not None:  
-                SCENARIO +="- Sexe du patient : " + str(v) + "\n"
+                SCENARIO +="- Sexe du patient : " + interpret_sexe(v) + "\n"
             if k == "date_entry" and v is not None:  
                 SCENARIO +="- Date d'entrée : "+ v.strftime("%d/%m/%Y") + "\n"
             if k == "date_discharge" and v is not None:  
@@ -747,17 +758,18 @@ class generate_scenario:
                 SCENARIO +="- Nom du patient : "+ v + "\n" 
             if k == "first_name" and v is not None:  
                 SCENARIO +="- Prénom du patient : "+ v + "\n" 
-            if(scenario["icd_primary_code"] in self.icd_codes_cancer) : 
-                if k == "icd_primary_code_definition" and v is not None:  
-                    SCENARIO +="- Localisation anatomique de la tumeur primaire : ("+ v + scenario["icd_primary_code"] + ")\n" 
+                
+            if scenario["icd_primary_code"] in self.icd_codes_cancer: 
+                if k == "icd_primary_description" and v is not None:  
+                    SCENARIO +="- Localisation anatomique de la tumeur primaire : "+ v + " (" + scenario["icd_primary_code"] + ")\n" 
                 if k == "histological_type":
                     if v is not None:  
-                        SCENARIO +="- Type anatomopathologique de la tumeur primaire : ("+ v + ")\n" 
+                        SCENARIO +="- Type anatomopathologique de la tumeur primaire : "+ v + "\n" 
                     else :
                         SCENARIO +="- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique\n" 
                 if k == "score_TNM":
                     if v is not None:  
-                        SCENARIO +="- Score TNM :"+ v + "\n" 
+                        SCENARIO +="- Score TNM : "+ v + "\n" 
                     else :
                         SCENARIO +="- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM\n" 
                 if k == "cancer_stage":
@@ -767,28 +779,27 @@ class generate_scenario:
                     if v is not None:  
                         SCENARIO +="- Biomarqueurs tumoraux : "+ v + "\n" 
                     else :
-                        SCENARIO +="- Biomarqueurs tumoraux : Vous choisirez des biomarqueur tumoraux cohérent avec la localisation et l'histologie de la tumeur\n" 
+                        SCENARIO +="- Biomarqueurs tumoraux : Vous choisirez des biomarqueurs tumoraux cohérents avec la localisation anatomique et l'histologie de la tumeur\n" 
             
-            if k == "mode_entree" and v is not None:  
+            if k == "admission_mode" and v is not None:  
                 SCENARIO +="- Mode d'entrée' : "+ v + "\n" 
-            if k == "mode_sortie" and v is not None:  
+            if k == "discharge_disposition" and v is not None:  
                 SCENARIO +="- Mode de sortie' : "+ v + "\n" 
 
             if k == "case_management_type" and v is not None:  
-                
                 SCENARIO +="- Mode de prise en charge : "+ scenario["case_management_type_text"] + "\n" 
-                SCENARIO +="- codage CIM10 :\n" 
-                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + "("+ scenario["icd_primary_code"] + ")\n"  
+                SCENARIO +="- Codage CIM10 :\n" 
+                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + " ("+ scenario["icd_primary_code"] + ")\n"  
                 
                 if scenario["case_management_type"]!="DP":
-                    SCENARIO +="   * Diagnostic relié : "+  scenario["case_management_type_description"] + "("+ scenario["case_management_type"] + ")\n"  
+                    SCENARIO +="   * Diagnostic relié : "+  scenario["case_management_type_description"] + " ("+ scenario["case_management_type"] + ")\n"  
                 else:
-                    SCENARIO +="   * Diagnostic relié :  Aucun\n"  
+                    SCENARIO +="   * Diagnostic relié : Aucun\n"  
                 
                 SCENARIO +="   * Diagnostic associés : \n"
                 SCENARIO +=  scenario["text_secondary_icd_official"]  + "\n" 
 
-        ICD_ALTERNATIVES =""
+        # ICD_ALTERNATIVES =""
 
 
         #ICD_ALTERNATIVES +=" - " + scenario["icd_primary_description"] + "("+ scenario["icd_primary_code"] + ") : " 
@@ -798,11 +809,12 @@ class generate_scenario:
         
         INSTRUCTIONS_CANCER = ""
         if scenario["histological_type"] is not None:
-            INSTRUCTIONS_CANCER ="vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
-            INSTRUCTIONS_CANCER +=" - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
+            INSTRUCTIONS_CANCER ="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
+            INSTRUCTIONS_CANCER +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
             if scenario["chemotherapy_regimen"] is not None :
-                INSTRUCTIONS_CANCER += " - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
+                INSTRUCTIONS_CANCER += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
 
-            INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
+            # INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
 
-        return {"SCENARIO": SCENARIO, "ICD_ALTERNATIVES" : ICD_ALTERNATIVES, "INSTRUCTIONS_CANCER":INSTRUCTIONS_CANCER}
+        # return {"SCENARIO": SCENARIO, "ICD_ALTERNATIVES" : ICD_ALTERNATIVES, "INSTRUCTIONS_CANCER":INSTRUCTIONS_CANCER}
+        return {"SCENARIO": SCENARIO, "INSTRUCTIONS_CANCER": INSTRUCTIONS_CANCER}
