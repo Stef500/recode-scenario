@@ -535,18 +535,23 @@ class generate_scenario:
         else :
             if case["icd_primary_code"] in self.icd_codes_cancer : 
 
-                option = np.random.choice(3, p=[0.4, 0.3, 0.3])
-                if option == 0:
-                        situa = "Première hospitalisation pour découverte de cancer" # 40%
-                        code = 15
-
-                elif option == 1:
-                    situa = "Première diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement" # 30%
-                    code = 16
-
+                if    case["case_management_type"][0:1]=="Z" :
+                                     
+                    situa =  "Hospitalisation en ambulatoire pour " + case["case_management_type_description"]
+                    code = 15
+                    print(code)
+                    
                 else:
-                    situa =  "Hospitalisation pour bilan et surveillance du cancer" # 30%
-                    code = 17
+                    option = np.random.choice(3, p=[0.6, 0.4])
+                    if option == 0:
+                            situa = "Première hospitalisation pour découverte de cancer" # 40%
+                            code = 16
+
+                    elif option == 1:
+                        situa = "Première diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement" # 30%
+                        code = 17
+
+  
             else :
                     if case["admission_type"]  == "Outpatient" :
                         
