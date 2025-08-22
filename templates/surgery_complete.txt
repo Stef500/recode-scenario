@@ -108,9 +108,9 @@ Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arteri
     * Créatinine : résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
 
-Par exemple : {"Âge": ["55 ans"], "Stade tumoral" : ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"],...}
+Par exemple : {"Âge": ["55 ans"], "Stade tumoral": ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"],...}
 
 - La sortie doit être un objet JSON au format suivant :
 {"CR": "le text généré", "formulations": {"diagnostics": {...}, "informations": {...}}}
 
-Par exemple : {"CR": "Texte du compte rendu ici...", "formulations": {"diagnostics": {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"]},  "informations": {"Âge": ["55 ans"], "Stade tumoral" : ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"]}}}
+Par exemple : {"CR": "Texte du compte rendu ici...", "formulations": {"diagnostics": {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"]}, "informations": {"Âge": ["55 ans"], "Stade tumoral": ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"]}}}
