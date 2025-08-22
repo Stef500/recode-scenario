@@ -302,6 +302,9 @@ class generate_scenario:
         
         if(col_weights not in df_sel.columns):
             df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
+        
+        if df_sel[col_weights].sum() == 0:
+            df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
     
         if df_sel.shape[0] ==0 :
             return pd.DataFrame(columns=df_values.columns)
@@ -763,20 +766,20 @@ class generate_scenario:
                 if k == "icd_primary_description" and v is not None:  
                     SCENARIO +="- Localisation anatomique de la tumeur primaire : "+ v + " (" + scenario["icd_primary_code"] + ")\n" 
                 if k == "histological_type":
-                    if v is not None:  
+                    if v is not None and not (isinstance(v, float)):  
                         SCENARIO +="- Type anatomopathologique de la tumeur primaire : "+ v + "\n" 
                     else :
                         SCENARIO +="- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique\n" 
                 if k == "score_TNM":
-                    if v is not None:  
+                    if v is not None and not (isinstance(v, float)):   
                         SCENARIO +="- Score TNM : "+ v + "\n" 
                     else :
                         SCENARIO +="- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM\n" 
                 if k == "cancer_stage":
-                    if v is not None:  
+                    if v is not None and not (isinstance(v, float)):   
                         SCENARIO +="- Stade tumoral : " + v + "\n" 
                 if k == "biomarkers":
-                    if v is not None:  
+                    if v is not None and not (isinstance(v, float)):   
                         SCENARIO +="- Biomarqueurs tumoraux : "+ v + "\n" 
                     else :
                         SCENARIO +="- Biomarqueurs tumoraux : Vous choisirez des biomarqueurs tumoraux cohérents avec la localisation anatomique et l'histologie de la tumeur\n" 
@@ -811,7 +814,7 @@ class generate_scenario:
         if scenario["histological_type"] is not None:
             INSTRUCTIONS_CANCER ="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
             INSTRUCTIONS_CANCER +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
-            if scenario["chemotherapy_regimen"] is not None :
+            if scenario["chemotherapy_regimen"] is not None and not (isinstance(v, float)): 
                 INSTRUCTIONS_CANCER += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
 
             # INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
