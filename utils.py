@@ -820,7 +820,7 @@ class generate_scenario:
         if scenario["histological_type"] is not None:
             INSTRUCTIONS_CANCER ="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
             INSTRUCTIONS_CANCER +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
-            if scenario["chemotherapy_regimen"] is not None and not (isinstance(v, float)): 
+            if scenario["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)): 
                 INSTRUCTIONS_CANCER += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
 
             INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
