@@ -1,8 +1,4 @@
-Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu opératoire de chirurgie ambulatoire en style clinique synthétique.
-
-
-[SCENARIO here]
-
+Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu opératoire de chirurgie ambulatoire à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
 
 **INSTRUCTIONS :**
 
@@ -15,9 +11,6 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compt
 - Langue : Rédigez le compte rendu en français.
 
 - Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes.
-	+ Ton télégraphique.
-	+ Phrases éventuellement incomplètes (absence de sujet ou verbe) si cela reste naturel.
-	+ Informations enchaînées par ponctuation simple : virgules, tirets, points-virgules, etc.
 
 - Formulation : 
 	+ Variez la structure des phrases. 
@@ -25,12 +18,11 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compt
 	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
 
 - Contenu à produire :
-	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
+	+ Rédigez uniquement le compte rendu opératoire.
 	+ Points à faire figurer si pertinents (max. 200 mots/point) : 
 		Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
 		Technique utilisée
 		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
-
 		Matériels utilisés et leur caractéristiques
 
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
