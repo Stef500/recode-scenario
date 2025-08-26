@@ -1,4 +1,4 @@
-Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation en style clinique synthétique.
+Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
 
 
 [SCENARIO here]
@@ -34,12 +34,6 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compt
     + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
     + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
     + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible, en particulier indiquez : 
-        Prise en charge diagnostique si pertinent
-		Conclusions des principaux examens complémentaires réalisés dans la section « Examens complémentaires »
- 		Pathologies finales retenues si pertinent
-        Prise en charge thérapeutique si applicable
-        Suivi mis en place
-        Critères de sortie
     + Conclusion
 
 - Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
