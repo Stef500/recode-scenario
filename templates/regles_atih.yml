@@ -1,0 +1,122 @@
+---
+regles:
+  - id: D1
+    description: Règle D1
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est ainsi caractérisée par une démarche médicale de nature diagnostique. Celle-ci vise, à partir de la symptomatologie qui a motivé l’hospitalisation, à établir un diagnostic (suivi ou non d’un traitement).Ici le séjour a permis le diagnostic de l’affection causale. Le traitement
+      a pu être réalisé au court de l'hospitalisation ou bien être remis à plus
+      tard. Dans cette situation, le codage du DP utilise en général les
+      chapitres I à XVII et XIX (voire XXII) de la CIM–10. Il ne fait pas appel
+      aux « codes Z », il ne doit donc pas être mentionné de DR dans le RUM.
+    criteres: DP != "Z"
+  - id: D2
+    description: Règle D2
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est
+      ainsi caractérisée par une démarche médicale de nature diagnostique.
+      Celle-ci vise, à partir de la symptomatologie qui a motivé
+      l’hospitalisation, à établir un diagnostic (suivi ou non d’un traitement).
+      Ici il n’a pas été fait de diagnostic étiologique. La symptomatologie qui
+      a motivé l’hospitalisation et qui a été explorée, est le DP, qu’elle
+      persiste ou qu’elle ait disparu lors du séjour. La situation clinique
+      relative à la règle D2 est ainsi la seule exception à la consigne selon
+      laquelle il ne peut être codé dans le RUM que des problèmes de santé
+      présents (actifs) au moment de l’hospitalisation. Dans cette situation, le
+      codage du DP utilise souvent le chapitre XVIII de la CIM–10 ; il ne fait
+      pas appel aux codes Z, il ne doit donc pas être mentionné de DR dans le
+      RUM. Sont équivalentes les situations rencontrées chez un patient atteint
+      d’une affection chronique ou de longue durée connue, antérieurement
+      diagnostiquée, admis pour une symptomatologie qui reste sans diagnostic
+      étiologique. Le DP est la symptomatologie.
+    criteres: DP != Z
+  - id: D3
+    description: Règle D3
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. Séjour programmé pour exploration
+      diagnostique 
+    criteres: |
+      DP = Liste des situations de diagnostic
+  - id: D4
+    description: Règle D4
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est
+      ainsi caractérisée par une démarche médicale de nature diagnostique.
+      Celle-ci vise, à partir de la symptomatologie qui a motivé
+      l’hospitalisation, à établir un diagnostic suivi ou non d’un traitement.
+      Ici le séjour est motivée par un antécédent personnel ou familial ou par
+      une symptomatologie quelconque (élévation du PSA, par exemple). Le séjour
+      est en général programmés pour une situation d’examen diagnostique. Le DP
+      est, en l’absence de mise en évidence du diagnostic, la raison des
+      explorations : 
+    criteres: |
+      DP = Liste des antécédants personnels ou familiaux
+  - id: D5
+    description: Règle D5
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est
+      ainsi caractérisée par une démarche médicale de nature diagnostique.
+      Celle-ci vise, à partir de la symptomatologie qui a motivé
+      l’hospitalisation, à établir un diagnostic suivi ou non d’un traitement.
+      Ici le séjour a permis le diagnostic de l’affection causale et on se
+      trouve dans une situation de poussée aigue d'une maladie chronique. Dans
+      cette situation, le langage médical courant emploie volontiers les
+      qualificatifs de maladie « déséquilibrée », « décompensée », «
+      déstabilisée » ou « exacerbée ». Lorsque le séjour a été motivé par une
+      poussée aigüe d’une maladie chronique ou de longue durée, cette maladie
+      peut être le diagnostic principal. Il importe que le dossier médical
+      contienne les informations étayant le diagnostic de poussée aigüe. La
+      survenue de celle-ci cause une rupture dans la prise en charge de la
+      maladie chronique ou de longue durée. Son traitement impose des mesures
+      thérapeutiques inhabituelles, transitoires, témoignant d’une période
+      critique. Il ne peut pas s’agir seulement, au cours du séjour, de
+      modifications posologiques progressives du traitement antérieur, ou de la
+      mise en place progressive du traitement avec lequel le patient quittera
+      l’unité. On ne doit pas considérer toute maladie chronique ou de longue
+      durée comme étant susceptible de poussée aigüe. Par exemple, on ne doit
+      pas confondre l’aggravation progressive d’une maladie chronique avec la
+      situation de poussée aigüe. L’aboutissement d’une poussée aigüe d’une
+      maladie chronique est en général soit le décès (par exemple, acutisation
+      terminale d’une hémopathie maligne), soit un retour à l’état antérieur
+      (éventuellement aggravé ; par exemple, après une poussée de sclérose en
+      plaques, le patient peut souffrir d’un déficit accentué).
+    criteres: DP = Liste CIM de pathologies chronique
+  - id: D6
+    description: Règle D6
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est
+      ainsi caractérisée par une démarche médicale de nature diagnostique.
+      Celle-ci vise, à partir de la symptomatologie qui a motivé
+      l’hospitalisation, à établir un diagnostic (suivi ou non d’un traitement).
+      Ici le séjour a permis le diagnostic de l’affection causale. On se trouve
+      dans une situation de poussée aigue d'une maladie chronique. Dans cette
+      situation, le langage médical courant emploie volontiers les qualificatifs
+      de maladie « déséquilibrée », « décompensée », « déstabilisée » ou «
+      exacerbée ». Ici la CIM prévoit un code spécifique pour cette poussée
+      aigue. Le diagnostic principal est ce code, il n'y a pas de diagnostic
+      relié. 
+    criteres: DP = Liste CIM poussée aigue de maladie chronique
+  - id: D7
+    description: Règle D7
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est
+      ainsi caractérisée par une démarche médicale de nature diagnostique.
+      Celle-ci vise, à partir de la symptomatologie qui a motivé
+      l’hospitalisation, à établir un diagnostic (suivi ou non d’un traitement).
+      Ici le séjour a été motivé par le diagnostic d’une complication d’une maladie chronique ou de longue durée, 
+			ou d’une complication du traitement de cette maladie, la complication est le diagnostic principal, 
+			que le diagnostic s’accompagne ou non d’un traitement. La règle D7 s’applique dans le cas d’une maladie chronique
+			 ou de longue durée connue avant la survenue de la complication. 
+			 On ne confondra pas la situation avec celle d’une complication révélatrice d’une maladie auparavant méconnue
+    criteres: DP = Liste CIM complication de maladie chronique
+  - id: D8
+    description: Règle D8
+    texte: >
+      HOSPITALISATION POUR DIAGNOSTIC. La situation clinique de diagnostic est
+      ainsi caractérisée par une démarche médicale de nature diagnostique.
+      Celle-ci vise, à partir de la symptomatologie qui a motivé
+      l’hospitalisation, à établir un diagnostic (suivi ou non d’un traitement).
+      Ici on se situe dans une situation d'affection ou lésion intercurrente concomittante
+			mais indépendante d'une maladie chronique ou de longue durée. Lorsque le séjour a été
+			motivé par le diagnostic d’une affection ou d’une lésion intercurrente indépendante de
+			la maladie chronique ou de longue durée, qu’il ait ou non été suivi d’un traitement, l’affection ou la lésion est le DP.
+    criteres: DP = Liste CIM affections aigues

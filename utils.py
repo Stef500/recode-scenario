@@ -185,6 +185,9 @@ class generate_scenario:
         self.df_names = pd.read_csv(path_ref + "prenoms_nom_sexe.csv",sep=";").dropna()
 
 
+        self.icd_code_chronic_attack = pd.read_csv(path_ref + "icd_code_chronic_attack.txt",sep=";").code
+
+
      
     def load_offical_icd(self,
                         file_name : str,
@@ -584,6 +587,9 @@ class generate_scenario:
         return (situa, code)
             
         
+
+
+   
 
 
     def generate_scenario_from_profile(self,
