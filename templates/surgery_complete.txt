@@ -1,11 +1,7 @@
-Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux documents distincts en style clinique synthétique :
-
+Vous êtes chirurgien praticien. Votre tâche est de générer 
 1. Un compte rendu opératoire de chirurgie
 2. Un compte rendu d’hospitalisation associé
-
-
-[SCENARIO here]
-
+à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
 
 **INSTRUCTIONS :**
 
@@ -16,11 +12,6 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux doc
 - Aucune partie du texte ne doit être mise en gras.
 
 - Langue : Rédigez le compte rendu en français.
-
-- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes.
-	+ Ton télégraphique.
-	+ Phrases éventuellement incomplètes (absence de sujet ou verbe) si cela reste naturel.
-	+ Informations enchaînées par ponctuation simple : virgules, tirets, points-virgules, etc.
 
 - Formulation : 
 	+ Variez la structure des phrases. 
@@ -45,11 +36,7 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux doc
 	+ Histoire de la maladie
 	+ Examen clinique (constantes vitales, examen physique, poids en kgs — en particulier si une dénutrition est évoquée, etc.) (uniquement ceux réalisés durant l’hospitalisation) 
 	+ Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
-	+ Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible, en particulier indiquez :  
-		Conclusions des principaux examens complémentaires réalisés dans la section « Examens complémentaires »
-		Prise en charge thérapeutique et suivi post-opératoire
-		Suivi mis en place
-		Critères de sortie
+	+ Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
 	+ Conclusion
 
 	Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation)
