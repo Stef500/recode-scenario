@@ -798,13 +798,11 @@ class generate_scenario:
             if k == "case_management_type" and v is not None:  
                 SCENARIO +="- Mode de prise en charge : "+ scenario["case_management_type_text"] + "\n" 
                 SCENARIO +="- Codage CIM10 :\n" 
-                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + " ("+ scenario["icd_primary_code"] + ")\n"  
-                
-                if scenario["case_management_type"]!="DP":
-                    SCENARIO +="   * Diagnostic relié : "+  scenario["case_management_type_description"] + " ("+ scenario["case_management_type"] + ")\n"  
-                else:
-                    SCENARIO +="   * Diagnostic relié : Aucun\n"  
-                
+                #if scenario["case_management_type"]!="DP":
+                #    SCENARIO +="   * Code CIM prise en charge :\n"  +  scenario["case_management_type_description"] + " ("+ scenario["case_management_type"] + ")\n"  
+               
+                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + " ("+ scenario["icd_primary_code"] + ")\n"          
+                               
                 SCENARIO +="   * Diagnostic associés : \n"
                 SCENARIO +=  scenario["text_secondary_icd_official"]  + "\n" 
 
@@ -823,7 +821,7 @@ class generate_scenario:
             if scenario["chemotherapy_regimen"] is not None and not (isinstance(v, float)): 
                 INSTRUCTIONS_CANCER += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
 
-            # INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
+            INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
 
         # return {"SCENARIO": SCENARIO, "ICD_ALTERNATIVES" : ICD_ALTERNATIVES, "INSTRUCTIONS_CANCER":INSTRUCTIONS_CANCER}
         return {"SCENARIO": SCENARIO, "INSTRUCTIONS_CANCER": INSTRUCTIONS_CANCER}
