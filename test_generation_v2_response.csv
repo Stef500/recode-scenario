@@ -1,0 +1,1882 @@
+,age,sexe,date_entry,date_discharge,date_of_birth,first_name,last_name,icd_primary_code,case_management_type,icd_secondaray_code,admission_mode,discharge_disposition,cancer_stage,score_TNM,histological_type,treatment_recommandation,chemotherapy_regimen,drg_parent_code,cage,cage2,admission_type,dms,los_mean,los_sd,drg_parent_description,icd_parent_code,icd_primary_description,case_management_type_description,first_name_med,last_name_med,text_secondary_icd_official,procedure,text_procedure,case_management_type_text,cd_md_pec,user_prompt,system_prompt,biomarkers,response
+0,69,2,2024-02-20,2024-02-20,1954-05-23,Samiha,Guyot de camy gozon,C259,Z5101,"['I10', 'C787', 'C780', 'C771', 'Z006']",DOMICILE,DOMICILE,,,,,,28Z18,[60-70[,[50-[,Outpatient,"0,00000000000000e+00",,,"Radiothérapie conformationnelle avec modulation d'intensité, en séances",C25,"Tumeur maligne du pancréas, sans précision",Séance d'irradiation,Kadidjatou,Merand,"- Hypertension essentielle (primitive) (I10)
+- Tumeur maligne secondaire du foie et des voies biliaires intrahépatiques (C787)
+- Tumeur maligne secondaire du poumon (C780)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrathoraciques (C771)
+- Examen de comparaison et de contrôle dans le cadre d'un programme de recherche clinique (Z006)
+",['YYYY600'],"- Supplément pour archivage numérique d'une mammographie ou d'un examen scanographique ou remnographique (YYYY600)
+",Prise en charge en hospitalisation de jour pour séance de radiothérapie,3,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 69 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 20/02/2024
+- Date de sortie : 20/02/2024
+- Date de naissance : 23/05/1954
+- Prénom du patient : Samiha
+- Nom du patient : Guyot de camy gozon
+- Mode de prise en charge : Prise en charge en hospitalisation de jour pour séance de radiothérapie
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne du pancréas, sans précision (C259)
+   * Diagnostic associés : 
+- Hypertension essentielle (primitive) (I10)
+- Tumeur maligne secondaire du foie et des voies biliaires intrahépatiques (C787)
+- Tumeur maligne secondaire du poumon (C780)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrathoraciques (C771)
+- Examen de comparaison et de contrôle dans le cadre d'un programme de recherche clinique (Z006)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne du pancréas, sans précision (C259)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{
+  ""CR"": ""### Motif d’hospitalisation\nSamiha Guyot de Camy Gozon, âgée de 69 ans, a été admise en hospitalisation de jour le 20/02/2024 pour une séance de radiothérapie dans le cadre de la prise en charge de son adénocarcinome pancréatique métastatique. La patiente est incluse dans un protocole de recherche clinique nécessitant des examens réguliers pour évaluer l’évolutivité tumorale.\n\n### Antécédents\nLa patiente présente une hypertension artérielle essentielle suivie depuis plusieurs années, traitée par inhibiteur de l'enzyme de conversion. Aucun antécédent chirurgical notable. Pas d’allergie connue. Sur le plan familial, on note un père décédé d’un cancer du poumon.\n\n### Mode de vie\nAncienne fumeuse (sevrage tabagique il y a 10 ans), la patiente ne consomme pas d’alcool. Elle est retraitée et vit en couple. Pas de pratique sportive régulière. G3P3, ménopausée depuis l’âge de 52 ans.\n\n### Histoire de la maladie\nLe diagnostic d’adénocarcinome pancréatique a été posé en janvier 2023 devant un syndrome cholestatique. La TDM abdomino-pelvienne et la biopsie hépatique ont confirmé le diagnostic, révélant une tumeur primitive du pancréas avec des métastases hépatiques, pulmonaires et des adénopathies intrathoraciques. La patiente a reçu une première ligne de chimiothérapie par FOLFIRINOX, puis une deuxième ligne par gemcitabine et nab-paclitaxel en raison d’une progression tumorale. Actuellement, elle est en troisième ligne de traitement avec une chimiothérapie à base de 5-fluorouracile et une radiothérapie palliative.\n\n### Examen clinique\nÀ l’admission, la patiente est en bon état général, ECOG 1. Les constantes vitales sont stables : PA à 140/80 mmHg, FC à 78 bpm, SpO2 à 98 % en air ambiant. L’examen physique retrouve une légère sensibilité de l’hypochondre droit sans hépatomégalie palpable. Le poids est stable à 62 kg, sans signe de dénutrition clinique.\n\n### Examens complémentaires\nUne NFS réalisée ce jour montre une légère anémie normocytaire à 11,2 g/dL, sans thrombopénie ni leucopénie. Le bilan hépatique révèle une élévation des gamma-GT à 2 fois la normale, sans cytolyse. La créatinine est normale. Un scanner thoraco-abdomino-pelvien réalisé dans le cadre du protocole de recherche clinique montre une stabilité des lésions secondaires hépatiques et pulmonaires par rapport au dernier examen d’imagerie réalisé un mois auparavant.\n\n### Évolution pendant l'hospitalisation\nLa patiente a bénéficié d’une séance de radiothérapie ciblée sur les lésions métastatiques hépatiques, bien tolérée sur le plan clinique. Aucun effet secondaire immédiat n’a été rapporté. La patiente a pu regagner son domicile en fin de journée avec un rendez-vous de contrôle programmé dans un mois.\n\n### Conclusion\nSamiha Guyot de Camy Gozon, 69 ans, a été prise en charge en hospitalisation de jour pour une séance de radiothérapie dans le cadre de son adénocarcinome pancréatique métastatique. La maladie reste stable sous traitement, et la patiente poursuit son inclusion dans un protocole de recherche clinique. La prochaine évaluation est prévue dans un mois avec réalisation d’un nouveau scanner thoraco-abdomino-pelvien."",
+
+  ""formulations"": {
+    ""diagnostics"": {
+      ""Tumeur maligne du pancréas, sans précision (C259)"": [
+        ""adénocarcinome pancréatique"",
+        ""tumeur primitive du pancréas""
+      ],
+      ""Hypertension essentielle (primitive) (I10)"": [
+        ""hypertension artérielle essentielle""
+      ],
+      ""Tumeur maligne secondaire du foie et des voies biliaires intrahépatiques (C787)"": [
+        ""métastases hépatiques""
+      ],
+      ""Tumeur maligne secondaire du poumon (C780)"": [
+        ""métastases pulmonaires""
+      ],
+      ""Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrathoraciques (C771)"": [
+        ""adénopathies intrathoraciques""
+      ],
+      ""Examen de comparaison et de contrôle dans le cadre d'un programme de recherche clinique (Z006)"": [
+        ""protocole de recherche clinique""
+      ]
+    },
+    ""informations"": {
+      ""Âge"": [
+        ""69 ans""
+      ],
+      ""Sexe"": [
+        ""Féminin""
+      ],
+      ""État général"": [
+        ""ECOG 1""
+      ],
+      ""Gestité"": [
+        ""G3P3""
+      ],
+      ""Topographie de la tumeur primaire"": [
+        ""pancréas""
+      ],
+      ""Histologie tumorale"": [
+        ""adénocarcinome""
+      ],
+      ""Stade tumoral"": [
+        ""métastatique""
+      ],
+      ""Sites métastatiques"": [
+        ""métastases hépatiques, pulmonaires et des adénopathies intrathoraciques""
+      ],
+      ""Évolutivité tumorale"": [
+        ""stabilité des lésions secondaires hépatiques et pulmonaires par rapport au dernier examen d’imagerie réalisé un mois auparavant""
+      ],
+      ""Examens pour diagnostic initial"": [
+        ""TDM abdomino-pelvienne"",
+        ""biopsie hépatique""
+      ],
+      ""Examens d'évaluation du stade tumoral"": [
+        ""TDM abdomino-pelvienne""
+      ],
+      ""Examens d’évaluation de l’évolutivité tumorale"": [
+        ""scanner thoraco-abdomino-pelvien""
+      ],
+      ""Traitements antitumoraux"": [
+        ""radiothérapie"",
+        ""chimiothérapie""
+      ],
+      ""Lignes de traitement antitumoral"": [
+        ""troisième ligne de traitement""
+      ],
+      ""Médicaments antitumoraux"": [
+        ""FOLFIRINOX"",
+        ""gemcitabine"",
+        ""nab-paclitaxel"",
+        ""5-fluorouracile""
+      ],
+      ""Cycles de chimiothérapie"": [
+        ""chimiothérapie par FOLFIRINOX"",
+        ""gemcitabine et nab-paclitaxel"",
+        ""5-fluorouracile""
+      ],
+      ""NFS"": [
+        ""anémie normocytaire à 11,2 g/dL""
+      ],
+      ""Bilan hépatique"": [
+        ""élévation des gamma-GT à 2 fois la normale""
+      ],
+      ""Créatinine"": [
+        ""normale""
+      ]
+    }
+  }
+}"
+1,80,2,2024-07-22,2024-07-22,1944-07-16,Anabelle,Bulsiewicz,C187,Z511,"['I10', 'R64', 'G309', 'C780']",DOMICILE,DOMICILE,IV,T4N0M1,Adénocarcinome mucineux,Chimiothérapie systémique,"FOLFOX, CAPEOX, FOLFIRI, FOLFIRINOX",28Z07,[70-80[,[50-[,Outpatient,"5,68181818181818e-02",2.0,0.0,"Chimiothérapie pour tumeur, en séances",C18,Tumeur maligne du côlon sigmoïde,Séance de chimiothérapie pour tumeur,Robert,Mathieu,"- Hypertension essentielle (primitive) (I10)
+- Cachexie (R64)
+- Maladie d'Alzheimer, sans précision (G309)
+- Tumeur maligne secondaire du poumon (C780)
+",['HPJB001'],"- Évacuation d'un épanchement intrapéritonéal, par voie transcutanée (HPJB001)
+","Prise en charge en hospitalisation de jour pour cure de chimiothérapie. Le protocole actuellement suivi est : FOLFOX, CAPEOX, FOLFIRI, FOLFIRINOX",1,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 80 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 22/07/2024
+- Date de sortie : 22/07/2024
+- Date de naissance : 16/07/1944
+- Prénom du patient : Anabelle
+- Nom du patient : Bulsiewicz
+- Mode de prise en charge : Prise en charge en hospitalisation de jour pour cure de chimiothérapie. Le protocole actuellement suivi est : FOLFOX, CAPEOX, FOLFIRI, FOLFIRINOX
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne du côlon sigmoïde (C187)
+   * Diagnostic associés : 
+- Hypertension essentielle (primitive) (I10)
+- Cachexie (R64)
+- Maladie d'Alzheimer, sans précision (G309)
+- Tumeur maligne secondaire du poumon (C780)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Stade tumoral : IV
+- Score TNM : T4N0M1
+- Type anatomopathologique de la tumeur primaire : Adénocarcinome mucineux
+- Localisation anatomique de la tumeur primaire : Tumeur maligne du côlon sigmoïde (C187)
+- Biomarqueurs tumoraux : CEA, CA 19-9
+Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :
+   - Schéma thérapeutique : Chimiothérapie systémique
+   - Protocole de chimiothérapie : FOLFOX, CAPEOX, FOLFIRI, FOLFIRINOX
+Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","CEA, CA 19-9","{""CR"": ""### Motif d’hospitalisation\nAnabelle Bulsiewicz, 80 ans, est admise en hospitalisation de jour le 22/07/2024 pour une cure de chimiothérapie dans le cadre d’un adénocarcinome mucineux du côlon sigmoïde métastatique. La patiente est suivie pour un cancer colorectal de stade IV avec des métastases pulmonaires. Elle bénéficie actuellement d’une chimiothérapie de deuxième ligne par protocole FOLFIRI.\n\n### Antécédents\nSur le plan médical, la patiente présente une hypertension artérielle essentielle suivie en traitement, une cachexie liée à son état néoplasique avancé, ainsi qu’une maladie d’Alzheimer sans précision. Aucun antécédent chirurgical notable n’est rapporté. Les allergies ne sont pas mentionnées. La patiente est veuve et vit à domicile avec une aide à domicile.\n\n### Mode de vie\nAnabelle Bulsiewicz est une ancienne employée de bureau, retraitée. Elle ne présente pas de toxiques connus (tabac, alcool). Son état général est altéré par sa pathologie néoplasique et sa maladie d’Alzheimer, limitant ses activités physiques. La patiente a eu trois grossesses menées à terme. Elle est autonome pour les actes de la vie quotidienne, mais nécessite une assistance pour les tâches plus complexes.\n\n### Histoire de la maladie\nLe diagnostic de cancer colorectal a été posé en janvier 2023 devant des signes cliniques d’occlusion intestinale partielle. Une coloscopie avec biopsies a confirmé la présence d’un adénocarcinome mucineux du côlon sigmoïde. Le bilan d’extension initial (TDM TAP et scintigraphie osseuse) a révélé des métastases pulmonaires, classant la maladie au stade IV (T4N0M1). La patiente a reçu une première ligne de chimiothérapie par FOLFOX, avec une progression tumorale observée après six cycles, motivant le passage à une deuxième ligne par FOLFIRI.\n\n### Examen clinique\nÀ l’admission, la patiente est consciente, orientée dans le temps et l’espace malgré des troubles mnésiques liés à sa maladie d’Alzheimer. Les constantes vitales sont stables : pression artérielle à 140/80 mmHg, fréquence cardiaque à 78 bpm, saturation en oxygène à 98 % en air ambiant. L’examen physique révèle une patiente émaciée, avec un poids de 45 kg pour une taille de 1,60 m (IMC à 17,6). L’abdomen est souple, sans défense, avec une cicatrice de colostomie. Les champs pulmonaires sont libres à l’auscultation.\n\n### Examens complémentaires\nLes examens biologiques réalisés montrent une NFS dans les limites de la normale, une créatinine légèrement élevée à 110 µmol/L, et un bilan hépatique perturbé avec des transaminases à deux fois la normale. Les marqueurs tumoraux sont élevés : CEA à 150 µg/L et CA 19-9 à 200 U/mL. Une TDM thoraco-abdomino-pelvienne récente montre une stabilité des lésions pulmonaires métastatiques par rapport à l’examen précédent.\n\n### Évolution pendant l'hospitalisation\nLa patiente a reçu sa cure de chimiothérapie par FOLFIRI (acide folinique, 5-FU et irinotécan) sans incident notable. La tolérance aiguë a été bonne, sans réaction allergique ni complication immédiate. La patiente a été surveillée pendant quatre heures après l’administration du traitement, avec une tolérance clinique et biologique satisfaisante. Elle est retournée à domicile en fin de journée, accompagnée par son aide à domicile.\n\n### Conclusion\nAnabelle Bulsiewicz, 80 ans, a bénéficié d’une cure de chimiothérapie de deuxième ligne par FOLFIRI dans le cadre d’un cancer colorectal métastatique. La tolérance au traitement a été bonne, et la patiente a pu regagner son domicile. Un suivi rapproché est prévu pour évaluer l’efficacité du traitement et ajuster la prise en charge en fonction de l’évolution clinique et biologique."",
+
+""formulations"": {""diagnostics"": {""Tumeur maligne du côlon sigmoïde (C187)"": [""adénocarcinome mucineux du côlon sigmoïde"", ""cancer colorectal""], ""Hypertension essentielle (primitive) (I10)"": [""hypertension artérielle essentielle""], ""Cachexie (R64)"": [""cachexie""], ""Maladie d'Alzheimer, sans précision (G309)"": [""maladie d’Alzheimer""], ""Tumeur maligne secondaire du poumon (C780)"": [""métastases pulmonaires""]}, ""informations"": {""Âge"": [""80 ans""], ""Sexe"": [""Féminin""], ""État général"": [""limitant ses activités physiques"", ""altéré par sa pathologie néoplasique et sa maladie d’Alzheimer""], ""Gestité"": [""trois grossesses menées à terme""], ""Topographie de la tumeur primaire"": [""côlon sigmoïde""], ""Histologie tumorale"": [""adénocarcinome mucineux""], ""Stade tumoral"": [""stade IV"", ""T4N0M1""], ""Biomarqueurs tumoraux"": [""CEA à 150 µg/L"", ""CA 19-9 à 200 U/mL""], ""Sites métastatiques"": [""poumon""], ""Évolutivité tumorale"": [""stabilité des lésions pulmonaires métastatiques""], ""Examens pour diagnostic initial"": [""coloscopie avec biopsies""], ""Examens d'évaluation du stade tumoral"": [""TDM TAP"", ""scintigraphie osseuse""], ""Examens d’évaluation de l’évolutivité tumorale"": [""TDM thoraco-abdomino-pelvienne""], ""Traitements antitumoraux"": [""chimiothérapie systémique""], ""Lignes de traitement antitumoral"": [""deuxième ligne""], ""Médicaments antitumoraux"": [""FOLFOX"", ""FOLFIRI"", ""acide folinique"", ""5-FU"", ""irinotécan""], ""Cycles de chimiothérapie"": [""six cycles""], ""NFS"": [""dans les limites de la normale""], ""Créatinine"": [""légèrement élevée à 110 µmol/L""], ""Bilan hépatique"": [""perturbé avec des transaminases à deux fois la normale""]}}}"
+2,40,2,2024-06-20,2024-06-20,1983-12-20,Renelde,Saint-georges,C793,Z5101,"['G119', 'F102', 'R4700', 'Z742', 'Z290', 'H492', 'E8768', 'H919']",DOMICILE,DOMICILE,,,,,,17K04,[40-50[,[18-50[,Outpatient,"0,00000000000000e+00",3.33846153846154,6.98314590108891,Autres irradiations,C79,Tumeur maligne secondaire du cerveau et des méninges cérébrales,Séance d'irradiation,Imani,Consalvo,"- Ataxie héréditaire, sans précision (G119)
+- Troubles mentaux et du comportement liés à l'utilisation d'alcool : syndrome de dépendance (F102)
+- Aphasie récente, persistant au-delà de 24 heures (R4700)
+- Besoin d'assistance à domicile, aucun autre membre du foyer n'étant capable d'assurer les soins (Z742)
+- Isolement (prophylactique) (Z290)
+- Paralysie du nerf moteur oculaire externe (VI) (H492)
+- Hypokaliémies, autres et sans précision (E8768)
+- Perte de l'audition, sans précision (H919)
+",['ACQJ002'],"- Remnographie [IRM] du crâne et de son contenu, avec injection intraveineuse de produit de contraste (ACQJ002)
+",Prise en charge en hospitalisation de jour pour séance de radiothérapie,3,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 40 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 20/06/2024
+- Date de sortie : 20/06/2024
+- Date de naissance : 20/12/1983
+- Prénom du patient : Renelde
+- Nom du patient : Saint-georges
+- Mode de prise en charge : Prise en charge en hospitalisation de jour pour séance de radiothérapie
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)
+   * Diagnostic associés : 
+- Ataxie héréditaire, sans précision (G119)
+- Troubles mentaux et du comportement liés à l'utilisation d'alcool : syndrome de dépendance (F102)
+- Aphasie récente, persistant au-delà de 24 heures (R4700)
+- Besoin d'assistance à domicile, aucun autre membre du foyer n'étant capable d'assurer les soins (Z742)
+- Isolement (prophylactique) (Z290)
+- Paralysie du nerf moteur oculaire externe (VI) (H492)
+- Hypokaliémies, autres et sans précision (E8768)
+- Perte de l'audition, sans précision (H919)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{
+  ""CR"": ""### Motif d’hospitalisation\nRenelde Saint-Georges, 40 ans, a été admise en hospitalisation de jour le 20/06/2024 pour une séance de radiothérapie dans le cadre d'un cancer du sein métastatique au cerveau. La patiente présente des troubles neurologiques persistants, notamment une aphasie et une paralysie du nerf moteur oculaire externe, nécessitant une prise en charge spécialisée et une assistance à domicile.\n\n### Antécédents\nSur le plan médical, la patiente a des antécédents d'ataxie héréditaire et d'un syndrome de dépendance à l'alcool. Elle présente également des troubles électrolytiques avec une hypokaliémie. Aucun antécédent chirurgical notable n'est rapporté. Les antécédents familiaux ne sont pas contributifs. Aucune allergie connue n'est mentionnée.\n\n### Mode de vie\nLa patiente est isolée socialement et nécessite une assistance à domicile pour les soins. Elle n'a pas d'activité professionnelle actuelle. Aucune information supplémentaire n'est disponible concernant les toxiques ou les activités physiques. La patiente a eu deux grossesses menées à terme.\n\n### Histoire de la maladie\nRenelde Saint-Georges a été diagnostiquée avec un cancer du sein de type canalaire invasif il y a deux ans. Malgré un traitement initial par chirurgie et chimiothérapie, la maladie a progressé avec l'apparition de métastases cérébrales. La patiente a développé des troubles neurologiques, dont une aphasie et une paralysie du nerf moteur oculaire externe, ainsi qu'une perte auditive. Ces symptômes ont motivé la poursuite d'un traitement par radiothérapie.\n\n### Examen clinique\nÀ l'admission, la patiente est consciente mais présente des difficultés d'élocution et une faiblesse du nerf moteur oculaire externe. Les constantes vitales sont stables : pression artérielle à 120/80 mmHg, fréquence cardiaque à 78 bpm, saturation en oxygène à 98 % en air ambiant. Le poids est de 62 kg. L'examen neurologique révèle une aphasie persistante et une paralysie du nerf crânien VI. L'état général est altéré avec un score ECOG à 2.\n\n### Examens complémentaires avec résultats\nUne IRM cérébrale récente a confirmé la présence de métastases cérébrales multiples. La NFS montre une anémie légère avec un taux d'hémoglobine à 11 g/dL. Le bilan hépatique est normal. La créatinine sérique est normale. Les marqueurs tumoraux CA 15-3 sont élevés, confirmant l'activité de la maladie métastatique.\n\n### Évolution pendant l'hospitalisation\nLa patiente a reçu une séance de radiothérapie cérébrale. La séance s'est déroulée sans complication immédiate. La patiente a été surveillée pendant quelques heures après la séance, puis autorisée à rentrer chez elle avec des instructions pour la gestion des effets secondaires potentiels. Une assistance à domicile a été organisée pour assurer les soins nécessaires.\n\n### Conclusion\nRenelde Saint-Georges, 40 ans, a bénéficié d'une séance de radiothérapie pour des métastases cérébrales d'un cancer du sein. La patiente présente des troubles neurologiques persistants nécessitant une assistance à domicile. La prise en charge se poursuit en ambulatoire avec un suivi régulier pour évaluer l'efficacité du traitement et la tolérance."",
+  ""formulations"": {
+    ""diagnostics"": {
+      ""Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)"": [
+        ""cancer du sein métastatique au cerveau"",
+        ""métastases cérébrales""
+      ],
+      ""Ataxie héréditaire, sans précision (G119)"": [
+        ""ataxie héréditaire""
+      ],
+      ""Troubles mentaux et du comportement liés à l'utilisation d'alcool : syndrome de dépendance (F102)"": [
+        ""syndrome de dépendance à l'alcool""
+      ],
+      ""Aphasie récente, persistant au-delà de 24 heures (R4700)"": [
+        ""aphasie"",
+        ""troubles neurologiques persistants"",
+        ""aphasie persistante""
+      ],
+      ""Besoin d'assistance à domicile, aucun autre membre du foyer n'étant capable d'assurer les soins (Z742)"": [
+        ""assistance à domicile"",
+        ""assistance à domicile pour les soins""
+      ],
+      ""Isolement (prophylactique) (Z290)"": [
+        ""isolée socialement""
+      ],
+      ""Paralysie du nerf moteur oculaire externe (VI) (H492)"": [
+        ""paralysie du nerf moteur oculaire externe"",
+        ""faiblesse du nerf moteur oculaire externe"",
+        ""paralysie du nerf crânien VI""
+      ],
+      ""Hypokaliémies, autres et sans précision (E8768)"": [
+        ""hypokaliémie"",
+        ""troubles électrolytiques""
+      ],
+      ""Perte de l'audition, sans précision (H919)"": [
+        ""perte auditive""
+      ]
+    },
+    ""informations"": {
+      ""Âge"": [
+        ""40 ans""
+      ],
+      ""Sexe"": [
+        ""Féminin""
+      ],
+      ""État général"": [
+        ""L'état général est altéré avec un score ECOG à 2""
+      ],
+      ""Gestité"": [
+        ""La patiente a eu deux grossesses menées à terme""
+      ],
+      ""Topographie de la tumeur primaire"": [
+        ""cancer du sein""
+      ],
+      ""Histologie tumorale"": [
+        ""cancer du sein de type canalaire invasif""
+      ],
+      ""Stade tumoral"": [
+        ""métastases cérébrales multiples""
+      ],
+      ""Biomarqueurs tumoraux"": [
+        ""Les marqueurs tumoraux CA 15-3 sont élevés""
+      ],
+      ""Sites métastatiques"": [
+        ""métastases cérébrales""
+      ],
+      ""Examens pour diagnostic initial"": [
+        ""IRM cérébrale""
+      ],
+      ""Examens d'évaluation de l’évolutivité tumorale"": [
+        ""IRM cérébrale""
+      ],
+      ""Traitements antitumoraux"": [
+        ""radiothérapie cérébrale""
+      ],
+      ""Médicaments antitumoraux"": [
+        ""Aucun médicament antitumoral mentionné""
+      ],
+      ""Cycles de chimiothérapie"": [
+        ""Aucun cycle de chimiothérapie mentionné""
+      ],
+      ""NFS"": [
+        ""anémie légère avec un taux d'hémoglobine à 11 g/dL""
+      ],
+      ""Créatinine"": [
+        ""normale""
+      ],
+      ""Bilan hépatique"": [
+        ""normal""
+      ]
+    }
+  }
+}"
+3,81,2,2024-08-13,2024-08-22,1942-10-28,Lucette,Mertens,C20,DP,"['F03+01', 'C775', 'C774']",DOMICILE,DOMICILE,,,,,,06M05,[80-[,[50-[,Inpatient,"5,46007604562738e+00",9.18133333333333,11.2979310296886,Autres tumeurs malignes du tube digestif,C20,Tumeur maligne du rectum,,Jennifer,Motel,"- Démence moyenne, sans précision, sans symptôme supplémentaire (F03+01)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrapelviens (C775)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques inguinaux et du membre inférieur (C774)
+",['ZCQJ004'],"- Remnographie [IRM] de l'abdomen ou du petit bassin [pelvis], avec injection intraveineuse de produit de contraste (ZCQJ004)
+",Première prise en charge diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement,17,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 81 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 13/08/2024
+- Date de sortie : 22/08/2024
+- Date de naissance : 28/10/1942
+- Prénom du patient : Lucette
+- Nom du patient : Mertens
+- Mode de prise en charge : Première prise en charge diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne du rectum (C20)
+   * Diagnostic associés : 
+- Démence moyenne, sans précision, sans symptôme supplémentaire (F03+01)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrapelviens (C775)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques inguinaux et du membre inférieur (C774)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne du rectum (C20)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{""CR"": ""### Motif d’hospitalisation\nLucette Mertens, 81 ans, a été admise le 13/08/2024 pour une prise en charge diagnostique et thérapeutique dans le cadre d'une rechute de son cancer du rectum. La patiente, suivie pour un adénocarcinome rectal, présentait des signes cliniques et biologiques évoquant une progression tumorale.\n\n### Antécédents\nSur le plan médical, la patiente est suivie pour une démence modérée, sans symptôme comportemental associé. Elle a été opérée en 2020 pour un cancer du rectum, traité initialement par une résection antérieure basse suivie d'une radiochimiothérapie adjuvante. Aucune allergie connue. Pas d'antécédent familial notable de cancer colorectal.\n\n### Mode de vie\nLucette Mertens vit à domicile, accompagnée par son fils. Elle est autonome pour les actes de la vie quotidienne, malgré des troubles cognitifs modérés. Elle ne fume pas et ne consomme pas d'alcool. Aucune activité physique régulière. La patiente a eu trois grossesses menées à terme.\n\n### Histoire de la maladie\nLa patiente a été diagnostiquée en 2020 avec un adénocarcinome rectal, traité par chirurgie et radiochimiothérapie. Après une période de rémission, une surveillance régulière a été mise en place. Récemment, une altération de l'état général et des douleurs pelviennes ont motivé une réévaluation, mettant en évidence une récidive tumorale avec extension ganglionnaire intrapelvienne et inguinale.\n\n### Examen clinique\nÀ l'admission, la patiente pesait 58 kg pour 1,60 m. Les constantes vitales étaient stables : PA à 130/80 mmHg, FC à 80 bpm, température à 37,2°C. L'examen physique retrouvait une sensibilité à la palpation de la fosse iliaque gauche et une masse palpable en région inguinale droite. L'examen neurologique était sans particularité, en dehors des signes cognitifs connus. La patiente était apyrétique et en bon état général, avec un score ECOG à 1.\n\n### Examens complémentaires avec résultats\nUne TDM thoraco-abdomino-pelvienne a été réalisée, confirmant la récidive tumorale rectale avec des adénopathies intrapelviennes et inguinales. La NFS montrait une anémie normocytaire à 10 g/dL, sans syndrome inflammatoire biologique. Le bilan hépatique et la créatinine étaient normaux.\n\n### Évolution pendant l'hospitalisation\nLa patiente a bénéficié d'une concertation pluridisciplinaire en RCP, proposant une chimiothérapie de deuxième ligne par FOLFIRI. Le premier cycle a été initié le 15/08/2024, avec une bonne tolérance clinique et biologique. La patiente a été surveillée pour d'éventuels effets secondaires, notamment hématologiques et digestifs. Une évaluation gériatrique a été réalisée, confirmant la faisabilité du traitement. La patiente a pu regagner son domicile le 22/08/2024, avec un suivi en oncologie programmé.\n\n### Conclusion\nLucette Mertens, 81 ans, a été prise en charge pour une récidive de son adénocarcinome rectal avec extension ganglionnaire. Une chimiothérapie de deuxième ligne a été initiée, avec une bonne tolérance initiale. La patiente a pu retourner à domicile avec un suivi rapproché en oncologie et en gériatrie."",
+
+""formulations"": {
+  ""diagnostics"": {
+    ""Tumeur maligne du rectum (C20)"": [""cancer du rectum"", ""adénocarcinome rectal"", ""récidive tumorale rectale""],
+    ""Démence moyenne, sans précision, sans symptôme supplémentaire (F03+01)"": [""démence modérée"", ""troubles cognitifs modérés""],
+    ""Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrapelviens (C775)"": [""adénopathies intrapelviennes""],
+    ""Tumeur maligne secondaire et non précisée des ganglions lymphatiques inguinaux et du membre inférieur (C774)"": [""adénopathies inguinales"", ""masse palpable en région inguinale droite""]
+  },
+  ""informations"": {
+    ""Âge"": [""81 ans""],
+    ""Sexe"": [""Féminin""],
+    ""État général"": [""bon état général"", ""score ECOG à 1""],
+    ""Gestité"": [""trois grossesses menées à terme""],
+    ""Topographie de la tumeur primaire"": [""rectum""],
+    ""Histologie tumorale"": [""adénocarcinome""],
+    ""Stade tumoral"": [""récidive tumorale avec extension ganglionnaire intrapelvienne et inguinale""],
+    ""Sites métastatiques"": [""ganglions lymphatiques intrapelviens"", ""ganglions lymphatiques inguinaux""],
+    ""Examens pour diagnostic initial"": [""TDM thoraco-abdomino-pelvienne""],
+    ""Examens d'évaluation de l’évolutivité tumorale"": [""TDM thoraco-abdomino-pelvienne""],
+    ""Traitements antitumoraux"": [""chimiothérapie de deuxième ligne par FOLFIRI""],
+    ""Lignes de traitement antitumoral"": [""deuxième ligne""],
+    ""Médicaments antitumoraux"": [""FOLFIRI""],
+    ""Cycles de chimiothérapie"": [""premier cycle""],
+    ""NFS"": [""anémie normocytaire à 10 g/dL""],
+    ""Créatinine"": [""normale""],
+    ""Bilan hépatique"": [""normal""]
+  }
+}
+}"
+4,61,1,2024-05-08,2024-05-08,1963-03-12,Silouane,Rouzaud,D020,DP,"['I10', 'G8108', 'F1026', 'D360', 'G523', 'Z926', 'G473']",DOMICILE,DOMICILE,,,,,,03K03,[60-70[,[50-[,Outpatient,"0,00000000000000e+00",,,"Séjours comprenant une endoscopie oto-rhino-laryngologique, en ambulatoire",D02,Carcinome in situ du larynx,,Marlene,Hohmatter,"- Hypertension essentielle (primitive) (I10)
+- Hémiplégie flasque, autre et sans précision (G8108)
+- Syndrome de dépendance à l'alcool, utilisation épisodique (F1026)
+- Tumeur bénigne des ganglions lymphatiques (D360)
+- Affections du nerf grand hypoglosse (G523)
+- Antécédents personnels de chimiothérapie pour tumeur (Z926)
+- Apnée du sommeil (G473)
+",['LCQH001'],"- Scanographie des tissus mous du cou, avec injection intraveineuse de produit de contraste (LCQH001)
+","Prise en charge en ambulatoire pour - scanographie des tissus mous du cou, avec injection intraveineuse de produit de contraste (lcqh001)
+",13,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 61 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 08/05/2024
+- Date de sortie : 08/05/2024
+- Date de naissance : 12/03/1963
+- Prénom du patient : Silouane
+- Nom du patient : Rouzaud
+- Mode de prise en charge : Prise en charge en ambulatoire pour - scanographie des tissus mous du cou, avec injection intraveineuse de produit de contraste (lcqh001)
+
+- Codage CIM10 :
+   * Diagnostic principal : Carcinome in situ du larynx (D020)
+   * Diagnostic associés : 
+- Hypertension essentielle (primitive) (I10)
+- Hémiplégie flasque, autre et sans précision (G8108)
+- Syndrome de dépendance à l'alcool, utilisation épisodique (F1026)
+- Tumeur bénigne des ganglions lymphatiques (D360)
+- Affections du nerf grand hypoglosse (G523)
+- Antécédents personnels de chimiothérapie pour tumeur (Z926)
+- Apnée du sommeil (G473)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Carcinome in situ du larynx (D020)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{
+  ""CR"": ""### Motif d’hospitalisation\nSilouane Rouzaud, âgé de 61 ans, a été admis en ambulatoire le 08/05/2024 pour la réalisation d’un scanner des tissus mous du cou avec injection intraveineuse de produit de contraste, dans le cadre du suivi de son carcinome in situ du larynx.\n\n### Antécédents\nSur le plan médical, le patient présente une hypertension artérielle essentielle, une hémiplégie flasque séquellaire, un syndrome de dépendance à l'alcool avec une utilisation épisodique, une tumeur bénigne des ganglions lymphatiques, une affection du nerf grand hypoglosse et un syndrome d'apnée du sommeil. Il a également des antécédents de chimiothérapie pour une tumeur. Aucune allergie connue n’est rapportée.\n\n### Mode de vie\nLe patient est anciennement fumeur, avec un sevrage tabagique il y a cinq ans. Il consomme de l'alcool de manière épisodique. Il vit seul à domicile et est autonome pour les activités de la vie quotidienne malgré son hémiplégie. Il n’exerce pas d’activité professionnelle.\n\n### Histoire de la maladie\nLe patient a été diagnostiqué avec un carcinome in situ du larynx il y a six mois, suite à une laryngoscopie avec biopsie. Le type histologique est un carcinome épidermoïde in situ. Le bilan d’extension initial, incluant un scanner cervical et une échographie ganglionnaire, n’a pas montré de signe d’extension locale ou à distance. Le patient a bénéficié d’une laryngectomie partielle avec curage ganglionnaire cervical. La tumeur était classée cTisN0M0. Le patient a ensuite reçu une radiothérapie adjuvante. Actuellement, le patient est en surveillance régulière avec des examens d’imagerie.\n\n### Examen clinique\nÀ l’examen, le patient est conscient et orienté. Les constantes vitales sont stables : pression artérielle à 140/80 mmHg, fréquence cardiaque à 78 bpm, saturation en oxygène à 98 % en air ambiant. L’examen ORL montre une cicatrice de laryngectomie sans signe de récidive locale. L’examen neurologique révèle une hémiplégie flasque droite séquellaire. Le poids est stable à 72 kg.\n\n### Examens complémentaires\nUn scanner des tissus mous du cou avec injection intraveineuse de produit de contraste a été réalisé. Les résultats montrent une absence de récidive tumorale locale ou de métastases ganglionnaires. Les ganglions lymphatiques sont stables par rapport aux examens précédents, sans signe de malignité. Le bilan biologique montre une NFS normale, une créatinine normale et un bilan hépatique normal.\n\n### Évolution pendant l'hospitalisation\nLe patient a été admis en ambulatoire pour la réalisation du scanner cervical. L’examen a été bien toléré, sans réaction allergique au produit de contraste. Les résultats du scanner ont été discutés avec le patient, confirmant l’absence de récidive tumorale. Le patient a été rassuré sur l’évolution favorable de sa maladie. Une consultation de suivi a été programmée dans trois mois avec un nouvel examen d’imagerie.\n\n### Conclusion\nSilouane Rouzaud, âgé de 61 ans, a été suivi en ambulatoire pour un scanner cervical dans le cadre du suivi de son carcinome in situ du larynx. Les résultats sont rassurants, sans signe de récidive. Le patient est retourné à domicile avec un suivi programmé dans trois mois."",
+  ""formulations"": {
+    ""diagnostics"": {
+      ""Carcinome in situ du larynx (D020)"": [
+        ""carcinome in situ du larynx"",
+        ""carcinome épidermoïde in situ""
+      ],
+      ""Hypertension essentielle (primitive) (I10)"": [
+        ""hypertension artérielle essentielle"",
+        ""pression artérielle à 140/80 mmHg""
+      ],
+      ""Hémiplégie flasque, autre et sans précision (G8108)"": [
+        ""hémiplégie flasque"",
+        ""hémiplégie flasque droite séquellaire""
+      ],
+      ""Syndrome de dépendance à l'alcool, utilisation épisodique (F1026)"": [
+        ""syndrome de dépendance à l'alcool avec une utilisation épisodique""
+      ],
+      ""Tumeur bénigne des ganglions lymphatiques (D360)"": [
+        ""tumeur bénigne des ganglions lymphatiques""
+      ],
+      ""Affections du nerf grand hypoglosse (G523)"": [
+        ""affection du nerf grand hypoglosse""
+      ],
+      ""Antécédents personnels de chimiothérapie pour tumeur (Z926)"": [
+        ""antécédents de chimiothérapie pour une tumeur""
+      ],
+      ""Apnée du sommeil (G473)"": [
+        ""syndrome d'apnée du sommeil""
+      ]
+    },
+    ""informations"": {
+      ""Âge"": [
+        ""61 ans""
+      ],
+      ""Sexe"": [
+        ""masculin""
+      ],
+      ""État général"": [
+        ""Le patient est conscient et orienté""
+      ],
+      ""Comorbidités"": [
+        ""hypertension artérielle essentielle, une hémiplégie flasque séquellaire, un syndrome de dépendance à l'alcool avec une utilisation épisodique, une tumeur bénigne des ganglions lymphatiques, une affection du nerf grand hypoglosse et un syndrome d'apnée du sommeil""
+      ],
+      ""Topographie de la tumeur primaire"": [
+        ""larynx""
+      ],
+      ""Histologie tumorale"": [
+        ""carcinome épidermoïde in situ""
+      ],
+      ""Stade tumoral"": [
+        ""cTisN0M0""
+      ],
+      ""Examens pour diagnostic initial"": [
+        ""laryngoscopie avec biopsie""
+      ],
+      ""Examens d'évaluation du stade tumoral"": [
+        ""scanner cervical et une échographie ganglionnaire""
+      ],
+      ""Examens d’évaluation de l’évolutivité tumorale"": [
+        ""scanner des tissus mous du cou avec injection intraveineuse de produit de contraste""
+      ],
+      ""Traitements antitumoraux"": [
+        ""laryngectomie partielle avec curage ganglionnaire cervical, radiothérapie adjuvante""
+      ],
+      ""NFS"": [
+        ""normale""
+      ],
+      ""Créatinine"": [
+        ""normale""
+      ],
+      ""Bilan hépatique"": [
+        ""normal""
+      ]
+    }
+  }
+}"
+5,69,1,2024-05-03,2024-06-16,1954-10-14,Didier,Soudiere,C348,Z515,"['Z515', 'I252', 'F1020', 'G301', 'R4700', 'C797', 'C780', 'C788', 'C772', 'C782', 'R568', 'Z452']",URGENCES,DECES,,,,,,23Z02,[60-70[,[50-[,Inpatient,"1,64482758620690e+01",15.6504152156443,16.7517559337519,"Soins Palliatifs, avec ou sans acte",C34,Tumeur maligne à localisations contiguës des bronches et du poumon,Soins palliatifs,Michel,Maury,"- Soins palliatifs (Z515)
+- Infarctus du myocarde, ancien (I252)
+- Syndrome de dépendance à l'alcool, personne actuellement abstinente (F1020)
+- Maladie d'Alzheimer à début tardif (G301)
+- Aphasie récente, persistant au-delà de 24 heures (R4700)
+- Tumeur maligne secondaire de la glande surrénale (C797)
+- Tumeur maligne secondaire du poumon (C780)
+- Tumeur maligne secondaire des organes digestifs, autres et non précisés (C788)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intra-abdominaux (C772)
+- Tumeur maligne secondaire de la plèvre (C782)
+- Convulsions, autres et non précisées (R568)
+- Ajustement et entretien d'un dispositif d'accès vasculaire (Z452)
+",['PAMH001'],"- Cimentoplastie intraosseuse extrarachidienne, par voie transcutanée avec guidage radiologique (PAMH001)
+",Prise en charge pour soins palliatifs,8,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 69 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 03/05/2024
+- Date de sortie : 16/06/2024
+- Date de naissance : 14/10/1954
+- Prénom du patient : Didier
+- Nom du patient : Soudiere
+- Mode de prise en charge : Prise en charge pour soins palliatifs
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne à localisations contiguës des bronches et du poumon (C348)
+   * Diagnostic associés : 
+- Soins palliatifs (Z515)
+- Infarctus du myocarde, ancien (I252)
+- Syndrome de dépendance à l'alcool, personne actuellement abstinente (F1020)
+- Maladie d'Alzheimer à début tardif (G301)
+- Aphasie récente, persistant au-delà de 24 heures (R4700)
+- Tumeur maligne secondaire de la glande surrénale (C797)
+- Tumeur maligne secondaire du poumon (C780)
+- Tumeur maligne secondaire des organes digestifs, autres et non précisés (C788)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intra-abdominaux (C772)
+- Tumeur maligne secondaire de la plèvre (C782)
+- Convulsions, autres et non précisées (R568)
+- Ajustement et entretien d'un dispositif d'accès vasculaire (Z452)
+
+- Mode d'entrée' : URGENCES
+- Mode de sortie' : DECES
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne à localisations contiguës des bronches et du poumon (C348)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{""CR"": ""### Motif d’hospitalisation\nDidier Soudiere, âgé de 69 ans, a été admis aux urgences le 03/05/2024 pour une aggravation de son état général dans le cadre d’un cancer bronchopulmonaire métastatique connu. Le patient présentait une détérioration rapide de son état avec une dyspnée majeure, des douleurs thoraciques intenses et un syndrome confusionnel. L’équipe des soins palliatifs a été sollicitée pour une prise en charge symptomatique et un accompagnement en fin de vie.\n\n### Antécédents\nSur le plan médical, le patient avait des antécédents d’infarctus du myocarde ancien, d’une dépendance à l’alcool avec une abstinence actuelle, et d’une maladie d’Alzheimer à début tardif. Il présentait également une aphasie persistante depuis plusieurs mois. Aucun antécédent chirurgical notable n’a été rapporté. Les antécédents familiaux n’étaient pas contributifs. Aucune allergie connue n’a été signalée.\n\n### Mode de vie\nAnciennement fumeur, le patient avait arrêté l’alcool et le tabac depuis plusieurs années. Il vivait en institution spécialisée en raison de sa maladie d’Alzheimer. Son activité physique était limitée en raison de son état de santé général. Il était veuf et sans enfant.\n\n### Histoire de la maladie\nLe patient a été diagnostiqué avec un carcinome bronchopulmonaire épidermoïde de stade IV (cT4N1M1) en janvier 2023. Le diagnostic a été posé suite à une TDM thoracique et une biopsie bronchique. Le patient a reçu plusieurs lignes de traitement, incluant une chimiothérapie à base de carboplatine et paclitaxel, ainsi qu’une immunothérapie par pembrolizumab. Malgré ces traitements, la maladie a progressé avec l’apparition de métastases surrénaliennes, digestives, ganglionnaires intra-abdominales et pleurales.\n\n### Examen clinique\nÀ l’admission, le patient était en mauvais état général, avec un score ECOG à 4. Il était désorienté, aphasique et présentait des signes de détresse respiratoire. Les constantes vitales étaient les suivantes : pression artérielle à 90/60 mmHg, fréquence cardiaque à 110 bpm, saturation en oxygène à 88% sous air ambiant, et une température à 37,8°C. L’examen physique révélait des râles crépitants bilatéraux, une hépatomégalie et des œdèmes des membres inférieurs. Le poids du patient était de 55 kg, révélant une dénutrition sévère.\n\n### Examens complémentaires\nUne NFS a montré une anémie normocytaire avec un taux d’hémoglobine à 9 g/dL. Le bilan hépatique était perturbé avec des transaminases élevées et une bilirubine à 30 mg/L. La créatinine était normale. Une TDM thoraco-abdomino-pelvienne a confirmé la progression des lésions tumorales avec une extension des métastases. Une IRM cérébrale a été réalisée pour évaluer l’extension des métastases, mais n’a pas montré de lésions cérébrales.\n\n### Évolution pendant l'hospitalisation\nL’évolution a été marquée par une détérioration rapide de l’état général du patient. Une oxygénothérapie a été initiée pour soulager la dyspnée, et un traitement antalgique par morphine a été ajusté pour contrôler les douleurs thoraciques. Des soins de confort ont été mis en place, incluant une hydratation intraveineuse et une assistance nutritionnelle. Le patient a présenté des épisodes de convulsions, traités par benzodiazépines. L’équipe de soins palliatifs a assuré un accompagnement psychologique et spirituel pour le patient et sa famille. Malgré les soins prodigués, l’état du patient s’est aggravé, conduisant à son décès le 16/06/2024.\n\n### Conclusion\nDidier Soudiere est décédé dans un contexte de cancer bronchopulmonaire métastatique en phase terminale. Les soins palliatifs ont permis de soulager ses symptômes et d’assurer un accompagnement digne et respectueux en fin de vie. La prise en charge a été centrée sur le confort et la qualité de vie du patient jusqu’à son dernier souffle."", ""formulations"": {""diagnostics"": {""Tumeur maligne à localisations contiguës des bronches et du poumon (C348)"": [""cancer bronchopulmonaire"", ""carcinome bronchopulmonaire épidermoïde""], ""Soins palliatifs (Z515)"": [""soins palliatifs""], ""Infarctus du myocarde, ancien (I252)"": [""infarctus du myocarde ancien""], ""Syndrome de dépendance à l'alcool, personne actuellement abstinente (F1020)"": [""dépendance à l’alcool"", ""abstinence actuelle""], ""Maladie d'Alzheimer à début tardif (G301)"": [""maladie d’Alzheimer à début tardif""], ""Aphasie récente, persistant au-delà de 24 heures (R4700)"": [""aphasie persistante""], ""Tumeur maligne secondaire de la glande surrénale (C797)"": [""métastases surrénaliennes""], ""Tumeur maligne secondaire du poumon (C780)"": [""métastases pulmonaires""], ""Tumeur maligne secondaire des organes digestifs, autres et non précisés (C788)"": [""métastases digestives""], ""Tumeur maligne secondaire et non précisée des ganglions lymphatiques intra-abdominaux (C772)"": [""métastases ganglionnaires intra-abdominales""], ""Tumeur maligne secondaire de la plèvre (C782)"": [""métastases pleurales""], ""Convulsions, autres et non précisées (R568)"": [""convulsions""]}, ""informations"": {""Âge"": [""69 ans"", ""âgé de 69 ans""], ""Sexe"": [""Masculin""], ""État général"": [""mauvais état général"", ""score ECOG à 4""], ""Comorbidités"": [""infarctus du myocarde ancien"", ""dépendance à l’alcool"", ""maladie d’Alzheimer à début tardif"", ""aphasie persistante""], ""Topographie de la tumeur primaire"": [""bronchopulmonaire""], ""Histologie tumorale"": [""carcinome épidermoïde""], ""Stade tumoral"": [""stade IV (cT4N1M1)""], ""Sites métastatiques"": [""surrénaliens"", ""digestifs"", ""ganglionnaires intra-abdominaux"", ""pleuraux""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""biopsie bronchique""], ""Examens d'évaluation du stade tumoral"": [""TDM thoraco-abdomino-pelvienne"", ""IRM cérébrale""], ""Traitements antitumoraux"": [""chimiothérapie"", ""immunothérapie""], ""Médicaments antitumoraux"": [""carboplatine"", ""paclitaxel"", ""pembrolizumab""], ""NFS"": [""anémie normocytaire"", ""taux d’hémoglobine à 9 g/dL""], ""Créatinine"": [""normale""], ""Bilan hépatique"": [""transaminases élevées"", ""bilirubine à 30 mg/L""]}}}"
+6,52,2,2024-06-03,2024-07-24,1971-06-28,Hanya,Delean,C920,DP,"['Z515', 'M311', 'C792', 'C780', 'C793', 'C795', 'E785', 'Z713', 'G473', 'D696', 'D619']",DOMICILE,DOMICILE,,,,,,17M09,[50-60[,[50-[,Inpatient,"2,61666666666667e+01",22.7158273381295,19.2260718304644,"Leucémies aigües, âge supérieur à 17 ans",C92,Leucémie myéloblastique aigüe [LAM],,Alain,Ranivoarisoa,"- Soins palliatifs (Z515)
+- Microangiopathie thrombotique (M311)
+- Tumeur maligne secondaire de la peau (C792)
+- Tumeur maligne secondaire du poumon (C780)
+- Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)
+- Tumeur maligne secondaire des os et de la moelle osseuse (C795)
+- Hyperlipidémie, sans précision (E785)
+- Surveillance et conseils diététiques (Z713)
+- Apnée du sommeil (G473)
+- Thrombopénie, sans précision (D696)
+- Aplasie médullaire, sans précision (D619)
+",['DHQH006'],"- Phlébographie globale de la veine cave supérieure [Cavographie supérieure], par voie veineuse transcutanée (DHQH006)
+",Première prise en charge diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement,17,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 52 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 03/06/2024
+- Date de sortie : 24/07/2024
+- Date de naissance : 28/06/1971
+- Prénom du patient : Hanya
+- Nom du patient : Delean
+- Mode de prise en charge : Première prise en charge diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement
+- Codage CIM10 :
+   * Diagnostic principal : Leucémie myéloblastique aigüe [LAM] (C920)
+   * Diagnostic associés : 
+- Soins palliatifs (Z515)
+- Microangiopathie thrombotique (M311)
+- Tumeur maligne secondaire de la peau (C792)
+- Tumeur maligne secondaire du poumon (C780)
+- Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)
+- Tumeur maligne secondaire des os et de la moelle osseuse (C795)
+- Hyperlipidémie, sans précision (E785)
+- Surveillance et conseils diététiques (Z713)
+- Apnée du sommeil (G473)
+- Thrombopénie, sans précision (D696)
+- Aplasie médullaire, sans précision (D619)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Leucémie myéloblastique aigüe [LAM] (C920)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{""CR"": ""### Motif d’hospitalisation\nHanya Delean, âgée de 52 ans, a été admise le 03/06/2024 pour une prise en charge diagnostique et thérapeutique dans le cadre d'une rechute de sa leucémie myéloblastique aiguë (LAM). La patiente présente également des signes de microangiopathie thrombotique et une thrombopénie sévère, nécessitant une évaluation et un traitement urgents.\n\n### Antécédents\nSur le plan médical, la patiente a des antécédents de leucémie myéloblastique aiguë diagnostiquée il y a deux ans, traitée par chimiothérapie et greffe de moelle osseuse. Elle présente également une hyperlipidémie et une apnée du sommeil. Aucune allergie connue n'est rapportée. Sur le plan chirurgical, la patiente a subi une greffe de moelle osseuse il y a un an. Les antécédents familiaux ne révèlent pas de pathologies malignes hématologiques.\n\n### Mode de vie\nLa patiente est ancienne fumeuse, ayant arrêté il y a cinq ans. Elle travaille comme enseignante et mène une vie sédentaire. Elle est mère de deux enfants et vit en couple. Elle ne pratique pas d'activité physique régulière. La patiente est ménopausée depuis l'âge de 50 ans.\n\n### Histoire de la maladie\nLa patiente a été initialement diagnostiquée avec une leucémie myéloblastique aiguë en 2022, traitée par chimiothérapie intensive suivie d'une greffe de moelle osseuse. Elle était en rémission complète jusqu'à récemment, où elle a présenté des signes de rechute avec une fatigue intense, des ecchymoses spontanées et des saignements gingivaux. Une NFS a révélé une thrombopénie sévère et une anémie. La patiente a également développé des métastases cutanées, pulmonaires, cérébrales et osseuses.\n\n### Examen clinique\nÀ l'admission, la patiente présentait un état général altéré avec un score ECOG de 2. Les constantes vitales étaient stables avec une TA à 120/70 mmHg, une FC à 85 bpm et une SpO2 à 98% en air ambiant. L'examen physique révélait des pétéchies diffuses, des ecchymoses et une pâleur cutanée. Le poids était de 62 kg pour une taille de 165 cm. L'examen neurologique était sans particularité, et l'auscultation pulmonaire était normale.\n\n### Examens complémentaires avec résultats\nUne NFS a montré une thrombopénie à 20 000/mm³, une anémie à 8 g/dL et une leucopénie à 1 500/mm³. Le bilan hépatique était normal, et la créatinine était à 0,8 mg/dL. Une biopsie médullaire a confirmé la rechute de la leucémie myéloblastique aiguë. Un scanner corporel a révélé des métastases cutanées, pulmonaires, cérébrales et osseuses. Une ponction lombaire a montré une infiltration leucémique des méninges.\n\n### Évolution pendant l'hospitalisation\nLa patiente a été mise sous traitement chimiothérapeutique avec une association de cytarabine et de daunorubicine. Elle a également reçu des transfusions de plaquettes et de culots globulaires pour corriger la thrombopénie et l'anémie. Une prise en charge symptomatique de la douleur et des nausées a été mise en place. La patiente a présenté une neutropénie fébrile au cours du traitement, nécessitant une antibiothérapie à large spectre. Une évaluation nutritionnelle a été réalisée, et des conseils diététiques ont été donnés pour gérer l'hyperlipidémie. La patiente a également bénéficié d'une prise en charge en soins palliatifs pour améliorer sa qualité de vie.\n\n### Conclusion\nHanya Delean a été admise pour une rechute de leucémie myéloblastique aiguë avec des métastases multiples et une microangiopathie thrombotique. Elle a reçu un traitement chimiothérapeutique et une prise en charge symptomatique. La patiente a été stabilisée et a pu retourner à domicile avec un suivi régulier en hématologie et en soins palliatifs."",
+
+""formulations"": {
+""diagnostics"": {
+""C920 - Leucémie myéloblastique aiguë [LAM]"": [""leucémie myéloblastique aiguë"", ""LAM""],
+""Z515 - Soins palliatifs"": [""prise en charge en soins palliatifs""],
+""M311 - Microangiopathie thrombotique"": [""microangiopathie thrombotique""],
+""C792 - Tumeur maligne secondaire de la peau"": [""métastases cutanées""],
+""C780 - Tumeur maligne secondaire du poumon"": [""métastases pulmonaires""],
+""C793 - Tumeur maligne secondaire du cerveau et des méninges cérébrales"": [""métastases cérébrales""],
+""C795 - Tumeur maligne secondaire des os et de la moelle osseuse"": [""métastases osseuses""],
+""E785 - Hyperlipidémie, sans précision"": [""hyperlipidémie""],
+""Z713 - Surveillance et conseils diététiques"": [""conseils diététiques""],
+""G473 - Apnée du sommeil"": [""apnée du sommeil""],
+""D696 - Thrombopénie, sans précision"": [""thrombopénie"", ""thrombopénie sévère""],
+""D619 - Aplasie médullaire, sans précision"": [""aplasie médullaire""]
+},
+""informations"": {
+""Âge"": [""52 ans""],
+""Sexe"": [""Féminin""],
+""État général"": [""score ECOG de 2""],
+""Statut gestationnel"": [""ménopausée""],
+""Comorbidités"": [""hyperlipidémie"", ""apnée du sommeil""],
+""Topographie de la tumeur primaire"": [""Leucémie myéloblastique aiguë""],
+""Histologie tumorale"": [""leucémie myéloblastique aiguë""],
+""Stade tumoral"": [""métastases cutanées, pulmonaires, cérébrales et osseuses""],
+""Sites métastatiques"": [""métastases cutanées"", ""métastases pulmonaires"", ""métastases cérébrales"", ""métastases osseuses""],
+""Évolutivité tumorale"": [""rechute de la leucémie myéloblastique aiguë""],
+""Examens pour diagnostic initial"": [""NFS"", ""biopsie médullaire"", ""scanner corporel"", ""ponction lombaire""],
+""Examens d'évaluation de l’évolutivité tumorale"": [""NFS"", ""biopsie médullaire"", ""scanner corporel"", ""ponction lombaire""],
+""Traitements antitumoraux"": [""chimiothérapie"", ""greffe de moelle osseuse""],
+""Lignes de traitement antitumoral"": [""première ligne de traitement""],
+""Médicaments antitumoraux"": [""cytarabine"", ""daunorubicine""],
+""Cycles de chimiothérapie"": [""premier cycle de chimiothérapie""],
+""NFS"": [""thrombopénie à 20 000/mm³"", ""anémie à 8 g/dL"", ""leucopénie à 1 500/mm³""],
+""Créatinine"": [""0,8 mg/dL""],
+""Bilan hépatique"": [""normal""]
+}
+}
+}"
+7,83,2,2024-07-04,2024-07-04,1940-09-17,Lore,Gallet,C449,Z5100,"['F068', 'R2630', 'I258', 'C793', 'C775', 'C774', 'Z5960', 'Z926', 'Z904', 'Z970']",DOMICILE,DOMICILE,,,,,,28Z19,[80-[,[50-[,Outpatient,"2,95652173913043e+01",47.9098782138024,21.2352626653646,Préparations à une irradiation externe par RCMI ou techniques spéciales,C44,"Tumeur maligne de la peau, sans précision",Séance de préparation à une irradiation,Hailey,Zakine,"- Autres troubles mentaux précisés dus à une lésion cérébrale et un dysfonctionnement cérébral et à une affection physique (F068)
+- État grabataire (R2630)
+- Autres formes de cardiopathie ischémique chronique (I258)
+- Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrapelviens (C775)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques inguinaux et du membre inférieur (C774)
+- Bénéficiaire de la CMUc (Z5960)
+- Antécédents personnels de chimiothérapie pour tumeur (Z926)
+- Absence acquise d'autres parties de l'appareil digestif (Z904)
+- Présence d'un oeil artificiel (Z970)
+",['ZZMP016'],"- Préparation à une irradiation externe en conditions stéréotaxiques sans synchronisation avec la respiration avec dosimétrie tridimensionnelle avec HDV après repérage par fusion numérique multimodale et simulation virtuelle utilisant la fonction ""vue de la source"" [beam's eye view] [BEV] et la restitution tridimensionnelle (ZZMP016)
+",Prise en charge en hospitalisation de jour pour séance de radiothérapie,3,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 83 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 04/07/2024
+- Date de sortie : 04/07/2024
+- Date de naissance : 17/09/1940
+- Prénom du patient : Lore
+- Nom du patient : Gallet
+- Mode de prise en charge : Prise en charge en hospitalisation de jour pour séance de radiothérapie
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne de la peau, sans précision (C449)
+   * Diagnostic associés : 
+- Autres troubles mentaux précisés dus à une lésion cérébrale et un dysfonctionnement cérébral et à une affection physique (F068)
+- État grabataire (R2630)
+- Autres formes de cardiopathie ischémique chronique (I258)
+- Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrapelviens (C775)
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques inguinaux et du membre inférieur (C774)
+- Bénéficiaire de la CMUc (Z5960)
+- Antécédents personnels de chimiothérapie pour tumeur (Z926)
+- Absence acquise d'autres parties de l'appareil digestif (Z904)
+- Présence d'un oeil artificiel (Z970)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne de la peau, sans précision (C449)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{
+  ""CR"": ""### Motif d'hospitalisation\nMadame Lore Gallet, âgée de 83 ans, est admise en hospitalisation de jour pour une séance de radiothérapie dans le cadre d'un carcinome épidermoïde cutané métastatique.\n\n### Antécédents\nSur le plan médical, la patiente présente une cardiopathie ischémique chronique, un état grabataire, et des antécédents de chimiothérapie pour une tumeur maligne. Elle a également subi une résection digestive partielle et porte un oeil artificiel. Sur le plan psychiatrique, on note des troubles mentaux liés à une lésion cérébrale. La patiente bénéficie de la CMUc. Aucune allergie connue n'est rapportée.\n\n### Mode de vie\nAncienne fumeuse, la patiente a arrêté le tabac il y a 20 ans. Elle vit à domicile avec une aide à domicile pour les activités de la vie quotidienne. Elle est veuve et a deux enfants. Elle n'a pas d'activité physique régulière en raison de son état grabataire.\n\n### Histoire de la maladie\nLa patiente a été diagnostiquée avec un carcinome épidermoïde cutané métastatique il y a 6 mois. Le diagnostic initial a été posé par une biopsie cutanée. Les examens d'imagerie (TDM corps entier et IRM cérébrale) ont révélé des métastases cérébrales, intrapelviennes et inguinales. La patiente a reçu une première ligne de chimiothérapie à base de cisplatine et de 5-fluorouracile, mais la maladie a progressé. Une radiothérapie palliative a été décidée pour contrôler les symptômes liés aux métastases cérébrales.\n\n### Examen clinique\nÀ l'admission, la patiente est consciente mais présente une confusion modérée. Les constantes vitales sont stables : PA à 130/80 mmHg, FC à 80 bpm, température à 36,8°C et SpO2 à 96% en air ambiant. L'examen cutané révèle une lésion ulcérée de 3 cm de diamètre au niveau de la cuisse gauche. L'examen neurologique montre des signes de focalisation liés aux métastases cérébrales. Le poids est de 50 kg pour une taille de 160 cm, avec un IMC à 19,5.\n\n### Examens complémentaires\nUne NFS montre une anémie normocytaire avec un taux d'hémoglobine à 10 g/dL. Le bilan hépatique est normal, tout comme la créatinine. Une TDM cérébrale récente montre une progression des lésions métastatiques cérébrales.\n\n### Évolution pendant l'hospitalisation\nLa patiente a reçu une séance de radiothérapie cérébrale. Elle a toléré la séance sans complication aiguë. Une évaluation par l'équipe soignante a confirmé la stabilité des constantes vitales et l'absence de réaction cutanée immédiate. La patiente a été surveillée pendant 4 heures après la séance, puis autorisée à rentrer à domicile avec un rendez-vous pour la prochaine séance dans une semaine.\n\n### Conclusion\nLa patiente a bénéficié d'une séance de radiothérapie palliative pour des métastases cérébrales dans le cadre d'un carcinome épidermoïde cutané métastatique. La séance s'est déroulée sans complication, et la patiente a pu regagner son domicile en fin de journée. Un suivi régulier est prévu pour évaluer l'efficacité du traitement et ajuster la prise en charge symptomatique."",
+  ""formulations"": {
+    ""diagnostics"": {
+      ""Tumeur maligne de la peau, sans précision (C449)"": [
+        ""carcinome épidermoïde cutané"",
+        ""carcinome épidermoïde cutané métastatique"",
+        ""lésion ulcérée""
+      ],
+      ""Autres troubles mentaux précisés dus à une lésion cérébrale et un dysfonctionnement cérébral et à une affection physique (F068)"": [
+        ""troubles mentaux liés à une lésion cérébrale""
+      ],
+      ""État grabataire (R2630)"": [
+        ""état grabataire""
+      ],
+      ""Autres formes de cardiopathie ischémique chronique (I258)"": [
+        ""cardiopathie ischémique chronique""
+      ],
+      ""Tumeur maligne secondaire du cerveau et des méninges cérébrales (C793)"": [
+        ""métastases cérébrales""
+      ],
+      ""Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrapelviens (C775)"": [
+        ""métastases intrapelviennes""
+      ],
+      ""Tumeur maligne secondaire et non précisée des ganglions lymphatiques inguinaux et du membre inférieur (C774)"": [
+        ""métastases inguinales""
+      ],
+      ""Bénéficiaire de la CMUc (Z5960)"": [
+        ""bénéficiaire de la CMUc""
+      ],
+      ""Antécédents personnels de chimiothérapie pour tumeur (Z926)"": [
+        ""antécédents de chimiothérapie""
+      ],
+      ""Absence acquise d'autres parties de l'appareil digestif (Z904)"": [
+        ""résection digestive partielle""
+      ],
+      ""Présence d'un oeil artificiel (Z970)"": [
+        ""porte un oeil artificiel""
+      ]
+    },
+    ""informations"": {
+      ""Âge"": [
+        ""83 ans""
+      ],
+      ""Sexe"": [
+        ""Féminin""
+      ],
+      ""État général"": [
+        ""confusion modérée"",
+        ""état grabataire""
+      ],
+      ""Gestité"": [
+        ""deux enfants""
+      ],
+      ""Comorbidités"": [
+        ""cardiopathie ischémique chronique""
+      ],
+      ""Topographie de la tumeur primaire"": [
+        ""lésion ulcérée de 3 cm de diamètre au niveau de la cuisse gauche""
+      ],
+      ""Histologie tumorale"": [
+        ""carcinome épidermoïde cutané""
+      ],
+      ""Stade tumoral"": [
+        ""métastases cérébrales, intrapelviennes et inguinales""
+      ],
+      ""Sites métastatiques"": [
+        ""métastases cérébrales"",
+        ""métastases intrapelviennes"",
+        ""métastases inguinales""
+      ],
+      ""Évolutivité tumorale"": [
+        ""la maladie a progressé""
+      ],
+      ""Examens pour diagnostic initial"": [
+        ""biopsie cutanée""
+      ],
+      ""Examens d'évaluation du stade tumoral"": [
+        ""TDM corps entier"",
+        ""IRM cérébrale""
+      ],
+      ""Examens d’évaluation de l’évolutivité tumorale"": [
+        ""TDM cérébrale""
+      ],
+      ""Traitements antitumoraux"": [
+        ""chimiothérapie"",
+        ""radiothérapie palliative""
+      ],
+      ""Lignes de traitement antitumoral"": [
+        ""première ligne de chimiothérapie""
+      ],
+      ""Médicaments antitumoraux"": [
+        ""cisplatine"",
+        ""5-fluorouracile""
+      ],
+      ""Cycles de chimiothérapie"": [
+        ""une séance de radiothérapie cérébrale""
+      ],
+      ""NFS"": [
+        ""anémie normocytaire"",
+        ""taux d'hémoglobine à 10 g/dL""
+      ],
+      ""Créatinine"": [
+        ""créatinine normale""
+      ],
+      ""Bilan hépatique"": [
+        ""bilan hépatique normal""
+      ]
+    }
+  }
+}"
+8,77,1,2024-08-25,2024-08-25,1947-04-28,Jean,Grzywa,C480,Z511,"['I10', 'Z8000', 'E6694']",DOMICILE,DOMICILE,,,,,,28Z07,[70-80[,[50-[,Outpatient,"0,00000000000000e+00",2.0,0.0,"Chimiothérapie pour tumeur, en séances",C48,Tumeur maligne du rétropéritoine,Séance de chimiothérapie pour tumeur,Baya,Li cheng,"- Hypertension essentielle (primitive) (I10)
+- Antécédents familiaux de tumeur maligne du tube digestif (Z8000)
+- Obésité sans précision de l'adulte avec indice de masse corporelle [IMC] égal ou supérieur à 30 kg/m² et inférieur à 35 kg/m², ou obésité sans précision de l'enfant (E6694)
+",['DAQL002'],"- Scintigraphie des cavités cardiaques au repos selon 1 incidence (DAQL002)
+",Prise en charge en hospitalisation de jour pour cure de chimiothérapie,1,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 77 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 25/08/2024
+- Date de sortie : 25/08/2024
+- Date de naissance : 28/04/1947
+- Prénom du patient : Jean
+- Nom du patient : Grzywa
+- Mode de prise en charge : Prise en charge en hospitalisation de jour pour cure de chimiothérapie
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne du rétropéritoine (C480)
+   * Diagnostic associés : 
+- Hypertension essentielle (primitive) (I10)
+- Antécédents familiaux de tumeur maligne du tube digestif (Z8000)
+- Obésité sans précision de l'adulte avec indice de masse corporelle [IMC] égal ou supérieur à 30 kg/m² et inférieur à 35 kg/m², ou obésité sans précision de l'enfant (E6694)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne du rétropéritoine (C480)
+","Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+	+ Cycles de chimiothérapie, la périodicité et le jour du cycle: indiquez explicitement à quel cycle de chimiothérapie le patient se trouve actuellement
+    + Protocole de chimiothérapie utilisé avec la dose
+    + La tolérance aiguë à la chimiothérapie
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{
+  ""CR"": ""### Motif d’hospitalisation\nJean Grzywa, 77 ans, a été admis en hospitalisation de jour le 25/08/2024 pour une cure de chimiothérapie dans le cadre d'un liposarcome rétropéritonéal métastatique. Le patient est suivi pour cette pathologie depuis plusieurs mois et cette hospitalisation s'inscrit dans la continuité de son traitement systémique.\n\n### Antécédents\nSur le plan médical, le patient présente une hypertension artérielle essentielle suivie en ville, ainsi qu'une obésité modérée avec un IMC à 32 kg/m². Il n'a pas d'antécédents chirurgicaux majeurs. On note des antécédents familiaux de cancers digestifs chez son père et un frère. Aucune allergie médicamenteuse ou alimentaire n'est rapportée.\n\n### Mode de vie\nAncien ouvrier dans le bâtiment, le patient est retraité depuis une dizaine d'années. Il vit à domicile avec son épouse. Il n'a pas de consommation tabagique ou alcoolique significative. Son activité physique est limitée par son état général et son traitement en cours.\n\n### Histoire de la maladie\nLe diagnostic de liposarcome rétropéritonéal a été posé en janvier 2024 devant des douleurs abdominales persistantes. Le bilan initial comprenait un scanner thoraco-abdomino-pelvien et une biopsie tumorale. La maladie était d'emblée métastatique avec des localisations secondaires pulmonaires et hépatiques. Le patient a débuté une première ligne de chimiothérapie à base d'anthracyclines et d'ifosfamide, avec une réponse partielle initiale. Après progression sous ce traitement, une deuxième ligne par trabectédine a été initiée.\n\n### Examen clinique\nÀ l'admission, le patient est en bon état général avec un score ECOG à 1. Il pèse 92 kg pour 1,75 m. Les constantes vitales sont stables : PA à 145/85 mmHg, FC à 78 bpm, température à 37,1°C. L'examen abdominal retrouve une masse palpable de la fosse iliaque droite, indolore, sans signe de souffrance digestive associée. Le reste de l'examen clinique est sans particularité.\n\n### Examens complémentaires\nLa NFS montre une anémie modérée à 11,2 g/dL, sans leucopénie ni thrombopénie. Le bilan hépatique est perturbé avec des transaminases à 1,5 fois la normale et des phosphatases alcalines augmentées. La créatinine est normale. Un scanner thoraco-abdomino-pelvien récent confirme la progression des lésions pulmonaires et hépatiques.\n\n### Évolution pendant l'hospitalisation\nLe patient a reçu sa 3ème cure de trabectédine à la dose de 1,3 mg/m² en perfusion de 24 heures. La tolérance immédiate a été bonne, sans réaction allergique ni complication métabolique. Le patient est sorti le jour même avec une ordonnance de traitement antiémétique et un rendez-vous de contrôle dans 3 semaines pour évaluer la tolérance et l'efficacité du traitement.\n\n### Conclusion\nHospitalisation de jour pour administration de chimiothérapie dans le cadre d'un liposarcome rétropéritonéal métastatique en progression sous traitement de deuxième ligne. Bonne tolérance immédiate de la cure. Surveillance clinique et biologique programmée."",
+  ""formulations"": {
+    ""diagnostics"": {
+      ""Tumeur maligne du rétropéritoine (C480)"": [
+        ""liposarcome rétropéritonéal"",
+        ""liposarcome rétropéritonéal métastatique""
+      ],
+      ""Hypertension essentielle (primitive) (I10)"": [
+        ""hypertension artérielle essentielle""
+      ],
+      ""Antécédents familiaux de tumeur maligne du tube digestif (Z8000)"": [
+        ""antécédents familiaux de cancers digestifs""
+      ],
+      ""Obésité sans précision de l'adulte avec indice de masse corporelle [IMC] égal ou supérieur à 30 kg/m² et inférieur à 35 kg/m², ou obésité sans précision de l'enfant (E6694)"": [
+        ""obésité modérée avec un IMC à 32 kg/m²""
+      ]
+    },
+    ""informations"": {
+      ""Âge"": [
+        ""77 ans""
+      ],
+      ""Sexe"": [
+        ""Masculin""
+      ],
+      ""État général"": [
+        ""bon état général avec un score ECOG à 1""
+      ],
+      ""Topographie de la tumeur primaire"": [
+        ""liposarcome rétropéritonéal""
+      ],
+      ""Histologie tumorale"": [
+        ""liposarcome""
+      ],
+      ""Stade tumoral"": [
+        ""maladie était d'emblée métastatique""
+      ],
+      ""Sites métastatiques"": [
+        ""localisations secondaires pulmonaires et hépatiques""
+      ],
+      ""Examens pour diagnostic initial"": [
+        ""scanner thoraco-abdomino-pelvien"",
+        ""biopsie tumorale""
+      ],
+      ""Examens d'évaluation de l’évolutivité tumorale"": [
+        ""scanner thoraco-abdomino-pelvien""
+      ],
+      ""Traitements antitumoraux"": [
+        ""chimiothérapie""
+      ],
+      ""Lignes de traitement antitumoral"": [
+        ""première ligne de chimiothérapie"",
+        ""deuxième ligne""
+      ],
+      ""Médicaments antitumoraux"": [
+        ""anthracyclines"",
+        ""ifosfamide"",
+        ""trabectédine""
+      ],
+      ""Cycles de chimiothérapie"": [
+        ""3ème cure de trabectédine""
+      ],
+      ""NFS"": [
+        ""anémie modérée à 11,2 g/dL""
+      ],
+      ""Bilan hépatique"": [
+        ""transaminases à 1,5 fois la normale"",
+        ""phosphatases alcalines augmentées""
+      ],
+      ""Créatinine"": [
+        ""normale""
+      ]
+    }
+  }
+}"
+9,68,1,2024-08-29,2024-10-21,1956-07-01,Joel,Chabrier,C172,DP,"['I351', 'F10200', 'R54+0', 'Z952', 'M1000', 'C788', 'C784', 'C787', 'K598', 'K632']",DOMICILE,DOMICILE,,,,,,06C04,[60-70[,[50-[,Inpatient,"9,04545454545454e+00",13.8909853249476,17.4861951769678,Interventions majeures sur l'intestin grêle et le côlon,C17,Tumeur maligne de l'iléon,,Monia,Tenaguillo munoz,"- Insuffisance (de la valvule) aortique (non rhumatismale) (I351)
+- Syndrome de dépendance à l'alcool, personne actuellement abstinente en rémission récente (F10200)
+- Syndrome de glissement (sénile) (R54+0)
+- Présence de prothèse d'une valvule cardiaque (Z952)
+- Goutte idiopathique - Sièges multiples (M1000)
+- Tumeur maligne secondaire des organes digestifs, autres et non précisés (C788)
+- Tumeur maligne secondaire de l'intestin grêle (C784)
+- Tumeur maligne secondaire du foie et des voies biliaires intrahépatiques (C787)
+- Autres troubles fonctionnels précisés de l'intestin (K598)
+- Fistule de l'intestin (K632)
+",['HGFA003'],"- Résection segmentaire unique de l'intestin grêle sans rétablissement de la continuité, en dehors de l'occlusion, par laparotomie (HGFA003)
+","Prise en charge chirugicale en hospitalisation complète pour - résection segmentaire unique de l'intestin grêle sans rétablissement de la continuité, en dehors de l'occlusion, par laparotomie (hgfa003)
+",12,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 68 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 29/08/2024
+- Date de sortie : 21/10/2024
+- Date de naissance : 01/07/1956
+- Prénom du patient : Joel
+- Nom du patient : Chabrier
+- Mode de prise en charge : Prise en charge chirugicale en hospitalisation complète pour - résection segmentaire unique de l'intestin grêle sans rétablissement de la continuité, en dehors de l'occlusion, par laparotomie (hgfa003)
+
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur maligne de l'iléon (C172)
+   * Diagnostic associés : 
+- Insuffisance (de la valvule) aortique (non rhumatismale) (I351)
+- Syndrome de dépendance à l'alcool, personne actuellement abstinente en rémission récente (F10200)
+- Syndrome de glissement (sénile) (R54+0)
+- Présence de prothèse d'une valvule cardiaque (Z952)
+- Goutte idiopathique - Sièges multiples (M1000)
+- Tumeur maligne secondaire des organes digestifs, autres et non précisés (C788)
+- Tumeur maligne secondaire de l'intestin grêle (C784)
+- Tumeur maligne secondaire du foie et des voies biliaires intrahépatiques (C787)
+- Autres troubles fonctionnels précisés de l'intestin (K598)
+- Fistule de l'intestin (K632)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Localisation anatomique de la tumeur primaire : Tumeur maligne de l'iléon (C172)
+","Vous êtes chirurgien praticien. Votre tâche est de générer 
+1. Un compte rendu opératoire de chirurgie
+2. Un compte rendu d’hospitalisation associé
+à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 
+	+ Variez la structure des phrases. 
+	+ Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.
+	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire pour le compte rendu opératoire :
+	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
+	+ Points à faire figurer si pertinents (max. 200 mots/point) :
+		Diagnostic (raison succincte de la chirurgie)
+		Technique utilisée
+		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
+		Matériels utilisés et leur caractéristiques
+
+	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
+
+- Contenu à produire pour le compte rendu d'hospitalisation associé: Il doit comporter les sections suivantes (max. 200 mots/section) :
+	+ Motif d’hospitalisation
+	+ Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+	+ Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+	+ Histoire de la maladie
+	+ Examen clinique (constantes vitales, examen physique, poids en kgs — en particulier si une dénutrition est évoquée, etc.) (uniquement ceux réalisés durant l’hospitalisation) 
+	+ Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+	+ Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+	+ Conclusion
+
+	Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation)
+	
+	Attribuez obligatoirement des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Commencez par le compte rendu opératoire, suivi du compte rendu d’hospitalisation associé. Séparez-les clairement à l’aide de leurs titres respectifs (ex.: ## Compte rendu opératoire et ## Compte rendu d’hospitalisation), ainsi que d’un séparateur visuel : -----.
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections ainsi qu'entre les deux comptes rendus.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+    + Localisation anatomique de la tumeur primaire
+	+ Type anatomopathologique de la tumeur primaire
+	+ Stade tumoral : stade TNM ou mention qualitative (ex. : localisé, localement avancé...)
+    + Biomarqueurs tumoraux : si vous faites mention cette information,  indiquez obligatoirement les noms et valeurs, qu'elles soient quantitatives (chiffres) ou qualitatives (ex. : ""normal"", ""augmenté""...)
+    + Localisation des sites métastatiques
+    + Évolutivité tumorale : si elle est mentionnée, vous devez obligatoirement :
+        * indiquer les examens ayant permis d’évaluer cette évolution, avec leurs résultats
+        * faire référence explicite aux examens antérieurs utilisés comme points de comparaison, afin de démontrer une progression ou une stabilité de la tumeur dans le temps
+    + Type de traitements antitumoraux reçus
+    + Médicaments antitumoraux administrés: précisez les noms 
+    + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
+
+	Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
+    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
+    * Stade tumoral
+    * Biomarqueurs tumoraux
+    * Sites métastatiques : Localisations anatomiques des métastases
+    * Évolutivité tumorale
+    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
+    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
+    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
+    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
+    * Lignes de traitement antitumoral
+    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
+    * Cycles de chimiothérapie
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+",,"{
+  ""CR"": ""## Compte rendu opératoire\n\n### Diagnostic\nLe patient, âgé de 68 ans, présente une tumeur maligne de l'iléon avec des métastases hépatiques et des localisations secondaires au niveau de l'intestin grêle. L'intervention chirurgicale est indiquée pour une résection segmentaire de l'intestin grêle.\n\n### Technique utilisée\nUne laparotomie médiane a été réalisée pour accéder à la cavité abdominale. La résection segmentaire de l'iléon a été effectuée avec une marge de sécurité de part et d'autre de la tumeur. La continuité digestive n'a pas été rétablie en raison de l'étendue des lésions et de la présence de fistules intestinales.\n\n### Constatations per-opératoires\nLa tumeur de l'iléon mesurait environ 5 cm de diamètre, avec une infiltration de la paroi intestinale. Plusieurs adénopathies ont été observées au niveau du mésentère. Des métastases hépatiques ont été visualisées, confirmant les données de l'imagerie préopératoire. La présence de fistules intestinales a compliqué la procédure, nécessitant une attention particulière pour éviter toute contamination de la cavité abdominale.\n\n### Matériels utilisés\nLes instruments standards de laparotomie ont été utilisés, incluant des pinces, des écarteurs et des fils de suture. Un dispositif de suture mécanique a été employé pour la section de l'intestin grêle. Un drain abdominal a été mis en place pour surveiller les éventuelles fuites postopératoires.\n\n-----\n\n## Compte rendu d'hospitalisation\n\n### Motif d'hospitalisation\nM. Chabrier, âgé de 68 ans, a été admis pour la prise en charge chirurgicale d'une tumeur maligne de l'iléon avec des métastases hépatiques et des localisations secondaires au niveau de l'intestin grêle.\n\n### Antécédents\nLe patient présente une insuffisance aortique non rhumatismale, un syndrome de dépendance à l'alcool en rémission récente, un syndrome de glissement sénile, une prothèse de valvule cardiaque, et une goutte idiopathique. Il a également des antécédents de troubles fonctionnels intestinaux et de fistules intestinales.\n\n### Mode de vie\nAnciennement dépendant à l'alcool, le patient est actuellement abstinent. Il vit seul à domicile avec une aide ménagère. Il n'a pas d'activité physique régulière.\n\n### Histoire de la maladie\nLe patient a été diagnostiqué avec une tumeur maligne de l'iléon il y a deux mois, suite à des examens d'imagerie (TDM abdominale et IRM). Des métastases hépatiques et des localisations secondaires au niveau de l'intestin grêle ont été identifiées. Une chimiothérapie à base de 5-fluorouracile et d'oxaliplatine a été initiée, mais la décision d'une résection chirurgicale a été prise en raison de la progression de la maladie.\n\n### Examen clinique\nÀ l'admission, le patient présentait un état général altéré avec un score ECOG de 2. Les constantes vitales étaient stables : TA 130/80 mmHg, FC 80 bpm, température 36,8°C. L'examen abdominal révélait une sensibilité à la palpation de la fosse iliaque droite, sans signe de péritonite. Le poids du patient était de 65 kg, avec des signes de dénutrition modérée.\n\n### Examens complémentaires\nUne TDM abdominale a confirmé la présence d'une tumeur de l'iléon avec des métastases hépatiques. Une IRM abdominale a permis de préciser l'étendue des lésions. Les marqueurs tumoraux (ACE, CA 19-9) étaient élevés. La NFS montrait une anémie normocytaire avec un taux d'hémoglobine à 10 g/dL. La créatinine était normale, et le bilan hépatique montrait une élévation des transaminases.\n\n### Évolution pendant l'hospitalisation\nLe patient a été opéré le 05/09/2024. La résection segmentaire de l'iléon a été réalisée sans rétablissement de la continuité digestive en raison de la présence de fistules intestinales. Les suites opératoires ont été marquées par une reprise progressive du transit intestinal. Le patient a bénéficié d'une nutrition parentérale en postopératoire. Une surveillance rapprochée des drains abdominaux a été mise en place pour détecter toute fuite anastomotique.\n\n### Conclusion\nM. Chabrier a été opéré avec succès pour une tumeur maligne de l'iléon. Les suites opératoires ont été globalement favorables, malgré la complexité de la procédure due à la présence de fistules intestinales. Le patient a été transféré en service de soins de suite et de réadaptation pour une prise en charge nutritionnelle et une rééducation.\n"",
+  ""formulations"": {
+    ""diagnostics"": {
+      ""Tumeur maligne de l'iléon (C172)"": [
+        ""tumeur maligne de l'iléon"",
+        ""tumeur de l'iléon""
+      ],
+      ""Insuffisance (de la valvule) aortique (non rhumatismale) (I351)"": [
+        ""insuffisance aortique non rhumatismale""
+      ],
+      ""Syndrome de dépendance à l'alcool, personne actuellement abstinente en rémission récente (F10200)"": [
+        ""syndrome de dépendance à l'alcool en rémission récente"",
+        ""anciennement dépendant à l'alcool""
+      ],
+      ""Syndrome de glissement (sénile) (R54+0)"": [
+        ""syndrome de glissement sénile""
+      ],
+      ""Présence de prothèse d'une valvule cardiaque (Z952)"": [
+        ""prothèse de valvule cardiaque""
+      ],
+      ""Goutte idiopathique - Sièges multiples (M1000)"": [
+        ""goutte idiopathique""
+      ],
+      ""Tumeur maligne secondaire des organes digestifs, autres et non précisés (C788)"": [
+        ""métastases hépatiques"",
+        ""localisations secondaires au niveau de l'intestin grêle""
+      ],
+      ""Tumeur maligne secondaire de l'intestin grêle (C784)"": [
+        ""localisations secondaires au niveau de l'intestin grêle""
+      ],
+      ""Tumeur maligne secondaire du foie et des voies biliaires intrahépatiques (C787)"": [
+        ""métastases hépatiques""
+      ],
+      ""Autres troubles fonctionnels précisés de l'intestin (K598)"": [
+        ""troubles fonctionnels intestinaux""
+      ],
+      ""Fistule de l'intestin (K632)"": [
+        ""fistules intestinales""
+      ]
+    },
+    ""informations"": {
+      ""Âge"": [
+        ""68 ans""
+      ],
+      ""Sexe"": [
+        ""Masculin""
+      ],
+      ""État général"": [
+        ""score ECOG de 2""
+      ],
+      ""Topographie de la tumeur primaire"": [
+        ""tumeur maligne de l'iléon"",
+        ""tumeur de l'iléon""
+      ],
+      ""Sites métastatiques"": [
+        ""métastases hépatiques"",
+        ""localisations secondaires au niveau de l'intestin grêle""
+      ],
+      ""Examens pour diagnostic initial"": [
+        ""TDM abdominale"",
+        ""IRM""
+      ],
+      ""Examens d'évaluation du stade tumoral"": [
+        ""TDM abdominale"",
+        ""IRM abdominale""
+      ],
+      ""Traitements antitumoraux"": [
+        ""chimiothérapie"",
+        ""résection chirurgicale""
+      ],
+      ""Médicaments antitumoraux"": [
+        ""5-fluorouracile"",
+        ""oxaliplatine""
+      ],
+      ""NFS"": [
+        ""anémie normocytaire"",
+        ""taux d'hémoglobine à 10 g/dL""
+      ],
+      ""Créatinine"": [
+        ""normale""
+      ],
+      ""Bilan hépatique"": [
+        ""élévation des transaminases""
+      ]
+    }
+  }
+}"
