@@ -13,6 +13,8 @@ Vous êtes chirurgien praticien. Votre tâche est de générer
 
 - Langue : Rédigez le compte rendu en français.
 
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
 - Formulation : 
 	+ Variez la structure des phrases. 
 	+ Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.
@@ -24,7 +26,6 @@ Vous êtes chirurgien praticien. Votre tâche est de générer
 		Diagnostic (raison succincte de la chirurgie)
 		Technique utilisée
 		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
-
 		Matériels utilisés et leur caractéristiques
 
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
@@ -65,7 +66,6 @@ Vous êtes chirurgien praticien. Votre tâche est de générer
     + Lignes de traitement antitumoral reçues: indiquez explicitement à quelle ligne de traitement le patient se trouve actuellement
 
 	Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
-
 
 - À la fin du texte généré, fournissez :
 + un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {"Code CIM - Définition du code": ["formulation utilisée 1", "formulation utilisée 2", ...],...}

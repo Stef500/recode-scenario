@@ -1,11 +1,7 @@
-Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux documents distincts en style clinique synthétique :
-
+Vous êtes chirurgien praticien. Votre tâche est de générer 
 1. Un compte rendu opératoire de chirurgie
 2. Un compte rendu d’hospitalisation associé
-
-
-[SCENARIO here]
-
+à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
 
 **INSTRUCTIONS :**
 
@@ -17,10 +13,7 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux doc
 
 - Langue : Rédigez le compte rendu en français.
 
-- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes.
-	+ Ton télégraphique.
-	+ Phrases éventuellement incomplètes (absence de sujet ou verbe) si cela reste naturel.
-	+ Informations enchaînées par ponctuation simple : virgules, tirets, points-virgules, etc.
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
 
 - Formulation : 
 	+ Variez la structure des phrases. 
@@ -33,7 +26,6 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux doc
 		Diagnostic (raison succincte de la chirurgie)
 		Technique utilisée
 		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
-
 		Matériels utilisés et leur caractéristiques
 
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
@@ -45,11 +37,7 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux doc
 	+ Histoire de la maladie
 	+ Examen clinique (constantes vitales, examen physique, poids en kgs — en particulier si une dénutrition est évoquée, etc.) (uniquement ceux réalisés durant l’hospitalisation) 
 	+ Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
-	+ Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible, en particulier indiquez :  
-		Conclusions des principaux examens complémentaires réalisés dans la section « Examens complémentaires »
-		Prise en charge thérapeutique et suivi post-opératoire
-		Suivi mis en place
-		Critères de sortie
+	+ Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
 	+ Conclusion
 
 	Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation)
@@ -79,7 +67,6 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer deux doc
 
 	Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
 
-
 - À la fin du texte généré, fournissez :
 + un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {"Code CIM - Définition du code": ["formulation utilisée 1", "formulation utilisée 2", ...],...}
 Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"],...} 
@@ -108,9 +95,9 @@ Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arteri
     * Créatinine : résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
 
-Par exemple : {"Âge": ["55 ans"], "Stade tumoral" : ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"],...}
+Par exemple : {"Âge": ["55 ans"], "Stade tumoral": ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"],...}
 
 - La sortie doit être un objet JSON au format suivant :
 {"CR": "le text généré", "formulations": {"diagnostics": {...}, "informations": {...}}}
 
-Par exemple : {"CR": "Texte du compte rendu ici...", "formulations": {"diagnostics": {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"]},  "informations": {"Âge": ["55 ans"], "Stade tumoral" : ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"]}}}
+Par exemple : {"CR": "Texte du compte rendu ici...", "formulations": {"diagnostics": {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"]}, "informations": {"Âge": ["55 ans"], "Stade tumoral": ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"]}}}

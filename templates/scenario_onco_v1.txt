@@ -1,12 +1,6 @@
 Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
 
-
-[SCENARIO here]
-
-
 **INSTRUCTIONS :**
-
-[INSTRUCTIONS_CANCER here]
 
 - Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
 
@@ -16,10 +10,7 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compt
 
 - Langue : Rédigez le compte rendu en français.
 
-- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes.
-    + Ton télégraphique.	
-    + Phrases éventuellement incomplètes (absence de sujet ou verbe) si cela reste naturel.
-    + Informations enchaînées par ponctuation simple : virgules, tirets, points-virgules, etc.
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
 
 - Formulation : 	
     + Variez la structure des phrases. 	
@@ -33,7 +24,7 @@ Vous êtes un oncologue clinicien expert. Votre tâche est de générer un compt
     + Histoire de la maladie
     + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
     + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
-    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible, en particulier indiquez : 
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
     + Conclusion
 
 - Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).

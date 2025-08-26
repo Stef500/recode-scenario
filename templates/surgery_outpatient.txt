@@ -10,7 +10,7 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 
 - Langue : Rédigez le compte rendu en français.
 
-- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes.
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
 
 - Formulation : 
 	+ Variez la structure des phrases. 
@@ -18,7 +18,7 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
 
 - Contenu à produire :
-	+ Rédigez uniquement le compte rendu opératoire.
+	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
 	+ Points à faire figurer si pertinents (max. 200 mots/point) : 
 		Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
 		Technique utilisée
