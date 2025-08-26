@@ -333,6 +333,8 @@ class generate_scenario:
                 for i in range(1,nb_final_sample+1):
                     df_sample=pd.concat([df_sample,df_sel[~(df_sel.icd_secondary_code.str.slice(0,1).isin(chapter))].sample(1, replace=False, weights = col_weights  )])
                     chapter = df_sample.icd_secondary_code.str.slice(0,1).to_list()
+                    if len(df_sel[~(df_sel.icd_secondary_code.str.slice(0,1).isin(chapter))]) == 0:
+                        break
            
 
             else:
