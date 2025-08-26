@@ -560,7 +560,7 @@ class generate_scenario:
                             code = 16
 
                     elif option == 1:
-                        situa = "Première diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement" # 40%
+                        situa = "Première prise en charge diagnostique et thérapeutique dans le cadre d'une rechute du cancer après traitement" # 40%
                         code = 17
 
   
