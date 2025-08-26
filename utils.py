@@ -473,13 +473,13 @@ class generate_scenario:
             
         if case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Outpatient" :
             situa = "Prise en charge en hospitalisation de jour pour cure de chimiothérapie"
-            if case["chemotherapy_regimen"] is not None :
+            if case["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)):
                 situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
             code = 1
 
         elif case["drg_parent_code"] in self.drg_parent_code_chimio and case["admission_type"]  == "Inpatient":
             situa = "Prise en charge en hospitalisation complète pour cure de chimiothérapie"
-            if case["chemotherapy_regimen"] is not None :
+            if case["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)): 
                 situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
             code = 2
 
