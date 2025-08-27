@@ -1,2 +1,4 @@
 # Ignore folder 'data' where are stored references data
 data/
+__pycache__/
+*.pyc
