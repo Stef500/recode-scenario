@@ -206,9 +206,10 @@ class generate_scenario:
 
         if col_names is not None : 
             self.df_procedure_official.rename(columns = col_names, inplace = True) 
-        
-        self.df_procedure_official = self.df_procedure_official[(self.df_procedure_official.procedure_description.str.contains("Examen anatomopathologique"))] 
 
+        self.pathology_procedure = self.df_procedure_official.procedure[self.df_procedure_official.procedure_description.str.contains("Examen anatomopathologique")]
+
+        
     def load_cancer_treatement_recommandations(self,
                         file_name : str,
                         col_names: dict | None = None ):
@@ -217,6 +218,16 @@ class generate_scenario:
 
         if col_names is not None : 
             self.df_cancer_treatment_recommandation.rename(columns = col_names, inplace = True) 
+
+    def load_specialty_refential(self,
+                        file_name : str,
+                        col_names: dict | None = None ):
+        
+        self.ref_sep = pd.read_excel(self.path_ref + file_name)
+
+        if col_names is not None : 
+           self.ref_sep.rename(columns = col_names, inplace = True) 
+
 
 
     def load_classification_profile(self,
@@ -231,6 +242,13 @@ class generate_scenario:
         self.df_classification_profile = self.df_classification_profile.merge(self.drg_statistics,how="left")
         self.df_classification_profile= self.df_classification_profile.merge(self.drg_parents_groups,how="left")
         self.df_classification_profile = self.df_classification_profile.assign(admission_type = self.df_classification_profile.admission_type.replace(self.recoding_dict))
+        self.df_classification_profile = self.df_classification_profile.merge(self.ref_sep[["age","specialty","drg_parent_code"]],how="left")
+
+    def load_referential_hospital(self,
+                       file_name : str,
+                       col_names: list = ["hospital"] ):
+        
+        self.df_hospitals = pd.read_csv(self.path_ref+ file_name, names = col_names)
 
     def load_secondary_icd(self,
                        file_name : str,
@@ -262,6 +280,9 @@ class generate_scenario:
 
         if col_names is not None : 
             self.df_procedures.rename(columns = col_names, inplace = True)
+
+        self.df_procedures = self.df_procedures[~(self.df_procedures.procedure.isin(self.pathology_procedure))] 
+
 
     def get_names(self,
                   gender : int):
@@ -310,7 +331,7 @@ class generate_scenario:
         
         if df_sel[col_weights].sum() == 0:
             df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
-    
+        
         if df_sel.shape[0] ==0 :
             return pd.DataFrame(columns=df_values.columns)
 
@@ -352,6 +373,7 @@ class generate_scenario:
                 return df_sample[["icd_secondary_code","icd_code_description_official"]].reset_index(  drop=True  )
 
             elif "procedure" in df_sample.columns  :
+                
                 df_sample["procedure_description_official"] = df_sample.procedure.apply(self.get_procedure_description)
                 return df_sample
             else:
@@ -384,6 +406,8 @@ class generate_scenario:
                 'treatment_recommandation':None,
                 'chemotherapy_regimen':None,
                 'biomarkers':None,
+                'department' : None,
+                'hospital':None,
                 'first_name_med':None, 
                 'last_name_med':None
                 
@@ -625,6 +649,10 @@ class generate_scenario:
         scenario["first_name"] , scenario["last_name"] = self.get_names(profile.sexe)
         scenario["first_name_med"] , scenario["last_name_med"] = self.get_names(random.randint(1, 2))
 
+        scenario["departement"] = profile["specialty"]
+
+        scenario["hospital"] =   self.df_hospitals.sample(1)['hospital'].iloc[0]
+        
 
         ### Secondary diagnosis :
         ### We sample secondary diagnosis by steps : metastases, metastases ln, chronic,complications
@@ -739,8 +767,8 @@ class generate_scenario:
 
         ## Actes
 
-        grouping_secondary =["procedure","drg_parent_code","icd_primary_code","cage2","sexe"]
-        procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_secondary],nb=1) 
+        grouping_procedure =["procedure","drg_parent_code","icd_primary_code","cage2","sexe"]
+        procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1) 
 
         scenario["procedure"] = procedures.procedure.to_list()
 
@@ -827,6 +855,12 @@ class generate_scenario:
             
             if k == "first_name_med" and v is not None:  
                 SCENARIO +="- Nom du médecin / signataire : "+ v + " " + scenario["last_name_med"] + "\n" 
+            
+            if k == "specialty" and v is not None:  
+                SCENARIO +="- Service : "+ v + "\n" 
+            
+            if k == "hospital" and v is not None:  
+                SCENARIO +="- Hôpital : "+ v + "\n" 
         # ICD_ALTERNATIVES =""
 
 
@@ -839,7 +873,7 @@ class generate_scenario:
         if scenario["icd_primary_code"] in self.icd_codes_cancer: 
             SCENARIO += "Ce cas clinique concerne un patient présentant un cancer\n"
             if scenario["histological_type"] is not None:
-                SCENARIO ="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
+                SCENARIO +="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
                 SCENARIO +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
                 if scenario["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)): 
                     SCENARIO += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
