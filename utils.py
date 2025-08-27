@@ -856,10 +856,10 @@ class generate_scenario:
             if k == "first_name_med" and v is not None:  
                 SCENARIO +="- Nom du médecin / signataire : "+ v + " " + scenario["last_name_med"] + "\n" 
             
-            if k == "specialty" and v is not None:  
+            if k == "specialty" and v is not None and not (isinstance(v, float)):  
                 SCENARIO +="- Service : "+ v + "\n" 
             
-            if k == "hospital" and v is not None:  
+            if k == "hospital" and v is not None and not (isinstance(v, float)):  
                 SCENARIO +="- Hôpital : "+ v + "\n" 
         # ICD_ALTERNATIVES =""
 
