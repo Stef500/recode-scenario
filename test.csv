@@ -1,0 +1,35 @@
+,user_prompt
+0,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 50 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 09/04/2024
+- Date de sortie : 09/04/2024
+- Date de naissance : 21/05/1973
+- Prénom du patient : Isaura
+- Nom du patient : Robi
+- Mode de prise en charge : Prise en charge en chirugie ambulatoire pour - examen immunocytochimique ou immunohistochimique de prélèvement cellulaire ou tissulaire fixé avec 6 à 9 anticorps, sans quantification du signal (zzqx034)
+
+- Codage CIM10 :
+   * Diagnostic principal : Carcinome in situ d'autres parties du col de l'utérus (D067)
+   * Diagnostic associés : 
+- Sclérose en plaques (G35)
+- Hypertension essentielle (primitive) (I10)
+- Syndrome de dépendance à l'alcool, utilisation actuelle (F1024)
+- Présence de prothèse d'une valvule cardiaque (Z952)
+- Difficultés liées à un emprisonnement et autre incarcération (Z651)
+- Malnutrition protéino-énergétique modérée (E440)
+- Résultats histologiques anormaux de prélèvements effectués sur les organes génitaux de la femme (R877)
+- Syndrome de dépendance au tabac, utilisation actuelle (F1724)
+- Hypercholestérolémie essentielle (E780)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM
+- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique
+- Biomarqueurs tumoraux : Vous choisirez des biomarqueurs tumoraux cohérents avec la localisation anatomique et l'histologie de la tumeur
+- Localisation anatomique de la tumeur primaire : Carcinome in situ d'autres parties du col de l'utérus (D067)
+Acte CCAM :- examen immunocytochimique ou immunohistochimique de prélèvement cellulaire ou tissulaire fixé avec 6 à 9 anticorps, sans quantification du signal (zzqx034)
+
+Ce cas clinique concerne un patient présentant un cancer
+Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés
+"

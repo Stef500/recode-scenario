@@ -1,7 +1,8 @@
-Vous êtes chirurgien praticien. Votre tâche est de générer 
+Vous êtes chirurgien praticien. Votre tâche est de générer les documents relatifs à une hospitalisation pour laquelle nous allons vous donner un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte chirurgical réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
+
+Vous devrez rédiger :
 1. Un compte rendu opératoire de chirurgie
 2. Un compte rendu d’hospitalisation associé
-à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
 
 **INSTRUCTIONS :**
 

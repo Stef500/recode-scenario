@@ -205,7 +205,9 @@ class generate_scenario:
         self.df_procedure_official =  pd.read_excel(self.path_ref + file_name )
 
         if col_names is not None : 
-            self.df_procedure_official.rename(columns = col_names, inplace = True)  
+            self.df_procedure_official.rename(columns = col_names, inplace = True) 
+        
+        self.df_procedure_official = self.df_procedure_official[(self.df_procedure_official.procedure_description.str.contains("Examen anatomopathologique"))] 
 
     def load_cancer_treatement_recommandations(self,
                         file_name : str,
@@ -372,13 +374,18 @@ class generate_scenario:
                 # 'icd_primary_code_definition_alternatives': None,
                 'case_management_type':None,
                 'icd_secondaray_code':[],
+                'procedure':None,
+                'icd_primary_description':None,
                 'admission_mode':None,
                 'discharge_disposition':None,
                 'cancer_stage':None,
                 'score_TNM':None,
                 'histological_type':None,
                 'treatment_recommandation':None,
-                'chemotherapy_regimen':None
+                'chemotherapy_regimen':None,
+                'biomarkers':None,
+                'first_name_med':None, 
+                'last_name_med':None
                 
              
         }
@@ -540,7 +547,7 @@ class generate_scenario:
             code = 13
 
         elif case["drg_parent_code"][2:3] in ["K"] and case["admission_type"]  == "Inpatient" :
-            situa =  "Prise en charge chirugicale en complète pour "
+            situa =  "Prise en charge en hospitalisation complète pour "
 
             if case["text_procedure"] != "" :
                 situa += case["text_procedure"].lower()
@@ -757,16 +764,22 @@ class generate_scenario:
         for k,v in scenario.items():
             if k == "age" and v is not None:
                 SCENARIO +="- Âge du patient : " + str(v) + " ans\n"
+           
             if k == "sexe" and v is not None:  
                 SCENARIO +="- Sexe du patient : " + interpret_sexe(v) + "\n"
+            
             if k == "date_entry" and v is not None:  
                 SCENARIO +="- Date d'entrée : "+ v.strftime("%d/%m/%Y") + "\n"
+            
             if k == "date_discharge" and v is not None:  
                 SCENARIO +="- Date de sortie : "+ v.strftime("%d/%m/%Y") + "\n" 
+            
             if k == "date_of_birth" and v is not None:  
                 SCENARIO +="- Date de naissance : "+ v.strftime("%d/%m/%Y") + "\n"  
+            
             if k == "last_name" and v is not None:  
                 SCENARIO +="- Nom du patient : "+ v + "\n" 
+            
             if k == "first_name" and v is not None:  
                 SCENARIO +="- Prénom du patient : "+ v + "\n" 
                 
@@ -794,6 +807,7 @@ class generate_scenario:
             
             if k == "admission_mode" and v is not None:  
                 SCENARIO +="- Mode d'entrée' : "+ v + "\n" 
+           
             if k == "discharge_disposition" and v is not None:  
                 SCENARIO +="- Mode de sortie' : "+ v + "\n" 
 
@@ -807,7 +821,12 @@ class generate_scenario:
                                
                 SCENARIO +="   * Diagnostic associés : \n"
                 SCENARIO +=  scenario["text_secondary_icd_official"]  + "\n" 
-
+            
+            if k == "procedure" and v is not None and scenario["drg_parent_code"][2:3] in ["C","K"] : 
+                SCENARIO +=  "* Acte CCAM :\n" + scenario["text_procedure"].lower()+ "\n"  
+            
+            if k == "first_name_med" and v is not None:  
+                SCENARIO +="- Nom du médecin / signataire : "+ v + " " + scenario["last_name_med"] + "\n" 
         # ICD_ALTERNATIVES =""
 
 
@@ -816,14 +835,17 @@ class generate_scenario:
         #ICD_ALTERNATIVES +=  scenario["text_secondary_icd_alternative"]  + "\n"  
 
         
-        INSTRUCTIONS_CANCER = ""
-        if scenario["histological_type"] is not None:
-            INSTRUCTIONS_CANCER ="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
-            INSTRUCTIONS_CANCER +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
-            if scenario["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)): 
-                INSTRUCTIONS_CANCER += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
+        # INSTRUCTIONS_CANCER
+        if scenario["icd_primary_code"] in self.icd_codes_cancer: 
+            SCENARIO += "Ce cas clinique concerne un patient présentant un cancer\n"
+            if scenario["histological_type"] is not None:
+                SCENARIO ="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
+                SCENARIO +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
+                if scenario["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)): 
+                    SCENARIO += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
+            
 
-            INSTRUCTIONS_CANCER += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
+            SCENARIO += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
 
         # return {"SCENARIO": SCENARIO, "ICD_ALTERNATIVES" : ICD_ALTERNATIVES, "INSTRUCTIONS_CANCER":INSTRUCTIONS_CANCER}
-        return {"SCENARIO": SCENARIO, "INSTRUCTIONS_CANCER": INSTRUCTIONS_CANCER}
+        return SCENARIO
