@@ -24,7 +24,6 @@ Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte
     + Histoire de la maladie
     + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
     + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
-    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
     + Conclusion
 
 - Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
@@ -35,9 +34,6 @@ Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte
 
 - Ne pas inclure : Clauses de non-responsabilité.
 
-- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
-    + État général : score de performance explicite selon l’échelle ECOG/OMS
-    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
 
 Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
 
@@ -46,6 +42,11 @@ Veillez à intégrer ces informations de façon naturelle dans le compte rendu, 
 Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"],...} 
 
 + un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du médecin
+    * Nom/Prénom du patient
     * Âge
     * Sexe
     * État général
@@ -55,6 +56,7 @@ Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arteri
     * NFS: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Créatinine : résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
+    * Traitements
 
 Par exemple : {"Âge": ["55 ans"], "Stade tumoral": ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"],...}
 

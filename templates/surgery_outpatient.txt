@@ -20,10 +20,12 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 - Contenu à produire :
 	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
 	+ Points à faire figurer si pertinents (max. 200 mots/point) : 
-		Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
+		Date de l'intervention
+        Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
 		Technique utilisée
 		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
 		Matériels utilisés et leur caractéristiques
+        Nom du chirurgien
 
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
 
@@ -36,25 +38,16 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"],...} 
 
 + un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date de l'intervention
+    * Nom/Prénom du chirurgien
+    * Nom/Prénom du patient
     * Âge
     * Sexe
     * État général
     * Statut gestationnel (s'il s'agit d'une femme)
     * Gestité
     * Comorbidités
-    * Topographie de la tumeur primaire: Localisation anatomique de la tumeur primaire
-    * Histologie tumorale : Type cellulaire explicite de la tumeur primaire. Ne pas inclure de localisations anatomiques générales (ex. : cancer du sein, tumeur pulmonaire...)
-    * Stade tumoral
-    * Biomarqueurs tumoraux
-    * Sites métastatiques : Localisations anatomiques des métastases
-    * Évolutivité tumorale
-    * Examens pour diagnostic initial: Noms des examens qui ont permis d'établir le diagnostic initial de la tumeur primaire
-    * Examens d'évaluation du stade tumoral : Noms des examens ayant servi à déterminer le stade tumoral initial
-    * Examens d’évaluation de l’évolutivité tumorale : Noms des examens ayant permis de juger de la progression ou de la stabilité de la maladie dans le temps
-    * Traitements antitumoraux : Type de traitements antitumoraux reçus, y compris les types de chirurgie pratiqués
-    * Lignes de traitement antitumoral
-    * Médicaments antitumoraux : Noms des médicaments antitumoraux administrés
-    * Cycles de chimiothérapie
+    * Traitements
     * NFS: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Créatinine : résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)

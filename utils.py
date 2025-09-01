@@ -243,12 +243,24 @@ class generate_scenario:
         self.df_classification_profile= self.df_classification_profile.merge(self.drg_parents_groups,how="left")
         self.df_classification_profile = self.df_classification_profile.assign(admission_type = self.df_classification_profile.admission_type.replace(self.recoding_dict))
         self.df_classification_profile = self.df_classification_profile.merge(self.ref_sep[["age","specialty","drg_parent_code"]],how="left")
+        self.df_classification_profile.los_mean[(self.df_classification_profile.los_mean.isna())] = 0
+        self.df_classification_profile.los_sd[(self.df_classification_profile.los_sd.isna())] = 0
 
     def load_referential_hospital(self,
                        file_name : str,
                        col_names: list = ["hospital"] ):
         
         self.df_hospitals = pd.read_csv(self.path_ref+ file_name, names = col_names)
+
+    def load_exclusions(self,
+                       file_name : str,
+                       col_names: dict | None = None):
+        
+        self.df_exclusions = pd.read_csv(self.path_ref+ file_name)
+
+        if col_names is not None : 
+            self.df_classification_profile.rename(columns = col_names, inplace = True) 
+
 
     def load_secondary_icd(self,
                        file_name : str,
@@ -883,3 +895,25 @@ class generate_scenario:
 
         # return {"SCENARIO": SCENARIO, "ICD_ALTERNATIVES" : ICD_ALTERNATIVES, "INSTRUCTIONS_CANCER":INSTRUCTIONS_CANCER}
         return SCENARIO
+
+    def create_system_prompt(self,scenario):
+        if scenario["icd_primary_code"] in self.icd_codes_cancer: 
+            if scenario['admission_type'] == "Inpatient" and scenario['drg_parent_code'][2:3]=="C" :
+                template_name = "surgery_complete_onco.txt"
+            elif scenario['admission_type'] == "Outpatient" and scenario['drg_parent_code'][2:3]=="C" :
+                template_name = "surgery_outpatient_onco.txt"
+            else:
+                template_name = "scenario_onco_v1.txt"
+        
+        else:
+            if scenario['admission_type'] == "Inpatient" and scenario['drg_parent_code'][2:3]=="C" :
+                template_name = "surgery_complete_onco.txt"
+            elif scenario['admission_type'] == "Outpatient" and scenario['drg_parent_code'][2:3]=="C" :
+                template_name = "surgery_outpatient_onco.txt"
+            else:
+                template_name = "scenario_onco_v1.txt"            
+            
+        with open("templates/" + template_name, "r", encoding="utf-8") as f:
+            prompt = f.read()
+        
+        return prompt
