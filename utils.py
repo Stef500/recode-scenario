@@ -243,8 +243,11 @@ class generate_scenario:
         self.df_classification_profile= self.df_classification_profile.merge(self.drg_parents_groups,how="left")
         self.df_classification_profile = self.df_classification_profile.assign(admission_type = self.df_classification_profile.admission_type.replace(self.recoding_dict))
         self.df_classification_profile = self.df_classification_profile.merge(self.ref_sep[["age","specialty","drg_parent_code"]],how="left")
-        self.df_classification_profile.los_mean[(self.df_classification_profile.los_mean.isna())] = 0
-        self.df_classification_profile.los_sd[(self.df_classification_profile.los_sd.isna())] = 0
+        
+        self.df_classification_profile = self.df_classification_profile.assign(los_mean = np.where(self.df_classification_profile.los_mean.isna(),0,self.df_classification_profile.los_mean) )
+        self.df_classification_profile = self.df_classification_profile.assign(los_sd = np.where(self.df_classification_profile.los_sd.isna(),0,self.df_classification_profile.los_sd) )
+
+
 
     def load_referential_hospital(self,
                        file_name : str,
@@ -902,16 +905,20 @@ class generate_scenario:
                 template_name = "surgery_complete_onco.txt"
             elif scenario['admission_type'] == "Outpatient" and scenario['drg_parent_code'][2:3]=="C" :
                 template_name = "surgery_outpatient_onco.txt"
+            elif scenario['admission_type'] == "Outpatient" :
+                template_name = "medical_outpatient_onco.txt"
             else:
-                template_name = "scenario_onco_v1.txt"
+                template_name = "medical_inpatient_onco.txt"
         
         else:
             if scenario['admission_type'] == "Inpatient" and scenario['drg_parent_code'][2:3]=="C" :
-                template_name = "surgery_complete_onco.txt"
+                template_name = "surgery_inpatient.txt"
             elif scenario['admission_type'] == "Outpatient" and scenario['drg_parent_code'][2:3]=="C" :
-                template_name = "surgery_outpatient_onco.txt"
+                template_name = "surgery_outpatient.txt"
+            elif scenario['admission_type'] == "Outpatient" :
+                template_name = "medical_outpatient.txt" 
             else:
-                template_name = "scenario_onco_v1.txt"            
+                template_name = "medical_inpatient.txt"            
             
         with open("templates/" + template_name, "r", encoding="utf-8") as f:
             prompt = f.read()
