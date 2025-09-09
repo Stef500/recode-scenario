@@ -151,10 +151,22 @@ class generate_scenario:
         self.icd_codes_cancer_meta_ln= ["C770","C771","C772","C773","C774","C775","C778","C779"]
         self.icd_codes_cancer_meta = ["C780","C781","C782","C783","C784","C785","C786","C787","C788",
                     "C790","C791","C792","C793","C794","C795","C796","C797","C798"]
+        
+        self.icd_codes_contact_tt_rep = ["Z491","Z511","Z512","Z5101","Z513","Z516"]
 
         self.drg_parent_code_chimio = ['28Z07','17M05','17M06']
         self.drg_parent_code_radio = ["17K04","17K05","17K08","17K09","28Z10","28Z11","28Z18","28Z19",
                         "28Z20","28Z21","28Z22","28Z23","28Z24","28Z25"]
+        self.icd_codes_t2_chronic_intractable_pain = ["R5210","R5218"]
+        self.icd_codes_ascites = ["R18"]
+        self.icd_codes_pleural_effusion = ["J90", "J91", "J940","J941","J942","J948","J949"]
+        self.icd_codes_cosmetic_surgery = ["Z410","Z411"]
+        self.icd_codes_comfort_intervention = ["Z4180"]
+        
+        self.icd_codes_plastic_surgery = ["Z420","Z421","Z423","Z424","Z425","Z426","Z427","Z428","Z429"]
+        
+        self.icd_codes_prophylactic_intervention = ["Z400","Z401","Z408"]
+
         self.drg_parent_code_greffe = ["27Z02","27Z03","27Z04"]
         self.drg_parent_code_transfusion = ["28Z14"]
         self.drg_parent_code_palliative_care = ["23Z02"]
@@ -186,6 +198,36 @@ class generate_scenario:
 
 
         self.icd_code_chronic_attack = pd.read_csv(path_ref + "icd_code_chronic_attack.txt",sep=";").code
+        
+        self.procedure_botulic_toxin = pd.read_csv(path_ref + "procedure_botulic_toxine.csv",sep=";").code
+        
+        self.icd_codes_prophylactic_intervention = pd.read_csv(path_ref + "icd_codes_prophylactic_intervention.csv",sep=";").code
+        
+        self.attention_artificial_openings_external_prosthetic_device = pd.read_csv(path_ref + "attention_artificial_openings_external_prosthetic_device.csv",sep=";").code
+        
+        self.icd_codes_iron_deficiency_anemia = pd.read_csv(path_ref + "icd_codes_iron_deficiency_anemia.csv",sep=";").code
+        
+        self.icd_codes_sessions = pd.read_csv(path_ref + "icd_codes_sessions.csv",sep=";").code
+        
+        self.icd_codes_diabetes_chronic = pd.read_csv(path_ref + "icd_codes_diabetes_chronic.csv",sep=";").code
+        
+        self.icd_codes_spontaneous_vertex_delivery = pd.read_csv(path_ref + "icd_codes_spontaneous_vertex_delivery.csv",sep=";").code
+        
+        self.icd_codes_liveborn_infants = pd.read_csv(path_ref + "icd_codes_liveborn_infants.csv",sep=";").code
+        
+        self.icd_codes_medical_abortion =  pd.read_csv(path_ref + "icd_codes_medical_abortion.csv",sep=";").code
+        
+        self.icd_codes_legal_abortion =  pd.read_csv(path_ref + "icd_codes_legal_abortion.csv",sep=";").code
+        
+        self.icd_codes_supervision = pd.read_csv(path_ref + "icd_codes_supervision.csv",sep=";").code
+        
+        self.icd_codes_supervision_chronic_disease = pd.read_csv(path_ref + "icd_codes_supervision_chronic_disease.csv",sep=";").code
+        
+        self.icd_codes_surgical_followup = pd.read_csv(path_ref + "icd_codes_surgical_followup.csv",sep=";").code
+        
+        self.icd_codes_supervision_pregnancy = pd.read_csv(path_ref + "icd_codes_supervision_pregnancy.csv",sep=";").code
+        
+        self.icd_codes_supervision_post_partum =  pd.read_csv(path_ref + "icd_codes_supervision_post_partum.csv",sep=";").code
 
 
      
