@@ -259,7 +259,7 @@ class generate_scenario:
         self.df_exclusions = pd.read_csv(self.path_ref+ file_name)
 
         if col_names is not None : 
-            self.df_classification_profile.rename(columns = col_names, inplace = True) 
+            self.df_exclusions.rename(columns = col_names, inplace = True) 
 
 
     def load_secondary_icd(self,
