@@ -228,8 +228,18 @@ class generate_scenario:
         self.icd_codes_supervision_pregnancy = pd.read_csv(path_ref + "icd_codes_supervision_pregnancy.csv",sep=";").code
         
         self.icd_codes_supervision_post_partum =  pd.read_csv(path_ref + "icd_codes_supervision_post_partum.csv",sep=";").code
+        
+        self.icd_codes_cardic_vascular_implants = pd.read_csv(path_ref + "icd_codes_cardic_vascular_implants.csv",sep=";").code
 
-
+        self.icd_codes_overnight_study = pd.read_csv(path_ref + "icd_codes_overnight_study.csv",sep=";").code
+        
+        self.icd_codes_sensitization_tests = pd.read_csv(path_ref + "icd_codes_sensitization_tests.csv",sep=";").code
+        
+        self.icd_codes_preoperative_assessment =  pd.read_csv(path_ref + "icd_codes_preoperative_assessment.csv",sep=";").code
+        
+        self.icd_codes_family_history = pd.read_csv(path_ref + "icd_codes_family_history.csv",sep=";").code
+     
+        self.icd_codes_personnel_history =  pd.read_csv(path_ref + "icd_codes_personnel_history.csv",sep=";").code
      
     def load_offical_icd(self,
                         file_name : str,
