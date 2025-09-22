@@ -1,0 +1,1048 @@
+,age,cage,cage2,sexe,date_entry,date_discharge,date_of_birth,first_name,last_name,icd_primary_code,icd_primary_description,icd_parent_code,case_management_type,case_management_type_description,case_management_type_text,drg_parent_code,drg_parent_description,icd_secondaray_code,text_secondary_icd_official,procedure,text_procedure,admission_type,admission_mode,discharge_disposition,dms,los_mean,los_sd,cancer_stage,score_TNM,histological_type,treatment_recommandation,chemotherapy_regimen,biomarkers,first_name_med,last_name_med,department,hospital,cd_md_pec,user_prompt,system_prompt,prefix,prefix_len
+0,63,[60-70[,[50-[,1,2024-01-18,2024-01-18,1960-08-16,Ihsane,Caltagirone,H402,Glaucome (primitif) à angle étroit,H40,DP,,,02C11,Autres interventions intraoculaires en dehors des affections sévères,"['E11i', 'H400']","- Diabète de type 2 insulino-requérant (E11i)
+- Glaucome limite (H400)
+",BEFA008,"- Trabéculectomie [Sclérectomie transfixiante] (BEFA008)
+",Outpatient,DOMICILE,DOMICILE,"0,00000000000000e+00",4.56944444444444,7.26198337139397,,,,,,,Pierrette,Rama,,Hôpital Européen Georges-Pompidou - Assistance Publique Hôpitaux de Paris,-1,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 63 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 18/01/2024
+- Date de sortie : 18/01/2024
+- Date de naissance : 16/08/1960
+- Prénom du patient : Ihsane
+- Nom du patient : Caltagirone
+- Contexte de l'hospitalisation : . HOSPITALISATION POUR TRAITEMENT.  La situation est celle d’un patient atteint d’une affection connue, diagnostiquée avant l’admission, hospitalisé pour le traitement de celle-ci. Les circonstances du diagnostic préalable n’importent pas : le diagnostic de l’affection a pu être fait par un médecin généraliste ou spécialiste « de ville », par un service médical d’urgence et de réanimation (SMUR), lors du passage dans une structure d’accueil des urgences, lors d’un séjour précédent dans une autre unité médicale, y compris l’unité d’hospitalisation de courte durée, du même établissement de santé ou d’un autre, etc. La situation de traitement est présente lorsque le diagnostic de l’affection est fait au moment de l’entrée du patient dans l’unité médicale et que l’admission a pour but le traitement de l’affection. La situation est celle d'une hospitalisation pour traitement unique chirurgical. Le diagnostic résultant de l'intervention peut être différent du diagnostic préopératoire.
+
+- Codage CIM10 :
+   * Diagnostic principal : Glaucome (primitif) à angle étroit (H402)
+   * Diagnostic associés : 
+- Diabète de type 2 insulino-requérant (E11i)
+- Glaucome limite (H400)
+
+* Acte CCAM :
+- trabéculectomie [sclérectomie transfixiante] (befa008)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Européen Georges-Pompidou - Assistance Publique Hôpitaux de Paris
+- Nom du médecin / signataire : Pierrette Rama
+- Service : OPHTALMOLOGIE
+","Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu opératoire de chirurgie ambulatoire à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 
+	+ Variez la structure des phrases. 
+	+ Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.
+	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire :
+	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
+	+ Points à faire figurer si pertinents (max. 200 mots/point) : 
+		Date de l'intervention
+        Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
+		Technique utilisée
+		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
+		Matériels utilisés et leur caractéristiques
+        Nom du chirurgien
+
+	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date de l'intervention
+    * Nom/Prénom du chirurgien
+    * Nom/Prénom du patient
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Traitements
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+1,35,[30-40[,[18-50[,2,2024-10-19,2024-10-30,1988-11-15,Letitia,Surleau,G551,Compression des racines et des plexus nerveux au cours d'atteintes des disques intervertébraux (M50-M51),G55,DP,,"Prise en charge chirugicale en hospitalisation complète pour - recalibrage unilatéral de la colonne vertébrale lombale ou lombosacrale, par abord postérieur (lfaa001)
+",08C27,Autres interventions sur le rachis,"['I498', 'D473', 'M4822']","- Autres arythmies cardiaques précisées (I498)
+- Thrombocytémie essentielle (hémorragique) (D473)
+- Arthrose interépineuse - Région cervicale (M4822)
+",LFAA001,"- Recalibrage unilatéral de la colonne vertébrale lombale ou lombosacrale, par abord postérieur (LFAA001)
+",Inpatient,URGENCES,DOMICILE,"3,88461538461538e+00",5.03789126853377,6.30996009733257,,,,,,,Joseph,Boixiere,,Hôpital de la Conception- Assistance Publique – Hôpitaux de Marseille,12,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 35 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 19/10/2024
+- Date de sortie : 30/10/2024
+- Date de naissance : 15/11/1988
+- Prénom du patient : Letitia
+- Nom du patient : Surleau
+- Contexte de l'hospitalisation : Prise en charge chirugicale en hospitalisation complète pour - recalibrage unilatéral de la colonne vertébrale lombale ou lombosacrale, par abord postérieur (lfaa001)
+. HOSPITALISATION POUR TRAITEMENT.  La situation est celle d’un patient atteint d’une affection connue, diagnostiquée avant l’admission, hospitalisé pour le traitement de celle-ci. Les circonstances du diagnostic préalable n’importent pas : le diagnostic de l’affection a pu être fait par un médecin généraliste ou spécialiste « de ville », par un service médical d’urgence et de réanimation (SMUR), lors du passage dans une structure d’accueil des urgences, lors d’un séjour précédent dans une autre unité médicale, y compris l’unité d’hospitalisation de courte durée, du même établissement de santé ou d’un autre, etc. La situation de traitement est présente lorsque le diagnostic de l’affection est fait au moment de l’entrée du patient dans l’unité médicale et que l’admission a pour but le traitement de l’affection. La situation est celle d'une hospitalisation pour traitement unique chirurgical. Le diagnostic résultant de l'intervention peut être différent du diagnostic préopératoire.
+
+- Codage CIM10 :
+   * Diagnostic principal : Compression des racines et des plexus nerveux au cours d'atteintes des disques intervertébraux (M50-M51) (G551)
+   * Diagnostic associés : 
+- Autres arythmies cardiaques précisées (I498)
+- Thrombocytémie essentielle (hémorragique) (D473)
+- Arthrose interépineuse - Région cervicale (M4822)
+
+* Acte CCAM :
+- recalibrage unilatéral de la colonne vertébrale lombale ou lombosacrale, par abord postérieur (lfaa001)
+
+- Mode d'entrée' : URGENCES
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital de la Conception- Assistance Publique – Hôpitaux de Marseille
+- Nom du médecin / signataire : Joseph Boixiere
+- Service : NEURO-CHIRURGIE
+","Vous êtes chirurgien praticien. Votre tâche est de générer les documents relatifs à une hospitalisation pour laquelle nous allons vous donner un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte chirurgical réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
+
+Vous devrez rédiger :
+1. Un compte rendu opératoire de chirurgie
+2. Un compte rendu d’hospitalisation associé
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 
+	+ Variez la structure des phrases. 
+	+ Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.
+	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire pour le compte rendu opératoire :
+	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
+	+ Points à faire figurer si pertinents (max. 200 mots/point) :
+		Date de l'intervention
+		Diagnostic (raison succincte de la chirurgie)
+		Technique utilisée
+		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
+		Matériels utilisés et leur caractéristiques
+		Chirurgien
+
+	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
+
+- Contenu à produire pour le compte rendu d'hospitalisation associé: Il doit comporter les sections suivantes (max. 200 mots/section) :
+	+ Motif d’hospitalisation
+	+ Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+	+ Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+	+ Histoire de la maladie
+	+ Examen clinique (constantes vitales, examen physique, poids en kgs — en particulier si une dénutrition est évoquée, etc.) (uniquement ceux réalisés durant l’hospitalisation) 
+	+ Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+	+ Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+	+ Conclusion
+
+	Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation)
+	
+	Attribuez obligatoirement des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Commencez par le compte rendu opératoire, suivi du compte rendu d’hospitalisation associé. Séparez-les clairement à l’aide de leurs titres respectifs (ex.: ## Compte rendu opératoire et ## Compte rendu d’hospitalisation), ainsi que d’un séparateur visuel : -----.
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections ainsi qu'entre les deux comptes rendus.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+ 
+	Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+	* Date de l'intervention
+    * Nom/Prénom du chirurgien
+	* Nom/Prénom du patient
+	* Âge
+    * Sexe
+    * État général
+	* Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Médicaments
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+2,52,[50-60[,[50-[,2,2024-11-07,2024-11-07,1972-05-18,Gilberte,Colussi,H028,Autres affections précisées des paupières,H02,Z411,Autres opérations plastiques pour raisons esthétiques,"Hospitalisation en ambulatoire pour - résection bilatérale cutanée, musculaire et/ou graisseuse au niveau des paupières, par abord cutané (bafa009)
+",09Z02,Chirurgie esthétique,"['I10', 'C443', 'H023']","- Hypertension essentielle (primitive) (I10)
+- Tumeur maligne de la peau de la face, parties autres et non précisées (C443)
+- Blépharochalasis (H023)
+",BAFA009,"- Résection bilatérale cutanée, musculaire et/ou graisseuse au niveau des paupières, par abord cutané (BAFA009)
+",Outpatient,DOMICILE,DOMICILE,"0,00000000000000e+00",1.58273381294964,1.1911465708588,,,,,,,Michele,Chaussadas,,Hôpital Pellegrin - CHU de Bordeaux,-1,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 52 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 07/11/2024
+- Date de sortie : 07/11/2024
+- Date de naissance : 18/05/1972
+- Prénom du patient : Gilberte
+- Nom du patient : Colussi
+- Contexte de l'hospitalisation : Hospitalisation en ambulatoire pour - résection bilatérale cutanée, musculaire et/ou graisseuse au niveau des paupières, par abord cutané (bafa009)
+. HOSPITALISATION POUR TRAITEMENT.  La situation est celle d’un patient atteint d’une affection connue, diagnostiquée avant l’admission, hospitalisé pour le traitement de celle-ci. Les circonstances du diagnostic préalable n’importent pas : le diagnostic de l’affection a pu être fait par un médecin généraliste ou spécialiste « de ville », par un service médical d’urgence et de réanimation (SMUR), lors du passage dans une structure d’accueil des urgences, lors d’un séjour précédent dans une autre unité médicale, y compris l’unité d’hospitalisation de courte durée, du même établissement de santé ou d’un autre, etc. La situation de traitement est présente lorsque le diagnostic de l’affection est fait au moment de l’entrée du patient dans l’unité médicale et que l’admission a pour but le traitement de l’affection. La situation est celle d'une hospitalisation pour réalisation d'un acte de chirurgie esthétique. On désigne ainsi toute intervention de chirurgie plastique non prise en charge par l’assurance maladie obligatoire. Mais ce détail, lié à la facturation du séjour ne doit pas être spécifiquement mentionné dans le compte rendu d'hospitalisation. Elle correspond en pratique à des situations où le patient ne présente pas de pathologie et l'opération est réalisée à des fins esthétiques.
+
+- Codage CIM10 :
+   * Diagnostic principal : Autres affections précisées des paupières (H028)
+   * Diagnostic associés : 
+- Hypertension essentielle (primitive) (I10)
+- Tumeur maligne de la peau de la face, parties autres et non précisées (C443)
+- Blépharochalasis (H023)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Pellegrin - CHU de Bordeaux
+- Nom du médecin / signataire : Michele Chaussadas
+- Service : CHIR.PLAST.RECONSTR.
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du médecin
+    * Nom/Prénom du patient
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+3,87,[80-[,[50-[,2,2024-04-05,2024-04-15,1937-02-22,Celine,Boutbhirt,K803,Calcul des canaux biliaires avec angiocholite,K80,DP,,Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète,07M02,Affections des voies biliaires,"['D376', 'G309', 'I255', 'F03+4', 'M341', 'I771']","- Tumeur à évolution imprévisible ou inconnue du foie, de la vésicule et des voies biliaires (D376)
+- Maladie d'Alzheimer, sans précision (G309)
+- Myocardiopathie ischémique (I255)
+- Démence, sans précision, avec symptômes mixtes (F03+4)
+- Syndrome C.R.E.S.T. (M341)
+- Sténose d'une artère (I771)
+",ZCQJ004,"- Remnographie [IRM] de l'abdomen ou du petit bassin [pelvis], avec injection intraveineuse de produit de contraste (ZCQJ004)
+",Inpatient,URGENCES,DOMICILE,"8,24571078431373e+00",7.18815871047737,8.10249818232921,,,,,,,Chantal,Gentile,,Hôpital Pitié-Salpêtrière - Assistance Publique Hôpitaux de Paris,20,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 87 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 05/04/2024
+- Date de sortie : 15/04/2024
+- Date de naissance : 22/02/1937
+- Prénom du patient : Celine
+- Nom du patient : Boutbhirt
+- Contexte de l'hospitalisation : Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète. 
+- Codage CIM10 :
+   * Diagnostic principal : Calcul des canaux biliaires avec angiocholite (K803)
+   * Diagnostic associés : 
+- Tumeur à évolution imprévisible ou inconnue du foie, de la vésicule et des voies biliaires (D376)
+- Maladie d'Alzheimer, sans précision (G309)
+- Myocardiopathie ischémique (I255)
+- Démence, sans précision, avec symptômes mixtes (F03+4)
+- Syndrome C.R.E.S.T. (M341)
+- Sténose d'une artère (I771)
+
+- Mode d'entrée' : URGENCES
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Pitié-Salpêtrière - Assistance Publique Hôpitaux de Paris
+- Nom du médecin / signataire : Chantal Gentile
+- Service : HEPATO-GASTRO-ENTERO
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partir d'un scénario clinique réalisé avec des codes de la classification internationale des maladies (CIM-10) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code CIM-10 qui vous est données dans le scénario.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+      - Démarche diagnostique
+      - Traitements
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Définition du code (code)"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""Hypertension essentielle primitive (I10)"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du patient
+    * Nom/Prénom du médecin
+    * Âge
+    * Sexe
+    * État général
+    * Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+4,3,[1-5[,[1-5[,2,2024-05-25,2024-06-06,2020-06-20,Yvonne,Thevenin,G418,Autres états de mal épileptique,G41,DP,,Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète,01M24,"Epilepsie, âge inférieur à 18 ans","['Q870', 'G934', 'R51', 'J09']","- Syndromes congénitaux malformatifs atteignant principalement l'aspect de la face (Q870)
+- Encéphalopathie, sans précision (G934)
+- Céphalée (R51)
+- Grippe, à certains virus grippaux identifiés (J09)
+",AAQP007,"- Électroencéphalographie sur 8 dérivations ou plus avec enregistrement d'une durée minimale de 20 minutes sans numérisation et sans enregistrement vidéo (AAQP007)
+",Inpatient,URGENCES,DOMICILE,"3,07476635514019e+00",3.28522039757995,4.56497471812949,,,,,,,Teuira,Duvignaud,,Nouvel Hôpital Civil - Hôpitaux Universitaires de Strasbourg,20,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 3 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 25/05/2024
+- Date de sortie : 06/06/2024
+- Date de naissance : 20/06/2020
+- Prénom du patient : Yvonne
+- Nom du patient : Thevenin
+- Contexte de l'hospitalisation : Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète. 
+- Codage CIM10 :
+   * Diagnostic principal : Autres états de mal épileptique (G418)
+   * Diagnostic associés : 
+- Syndromes congénitaux malformatifs atteignant principalement l'aspect de la face (Q870)
+- Encéphalopathie, sans précision (G934)
+- Céphalée (R51)
+- Grippe, à certains virus grippaux identifiés (J09)
+
+- Mode d'entrée' : URGENCES
+- Mode de sortie' : DOMICILE
+- Hôpital : Nouvel Hôpital Civil - Hôpitaux Universitaires de Strasbourg
+- Nom du médecin / signataire : Teuira Duvignaud
+- Service : PEDIATRIE NEUROLOGIE
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partir d'un scénario clinique réalisé avec des codes de la classification internationale des maladies (CIM-10) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code CIM-10 qui vous est données dans le scénario.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+      - Démarche diagnostique
+      - Traitements
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Définition du code (code)"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""Hypertension essentielle primitive (I10)"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du patient
+    * Nom/Prénom du médecin
+    * Âge
+    * Sexe
+    * État général
+    * Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+5,70,[60-70[,[50-[,1,2024-04-01,2024-04-01,1953-10-07,Yaël,Ogire,D180,"Hémangiome, tout siège",D18,DP,,,08C46,Autres interventions sur les tissus mous,"['Q288', 'Z587', 'D170', 'S611']","- Autres malformations congénitales précisées de l'appareil circulatoire (Q288)
+- Exposition à la fumée du tabac (Z587)
+- Tumeur lipomateuse bénigne de la peau et du tissu sous-cutané de la tête, de la face et du cou (D170)
+- Plaie ouverte de(s) doigt(s) avec lésion de l'ongle (S611)
+",QZMA001,"- Réparation de perte de substance par lambeau local ou régional muqueux, cutané ou fasciocutané, à pédicule vasculonerveux non individualisé ou non individualisable [lambeau ""au hasard""], en dehors de l'extrémité céphalique (QZMA001)
+",Outpatient,DOMICILE,DOMICILE,"0,00000000000000e+00",9.29242819843342,15.8914221685373,,,,,,,Marie,Ghazali,,Hôpital Haut-Lévêque - CHU de Bordeaux,-1,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 70 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 01/04/2024
+- Date de sortie : 01/04/2024
+- Date de naissance : 07/10/1953
+- Prénom du patient : Yaël
+- Nom du patient : Ogire
+- Contexte de l'hospitalisation : . HOSPITALISATION POUR TRAITEMENT.  La situation est celle d’un patient atteint d’une affection connue, diagnostiquée avant l’admission, hospitalisé pour le traitement de celle-ci. Les circonstances du diagnostic préalable n’importent pas : le diagnostic de l’affection a pu être fait par un médecin généraliste ou spécialiste « de ville », par un service médical d’urgence et de réanimation (SMUR), lors du passage dans une structure d’accueil des urgences, lors d’un séjour précédent dans une autre unité médicale, y compris l’unité d’hospitalisation de courte durée, du même établissement de santé ou d’un autre, etc. La situation de traitement est présente lorsque le diagnostic de l’affection est fait au moment de l’entrée du patient dans l’unité médicale et que l’admission a pour but le traitement de l’affection. La situation est celle d'une hospitalisation pour traitement unique chirurgical. Le diagnostic résultant de l'intervention peut être différent du diagnostic préopératoire.
+
+- Codage CIM10 :
+   * Diagnostic principal : Hémangiome, tout siège (D180)
+   * Diagnostic associés : 
+- Autres malformations congénitales précisées de l'appareil circulatoire (Q288)
+- Exposition à la fumée du tabac (Z587)
+- Tumeur lipomateuse bénigne de la peau et du tissu sous-cutané de la tête, de la face et du cou (D170)
+- Plaie ouverte de(s) doigt(s) avec lésion de l'ongle (S611)
+
+* Acte CCAM :
+- réparation de perte de substance par lambeau local ou régional muqueux, cutané ou fasciocutané, à pédicule vasculonerveux non individualisé ou non individualisable [lambeau ""au hasard""], en dehors de l'extrémité céphalique (qzma001)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Haut-Lévêque - CHU de Bordeaux
+- Nom du médecin / signataire : Marie Ghazali
+- Service : CH.ORTHO.ET TRAUMATO
+","Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu opératoire de chirurgie ambulatoire à partit d'un scénario clinique réalisé avec des codes de la classification internationale des maladies, l'acte réalisé selon la classification commune des actes médicaux (CCAM) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 
+	+ Variez la structure des phrases. 
+	+ Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.
+	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire :
+	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
+	+ Points à faire figurer si pertinents (max. 200 mots/point) : 
+		Date de l'intervention
+        Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
+		Technique utilisée
+		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
+		Matériels utilisés et leur caractéristiques
+        Nom du chirurgien
+
+	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Code CIM - Définition du code"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date de l'intervention
+    * Nom/Prénom du chirurgien
+    * Nom/Prénom du patient
+    * Âge
+    * Sexe
+    * État général
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * Traitements
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+6,81,[80-[,[50-[,1,2024-02-13,2024-02-18,1942-07-17,Stephane,Larcher,J841,Autres affections pulmonaires interstitielles avec fibrose,J84,DP,,Hospitalisation au cours de laquelle le patient est décédé,04M14,Maladies pulmonaires interstitielles,"['Z742', 'M0599', 'I252', 'Z923']","- Besoin d'assistance à domicile, aucun autre membre du foyer n'étant capable d'assurer les soins (Z742)
+- Polyarthrite rhumatoïde séropositive, sans précision - Siège non précisé (M0599)
+- Infarctus du myocarde, ancien (I252)
+- Antécédents personnels d'irradiation (Z923)
+",DZQJ001,"- Échographie-doppler du coeur et des vaisseaux intrathoraciques, par voie oesophagienne [Échocardiographie-doppler transoesophagienne] (DZQJ001)
+",Inpatient,URGENCES,DECES,"1,19626168224299e+01",7.02530991735537,8.3324266115721,,,,,,,Anahi,Toto,,Hôpital Cochin - Assistance Publique Hôpitaux de Paris,10,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 81 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 13/02/2024
+- Date de sortie : 18/02/2024
+- Date de naissance : 17/07/1942
+- Prénom du patient : Stephane
+- Nom du patient : Larcher
+- Contexte de l'hospitalisation : Hospitalisation au cours de laquelle le patient est décédé. 
+- Codage CIM10 :
+   * Diagnostic principal : Autres affections pulmonaires interstitielles avec fibrose (J841)
+   * Diagnostic associés : 
+- Besoin d'assistance à domicile, aucun autre membre du foyer n'étant capable d'assurer les soins (Z742)
+- Polyarthrite rhumatoïde séropositive, sans précision - Siège non précisé (M0599)
+- Infarctus du myocarde, ancien (I252)
+- Antécédents personnels d'irradiation (Z923)
+
+- Mode d'entrée' : URGENCES
+- Mode de sortie' : DECES
+- Hôpital : Hôpital Cochin - Assistance Publique Hôpitaux de Paris
+- Nom du médecin / signataire : Anahi Toto
+- Service : PNEUMOLOGIE
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partir d'un scénario clinique réalisé avec des codes de la classification internationale des maladies (CIM-10) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code CIM-10 qui vous est données dans le scénario.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+      - Démarche diagnostique
+      - Traitements
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Définition du code (code)"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""Hypertension essentielle primitive (I10)"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du patient
+    * Nom/Prénom du médecin
+    * Âge
+    * Sexe
+    * État général
+    * Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+7,62,[60-70[,[50-[,2,2024-07-10,2024-07-12,1962-02-15,Evane,Sehili mejri,T783,Oedème angioneurotique,T78,DP,,Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète,21M05,"Réactions allergiques non classées ailleurs, âge supérieur à 17 ans","['L530', 'Z854', 'E6606', 'R068']","- Érythème toxique (L530)
+- Antécédents personnels de tumeur maligne des organes génitaux (Z854)
+- Obésité due à un excès calorique de l'adulte avec indice de masse corporelle [IMC] égal ou supérieur à 40 kg/m² et inférieur à 50 kg/m² (E6606)
+- Anomalies de la respiration, autres et non précisées (R068)
+",LCQK001,"- Scanographie des tissus mous du cou, sans injection intraveineuse de produit de contraste (LCQK001)
+",Inpatient,DOMICILE,DOMICILE,"1,33333333333333e+00",1.95846645367412,2.49130543468742,,,,,,,Monique,De almeida glorias,,Hôpital Édouard Herriot - Hospices Civils de Lyon,20,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 62 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 10/07/2024
+- Date de sortie : 12/07/2024
+- Date de naissance : 15/02/1962
+- Prénom du patient : Evane
+- Nom du patient : Sehili mejri
+- Contexte de l'hospitalisation : Hospitalisation pour prise en charge diagnostique et thérapeutique du diagnotic principal en hospitalisation complète. 
+- Codage CIM10 :
+   * Diagnostic principal : Oedème angioneurotique (T783)
+   * Diagnostic associés : 
+- Érythème toxique (L530)
+- Antécédents personnels de tumeur maligne des organes génitaux (Z854)
+- Obésité due à un excès calorique de l'adulte avec indice de masse corporelle [IMC] égal ou supérieur à 40 kg/m² et inférieur à 50 kg/m² (E6606)
+- Anomalies de la respiration, autres et non précisées (R068)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Édouard Herriot - Hospices Civils de Lyon
+- Nom du médecin / signataire : Monique De almeida glorias
+- Service : MEDECINE INTERNE
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partir d'un scénario clinique réalisé avec des codes de la classification internationale des maladies (CIM-10) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code CIM-10 qui vous est données dans le scénario.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+      - Démarche diagnostique
+      - Traitements
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Définition du code (code)"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""Hypertension essentielle primitive (I10)"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du patient
+    * Nom/Prénom du médecin
+    * Âge
+    * Sexe
+    * État général
+    * Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+8,66,[60-70[,[50-[,1,2024-08-27,2024-08-28,1957-09-26,Franck,Pogniot,D128,Tumeur bénigne du rectum,D12,DP,,"Prise en charge en hospitalisation complète pour - ablation d'endoprothèse biliaire et/ou pancréatique, par oeso-gastro-duodénoscopie (hmge001)
+",06K02,Endoscopies digestives thérapeutiques et anesthésie : séjours de moins de 2 jours,"['K220', 'K573', 'K598', 'K635+8', 'T66']","- Achalasie du cardia (K220)
+- Diverticulose du côlon, (sans perforation ni abcès) (K573)
+- Autres troubles fonctionnels précisés de l'intestin (K598)
+- Polype du côlon, autre et non précisé (K635+8)
+- Effets de rayonnements, sans précision (T66)
+",HMGE001,"- Ablation d'endoprothèse biliaire et/ou pancréatique, par oeso-gastro-duodénoscopie (HMGE001)
+",Inpatient,DOMICILE,DOMICILE,"4,65425531914894e-01",1.0,0.0,,,,,,,Giovanna,Saboukoulou dia zabakani,,Hôpital Rangueil - Centre hospitalier universitaire de Toulouse ,14,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 66 ans
+- Sexe du patient : Masculin
+- Date d'entrée : 27/08/2024
+- Date de sortie : 28/08/2024
+- Date de naissance : 26/09/1957
+- Prénom du patient : Franck
+- Nom du patient : Pogniot
+- Contexte de l'hospitalisation : Prise en charge en hospitalisation complète pour - ablation d'endoprothèse biliaire et/ou pancréatique, par oeso-gastro-duodénoscopie (hmge001)
+. HOSPITALISATION POUR TRAITEMENT.  La situation est celle d’un patient atteint d’une affection connue, diagnostiquée avant l’admission, hospitalisé pour le traitement de celle-ci. Les circonstances du diagnostic préalable n’importent pas : le diagnostic de l’affection a pu être fait par un médecin généraliste ou spécialiste « de ville », par un service médical d’urgence et de réanimation (SMUR), lors du passage dans une structure d’accueil des urgences, lors d’un séjour précédent dans une autre unité médicale, y compris l’unité d’hospitalisation de courte durée, du même établissement de santé ou d’un autre, etc. La situation de traitement est présente lorsque le diagnostic de l’affection est fait au moment de l’entrée du patient dans l’unité médicale et que l’admission a pour but le traitement de l’affection. La situation est celle d'une hospitalisation pour réalisation d'acte thérapeutique par voie endoscopique, endovasculaire ou d'imagerie interventionnelle. On place également dans ces situations des cas de reprise pour un acte thérapeutique par voie endoscopique, endovasculaire ou d'imagerie interventionnelle ou les cas où des actes doivent être réalisés en 2 temps.
+
+- Codage CIM10 :
+   * Diagnostic principal : Tumeur bénigne du rectum (D128)
+   * Diagnostic associés : 
+- Achalasie du cardia (K220)
+- Diverticulose du côlon, (sans perforation ni abcès) (K573)
+- Autres troubles fonctionnels précisés de l'intestin (K598)
+- Polype du côlon, autre et non précisé (K635+8)
+- Effets de rayonnements, sans précision (T66)
+
+* Acte CCAM :
+- ablation d'endoprothèse biliaire et/ou pancréatique, par oeso-gastro-duodénoscopie (hmge001)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Rangueil - Centre hospitalier universitaire de Toulouse 
+- Nom du médecin / signataire : Giovanna Saboukoulou dia zabakani
+- Service : HEPATO-GASTRO-ENTERO
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partir d'un scénario clinique réalisé avec des codes de la classification internationale des maladies (CIM-10) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code CIM-10 qui vous est données dans le scénario.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+      - Démarche diagnostique
+      - Traitements
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Définition du code (code)"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""Hypertension essentielle primitive (I10)"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du patient
+    * Nom/Prénom du médecin
+    * Âge
+    * Sexe
+    * État général
+    * Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211
+9,63,[60-70[,[50-[,2,2024-09-17,2024-09-27,1961-06-02,Sylvie,Tremauville,R18,Ascite,R18,DP,,Prise en charge pour ponction d'ascite en hospitalisation complète,07M14,Symptômes et autres recours aux soins de la CMD 07,"['C771', 'K551', 'C786', 'R060']","- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrathoraciques (C771)
+- Troubles vasculaires chroniques de l'intestin (K551)
+- Tumeur maligne secondaire du rétropéritoine et du péritoine (C786)
+- Dyspnée (R060)
+",YYYY015,"- Forfait de réanimation niveau A (YYYY015)
+",Inpatient,DOMICILE,DOMICILE,"3,06214689265537e+00",3.86991869918699,5.54471842738875,,,,,,,Jean,Abellon,,Hôpital Cochin - Assistance Publique Hôpitaux de Paris,-1,"**SCÉNARIO DE DÉPART :**
+- Âge du patient : 63 ans
+- Sexe du patient : Féminin
+- Date d'entrée : 17/09/2024
+- Date de sortie : 27/09/2024
+- Date de naissance : 02/06/1961
+- Prénom du patient : Sylvie
+- Nom du patient : Tremauville
+- Contexte de l'hospitalisation : Prise en charge pour ponction d'ascite en hospitalisation complète. HOSPITALISATION POUR TRAITEMENT.  La situation est celle d’un patient atteint d’une affection connue, diagnostiquée avant l’admission, hospitalisé pour le traitement de celle-ci. Les circonstances du diagnostic préalable n’importent pas : le diagnostic de l’affection a pu être fait par un médecin généraliste ou spécialiste « de ville », par un service médical d’urgence et de réanimation (SMUR), lors du passage dans une structure d’accueil des urgences, lors d’un séjour précédent dans une autre unité médicale, y compris l’unité d’hospitalisation de courte durée, du même établissement de santé ou d’un autre, etc. La situation de traitement est présente lorsque le diagnostic de l’affection est fait au moment de l’entrée du patient dans l’unité médicale et que l’admission a pour but le traitement de l’affection. La situation est celle d'une hospitaisation pour évacuation du liquide d'ascite.
+
+- Codage CIM10 :
+   * Diagnostic principal : Ascite (R18)
+   * Diagnostic associés : 
+- Tumeur maligne secondaire et non précisée des ganglions lymphatiques intrathoraciques (C771)
+- Troubles vasculaires chroniques de l'intestin (K551)
+- Tumeur maligne secondaire du rétropéritoine et du péritoine (C786)
+- Dyspnée (R060)
+
+- Mode d'entrée' : DOMICILE
+- Mode de sortie' : DOMICILE
+- Hôpital : Hôpital Cochin - Assistance Publique Hôpitaux de Paris
+- Nom du médecin / signataire : Jean Abellon
+- Service : HEPATO-GASTRO-ENTERO
+","Vous êtes un médecin clinicien expert. Votre tâche est de générer un compte rendu d'hospitalisation détaillé à partir d'un scénario clinique réalisé avec des codes de la classification internationale des maladies (CIM-10) et d'autres informations décrivant l'hospitalisation.
+
+**INSTRUCTIONS :**
+
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code CIM-10 qui vous est données dans le scénario.
+
+- Aucune partie du texte ne doit être mise en gras.
+
+- Langue : Rédigez le compte rendu en français.
+
+- Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
+
+- Formulation : 	
+    + Variez la structure des phrases. 	
+    + Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.	
+    + Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
+
+- Contenu à produire : Le compte rendu doit comporter les sections suivantes (max. 200 mots/section) :	
+    + Motif d’hospitalisation
+    + Antécédents (médicaux, chirurgicaux, familiaux, allergies)
+    + Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
+    + Histoire de la maladie
+    + Examen clinique (constantes vitales, examen physique, poids en kgs - en particulier si une dénutrition est évoquée, etc.) 
+    + Examens complémentaires avec résultats (uniquement ceux réalisés durant l’hospitalisation)
+    + Évolution pendant l'hospitalisation: Veillez à être le plus exhaustif possible.
+      - Démarche diagnostique
+      - Traitements
+    + Conclusion
+
+- Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation).
+
+- Attribuez des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
+
+- Assurez la cohérence temporelle et médicale entre les différentes sections.
+
+- Ne pas inclure : Clauses de non-responsabilité.
+
+- Veillez à être le plus détaillé possible concernant le cancer. Incluez, si pertinent, les informations suivantes : 
+    + État général : score de performance explicite selon l’échelle ECOG/OMS
+    + Statut gestationnel (contraception, grossesse ou allaitement) : uniquement chez les femmes
+
+Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
+
+- À la fin du texte généré, fournissez :
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {""Définition du code (code)"": [""formulation utilisée 1"", ""formulation utilisée 2"", ...],...}
+Par exemple : {""Hypertension essentielle primitive (I10)"": [""poussée hypertension arterielle"", ""poussée HTA""],...} 
+
+
++ un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
+    * Date entrée
+    * Date de sortie
+    * Service d'hospitalisation
+    * Nom/Prénom du patient
+    * Nom/Prénom du médecin
+    * Âge
+    * Sexe
+    * État général
+    * Poids
+    * Statut gestationnel (s'il s'agit d'une femme)
+    * Gestité
+    * Comorbidités
+    * NFS: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Créatinine : résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme ""normal"", ""élevé"",...)
+    * Traitements
+
+Par exemple : {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""],...}
+
+- La sortie doit être un objet JSON au format suivant :
+{""CR"": ""le text généré"", ""formulations"": {""diagnostics"": {...}, ""informations"": {...}}}
+
+Par exemple : {""CR"": ""Texte du compte rendu ici..."", ""formulations"": {""diagnostics"": {""poussee hypertension arterielle"": [""poussée hypertension arterielle"", ""poussée HTA""]}, ""informations"": {""Âge"": [""55 ans""], ""Stade tumoral"": [""cT4N1M2""], ""Examens pour diagnostic initial"": [""TDM thoracique"", ""IRM cérébrale""]}}}
+","Le compte rendu suivant respecte les élements suivants :
+        - les diagnostics ont une formulation moins formelle que la définition du code
+        - le plan du CRH est conforme aux recommandations.
+        ",211

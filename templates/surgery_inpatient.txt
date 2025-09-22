@@ -6,6 +6,13 @@ Vous devrez rédiger :
 
 **INSTRUCTIONS :**
 
+- Format des documents à produire : 
+	+ Il s'agit de documents officiels réalisés au cours de l'hopsitalisation.
+	+ Les documents doit être complet et autonome.
+	+ Ils comportent des informations obligatoires:
+	  - En entête : nom du service et de l'hôpital (fournis dans le scénario)
+	  - Encadré au début du document avec les informatoin patient : Numéro idenfiant (IPP : Non fourni), Nom (fourni  dans le scénario), Prénom (fourni  dans le scénario), date de naissance (fourni  dans le scénario)
+
 - Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
 
 - Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 

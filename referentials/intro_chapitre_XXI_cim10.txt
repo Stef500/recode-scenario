@@ -1,4 +1,4 @@
-Les catégories Z00-Z99 du chapitre XX de la CIM-10 sont destinées à l'enregistrement des motifs de recours aux services de santé, autres que maladie, traumatisme ou cause externe classés dans les catégories A00-Y89, ce qui peut se produire dans deux cas principaux:
+Les catégories Z00-Z99 du chapitre XXI de la CIM-10 sont destinées à l'enregistrement des motifs de recours aux services de santé, autres que maladie, traumatisme ou cause externe classés dans les catégories A00-Y89, ce qui peut se produire dans deux cas principaux:
 
    1) Quand un sujet, malade ou non, entre en contact avec les services de santé pour une raison précise, par exemple, pour recevoir des soins ou des services de niveau limité pour une affection en cours, pour être donneur d'un organe ou d'un tissu, recevoir une vaccination ou discuter d'un problème qui ne représente pas en soi une maladie ou un traumatisme. Ce qui correspond aux catégories : 
 		- Z00-Z13 Sujets en contact avec les services de santé pour des examens divers 

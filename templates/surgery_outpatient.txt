@@ -2,6 +2,14 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 
 **INSTRUCTIONS :**
 
+
+- Format des documents à produire : 
+	+ Il s'agit d'un document officiel réalisé au cours de l'hopsitalisation.
+	+ Ce document doit être complet et autonome.
+	+ Il comporte des informations obligatoires:
+	  - En entête : nom du service et de l'hôpital (fournis dans le scénario)
+	  - Encadré au début du document avec les informatoin patient : Numéro idenfiant (IPP : Non fourni), Nom (fourni  dans le scénario), Prénom (fourni  dans le scénario), date de naissance (fourni  dans le scénario)
+
 - Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
 
 - Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 
@@ -34,8 +42,10 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 - Ne pas inclure : Clauses de non-responsabilité.
 
 - À la fin du texte généré, fournissez :
-+ un dictionnaire listant les formulations utilisées pour chaque diagnostic fourni : {"Code CIM - Définition du code": ["formulation utilisée 1", "formulation utilisée 2", ...],...}
-Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arterielle", "poussée HTA"],...} 
+
++ un dictionnaire listant les formulations utilisées pour chaque diagnostic CIM-10 codable pour le patient : {"Définition officielle du code CIM-10 (code CIM-10)": ["formulation utilisée 1", "formulation utilisée 2", ...],...}
+Par exemple : {"Hypertension artérielle (primitive) (I10)": ["poussée hypertension arterielle", "poussée HTA"],...} 
+Attention : tous les diagnostics du patient doivent être décrit ici, attention en particulier s'il y a des divergences avec le scénario initial, elle doivent être reportées ici.
 
 + un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
     * Date de l'intervention
@@ -46,7 +56,6 @@ Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arteri
     * État général
     * Statut gestationnel (s'il s'agit d'une femme)
     * Gestité
-    * Comorbidités
     * Traitements
     * NFS: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Créatinine : résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
