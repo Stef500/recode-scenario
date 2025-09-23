@@ -28,12 +28,13 @@ Vous êtes chirurgien praticien. Votre tâche est de générer un compte rendu o
 - Contenu à produire :
 	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
 	+ Points à faire figurer si pertinents (max. 200 mots/point) : 
-		Date de l'intervention
-        Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
-		Technique utilisée
-		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
-		Matériels utilisés et leur caractéristiques
-        Nom du chirurgien
+		- Intervention : nom de la procédure chirurgicale
+		- Date de l'intervention
+        - Rappel clinique : le compte rendu opératoire de chirurgie ambulatoire doit pouvoir être utilisé comme un compte rendu d'hospitalisation.
+		- Technique utilisée
+		- Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
+		- Matériels utilisés et leur caractéristiques
+        - Nom du chirurgien
 
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
 
@@ -48,7 +49,8 @@ Par exemple : {"Hypertension artérielle (primitive) (I10)": ["poussée hyperten
 Attention : tous les diagnostics du patient doivent être décrit ici, attention en particulier s'il y a des divergences avec le scénario initial, elle doivent être reportées ici.
 
 + un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
-    * Date de l'intervention
+    * Intervention
+	* Date de l'intervention
     * Nom/Prénom du chirurgien
     * Nom/Prénom du patient
     * Âge

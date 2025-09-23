@@ -31,12 +31,13 @@ Vous devrez rédiger :
 - Contenu à produire pour le compte rendu opératoire :
 	+ Rédigez uniquement le compte rendu opératoire : ne mentionnez ni le contexte préopératoire, ni le suivi postopératoire.
 	+ Points à faire figurer si pertinents (max. 200 mots/point) :
-		Date de l'intervention
-		Diagnostic (raison succincte de la chirurgie)
-		Technique utilisée
-		Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
-		Matériels utilisés et leur caractéristiques
-		Chirurgien
+		- Intervention : nom de la procédure chirurgicale
+		- Date de l'intervention
+		- Diagnostic (raison succincte de la chirurgie)
+		- Technique utilisée
+		- Constatations per-opératoires (difficultés techniques, caractéristiques de la tumeur, zones atteintes, zones saines...): vous ne devez en aucun cas mentionner le statut histologique de la tumeur, car celui-ci n’est pas connu de l’opérateur au moment de l’intervention
+		- Matériels utilisés et leur caractéristiques
+		- Chirurgien
 
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
 
@@ -71,6 +72,7 @@ Par exemple : {"poussee hypertension arterielle": ["poussée hypertension arteri
     * Date entrée
     * Date de sortie
     * Service d'hospitalisation
+	* Intervention
 	* Date de l'intervention
     * Nom/Prénom du chirurgien
 	* Nom/Prénom du patient

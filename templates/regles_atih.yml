@@ -360,9 +360,9 @@ regles:
   - id: T12
     instruction_id: Règle T12
     clinical_coding_scenario: >
-      HOSPITALISATION POUR ACCOUCHEMENT.  La situation est celle d’un accouchement normal. On désigne ainsi un accouchement en présentation du sommet sans complication chez une femme indemne de toute morbidité obstétricale. 
+      HOSPITALISATION POUR ACCOUCHEMENT.  
     ICD10_coding_instruction_ATIH: >
-      Le DP du séjour est codé O80.0 Accouchement spontané par présentation du sommet 
+      Le DP du séjour est codé O80.0 Accouchement spontané par présentation du sommet . La situation est celle d’un accouchement normal. On désigne ainsi un accouchement en présentation du sommet sans complication chez une femme indemne de toute morbidité obstétricale. 
     ICD10_coding_instruction: >
       primary_diagnosis: {primary_icd_diagnosis}
       contact_with_health_services:  dans cette situation d'hospitalisation d'accouchement normal, on n'utilise pas de code complémentaire de motifs de recours aux services de santé, le motif de recours aux services de santé est le diagnostic principal (Règle T12). 

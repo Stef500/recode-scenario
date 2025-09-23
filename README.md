@@ -85,3 +85,8 @@ Use the col_names options when import files in the load function of the project 
 | Hospital admission for relapse or recurrence of the cancer| Hospital admission for change in therapeutic strategy          | Hospital admission for acute exacerbation of the disease     |
 
 
+## TODO
+- Referentials
+  * Transfrom all referentials into config files
+- ATIH rules : 
+  * Review delivery recommandations

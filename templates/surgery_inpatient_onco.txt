@@ -39,7 +39,8 @@ Vous devrez rédiger :
 	Chaque point doit commencer par un titre au format suivant : ### Nom de la section (### Technique utilisée)
 
 - Contenu à produire pour le compte rendu d'hospitalisation associé: Il doit comporter les sections suivantes (max. 200 mots/section) :
-	+ Motif d’hospitalisation
+	+ Intervention : nom de la procédure chirurgicale
+    + Motif d’hospitalisation
 	+ Antécédents (médicaux, chirurgicaux, familiaux, allergies)
 	+ Mode de vie (toxiques, profession, autres - par exemple activité physique, nombre de gestités et parités chez les femmes, situation sociale...)
 	+ Histoire de la maladie
@@ -108,6 +109,8 @@ Attention : tous les diagnostics du patient doivent être décrit ici, attention
     * NFS: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Créatinine : résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
     * Bilan hepatique: résultats explicites (valeurs ou qualificatifs comme "normal", "élevé",...)
+    * Intervention
+    * Date de l'intervention
 
 Par exemple : {"Âge": ["55 ans"], "Stade tumoral": ["cT4N1M2"], "Examens pour diagnostic initial": ["TDM thoracique", "IRM cérébrale"],...}
 
