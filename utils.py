@@ -5,6 +5,9 @@ import re
 import datetime
 import random
 import yaml
+
+
+
 # Usefull functions
 
 
@@ -1036,9 +1039,13 @@ class generate_scenario:
 
         grouping_procedure =["procedure","drg_parent_code","icd_primary_code","cage2","sexe"]
         procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1) 
-
-        scenario["procedure"] = procedures.procedure.values[0]
-        scenario["text_procedure"] =procedures.procedure_description_official.values[0]
+        
+        if len(procedures) > 0 :
+            scenario["procedure"] = procedures.procedure.values[0]
+            scenario["text_procedure"] =procedures.procedure_description_official.values[0]
+        else:
+            scenario["procedure"] = ""
+            scenario["text_procedure"] ="" 
 
         #for index, row in procedures.iterrows():
         #        scenario["text_procedure"] = row.procedure_description_official
@@ -1183,3 +1190,137 @@ class generate_scenario:
             prompt = f.read()
         
         return prompt
+
+
+####-----------------------------------------------------------------------------------------------------------------------------
+#### GENERATION WITH MISTRAL API
+import argparse
+import json
+import os
+import random
+import time
+from io import BytesIO
+
+import httpx
+from mistralai import File, Mistral
+
+def create_client():
+    """
+    Create a Mistral client using the API key from environment variables.
+
+    Returns:
+        Mistral: An instance of the Mistral client.
+    """
+    return Mistral(api_key=os.environ["MISTRAL_API_KEY"])
+
+def generate_random_string(start, end):
+    """
+    Generate a random string of variable length.
+
+    Args:
+        start (int): Minimum length of the string.
+        end (int): Maximum length of the string.
+
+    Returns:
+        str: A randomly generated string.
+    """
+    length = random.randrange(start, end)
+    return ' '.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=length))
+
+def print_stats(batch_job):
+    """
+    Print the statistics of the batch job.
+
+    Args:
+        batch_job: The batch job object containing job statistics.
+    """
+    print(f"Total requests: {batch_job.total_requests}")
+    print(f"Failed requests: {batch_job.failed_requests}")
+    print(f"Successful requests: {batch_job.succeeded_requests}")
+    print(
+        f"Percent done: {round((batch_job.succeeded_requests + batch_job.failed_requests) / batch_job.total_requests, 4) * 100}")
+
+
+def create_input_file(client, data):
+    """
+    Create an input file for the batch job.
+
+    Args:
+        client (Mistral): The Mistral client instance.
+        num_samples (int): Number of samples to generate.
+
+    Returns:
+        File: The uploaded input file object.
+    """
+    buffer = BytesIO()
+    for idx in range(len(data)):
+        request = {
+            "custom_id": str(idx),
+            "body": {
+                "max_tokens":  128_000,
+                "messages":  [
+                    {
+                        "role": "system",
+                        "content": data.iloc[idx]["system_prompt"]
+                        },
+                    {
+                        "role": "user",
+                        "content": data.iloc[idx]["user_prompt"]
+                        },
+                    {
+                        "role": "assistant",
+                        "content": data.iloc[idx]["prefix"],
+                        "prefix": True
+                        },
+                    ]
+            }
+        }
+        buffer.write(json.dumps(request).encode("utf-8"))
+        buffer.write("\n".encode("utf-8"))
+    return client.files.upload(file=File(file_name="file.jsonl", content=buffer.getvalue()), purpose="batch")
+
+
+def run_batch_job(client, input_file, model):
+    """
+    Run a batch job using the provided input file and model.
+
+    Args:
+        client (Mistral): The Mistral client instance.
+        input_file (File): The input file object.
+        model (str): The model to use for the batch job.
+
+    Returns:
+        BatchJob: The completed batch job object.
+    """
+    batch_job = client.batch.jobs.create(
+        input_files=[input_file.id],
+        model=model,
+        endpoint="/v1/chat/completions",
+        metadata={"job_type": "testing"}
+    )
+
+    while batch_job.status in ["QUEUED", "RUNNING"]:
+        batch_job = client.batch.jobs.get(job_id=batch_job.id)
+        #print_stats(batch_job)
+        time.sleep(1)
+
+    print(f"Batch job {batch_job.id} completed with status: {batch_job.status}")
+    return batch_job
+
+
+def download_file(client, file_id, output_path):
+    """
+    Download a file from the Mistral server.
+
+    Args:
+        client (Mistral): The Mistral client instance.
+        file_id (str): The ID of the file to download.
+        output_path (str): The path where the file will be saved.
+    """
+    if file_id is not None:
+        print(f"Downloading file to {output_path}")
+        output_file = client.files.download(file_id=file_id)
+        with open(output_path, "wb") as f:
+            for chunk in output_file.stream:
+                f.write(chunk)
+        print(f"Downloaded file to {output_path}")
