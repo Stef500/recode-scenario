@@ -1,6 +1,11 @@
 # recode-scenario
 Creation of clinical scenario for medical documents generation
 
+Create prompts to guide LLM in generation of clinical discharge report.  Prompts are made by the association of :
+
+- clinical scenario = medico-economic data sampled from french national hospitalization claims data (Base nationale PMSI)
+- documents templates
+- instruction for the model
 ## Variables definition
 
 ***Variables dictionary*** :
@@ -42,10 +47,10 @@ For cancer, we use a ***synthetic treatment recommandation table*** :
 * primary_site
 * histological_type
 * Stage	
-* T : tumor (TNM)
-* N : nodes (TNM)
-* M	: metastasis (TNM)
-* TNM_score	
+* TNM_score	  
+  - T : tumor (TNM)
+  - N : nodes (TNM)
+  - M	: metastasis (TNM)
 * biomarkers
 * treatment_recommandation
 * chemotherapy_regimen
@@ -54,24 +59,24 @@ For cancer, we use a ***synthetic treatment recommandation table*** :
 Use the col_names options when import files in the load function of the project to align the columns names of your files with this dictionary.
 
 
-
-| French PMSI term                 | English equivalent                                         | Notes / Context                                                                 |
-|---------------------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|
-| `Résumé PMSI`                     | Patient-level coded abstract / Discharge abstract          | Structured data for each hospitalization, includes ICD diagnoses, procedures, demographics. |
-| `Code diagnostic principal (CDP)` | Primary diagnosis (`ICD code`)                              | Main reason for hospitalization.                                               |
-| `Codes diagnostics associés (CDA)`| Secondary diagnoses (`ICD codes`)                            | Comorbidities or complications during the stay.                                |
-| `Actes / Procédures`              | Procedures / `ICD procedure codes`                           | Coded interventions performed during hospitalization.                          |
-| `DRG (Groupe Homogène de Malades)`| `DRG (Diagnosis-Related Group)`                               | Classification for resource use / reimbursement purposes.                      |
-| `MDC (Groupe Diagnostic Majeur)`  | `MDC (Major Diagnostic Category)`                             | Top-level DRG grouping by body system or disease category.                     |
-| `Données de séjour / patient`     | Case-level data / Patient-level data                         | Individual hospitalization record used for DRG assignment or analysis.         |
-| `Mode entrée`                     | `Admission mode`                                          |  How the patient was admitted to the hospital.                              |
-| `Mode de sortie`                     | `Discharge disposition`                                   |  How the patient was discharged from the hospital, including deceased.                        |
-| `Mode d'hospitalisation`                     | `Type of admission`                                   |  Inpatient admission vs Outpatient admission                 |
-| `Variables normalisées`           | Normalized variables / Standardized coded fields            | Coded fields derived from the patient record (`ICD`, procedures, demographics). |
+ 
+| French PMSI term                  |  English equivalent                                          | Notes / Context                                                                |
+|-----------------------------------|--------------------------------------------------------------|--------------------------------------------------------------------------------|
+| `Résumé PMSI`                     | Patient-level coded abstract / Discharge abstract            | Structured data for each hospitalization, includes ICD diagnoses, procedures, demographics. |
+| `Code diagnostic principal (DP)`  | Primary diagnosis (`ICD code`)                               | Main reason for hospitalization.                                               |
+| `Codes diagnostics associés (DAS)`| Secondary diagnoses (`ICD codes`)                            | Comorbidities or complications during the stay.                                |
+| `Actes`                           | Procedures / `ICD procedure codes`                           | Coded interventions performed during hospitalization.                          |
+| `GHM (Groupe Homogène de Malades)`| `DRG (Diagnosis-Related Group)`                              | Classification for resource use / reimbursement purposes.                      |
+| `CMD (Catégorie maejeure de diagnsotic)`  | `MDC (Major Diagnostic Category)`                    | Top-level DRG grouping by body system or disease category.                     |
+| `Données de séjour` vs   `Données de patient` | `Case-level data` vs Patient-level data`         | Individual hospitalization record used for DRG assignment or analysis.         |
+| `Mode entrée`                     | `Admission mode`                                             | How the patient was admitted to the hospital.                                 |
+| `Mode de sortie`                  | `Discharge disposition`                                      | How the patient was discharged from the hospital, including deceased.         |
+| `Mode d'hospitalisation`          | `Type of admission`                                          | Inpatient admission vs Outpatient admission                                   |
+| Variables normalisées             | Normalized variables / Standardized coded fields             | Coded fields derived from the patient record (`ICD`, procedures, demographics). |
 
 
 ## Hospitalization management type 
-**Hospitalization management type** – a clinical abstraction derived from the combination of the principal diagnosis (`DP`) and the linked diagnosis (`DR`). This combination determines the DRG assignment and reflects the patient’s management mode during the hospital stay.
+**Hospitalization management type**  – a clinical abstraction derived from the combination of the principal diagnosis (`DP`) and the linked diagnosis (`DR`). This combination determines the DRG assignment and reflects the patient’s management mode during the hospital stay.
 
 **Hospitalization management type** are inhéreted from ATIH coding rules : cf recap table [Guide Situations cliniques](https://docs.google.com/spreadsheets/d/1XRVeSn3VFSaM8o7bJYz7gGcyAFWN9Gn7Ko4x-tAOYjs/edit?usp=sharing).
 
@@ -83,7 +88,7 @@ Use the col_names options when import files in the load function of the project 
 | Hospital admission for cancer workup                      | Hospital admission for diabetes initial workup                 | Hospital admission for diagnostic workup                     |
 | Hospital admission for initiation of treatment            | Hospital admission for initiation of treatment of the diabetes | Hospital admission for initiation of treatment               |
 | Hospital admission for relapse or recurrence of the cancer| Hospital admission for change in therapeutic strategy          | Hospital admission for acute exacerbation of the disease     |
-
+| Hospital admission for surgery                            |                                                                |                                                              |
 
 ## TODO
 - Referentials

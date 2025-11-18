@@ -6,7 +6,8 @@ import datetime
 import random
 import yaml
 
-
+from os import listdir
+from os.path import isfile
 
 # Usefull functions
 
@@ -1324,3 +1325,161 @@ def download_file(client, file_id, output_path):
             for chunk in output_file.stream:
                 f.write(chunk)
         print(f"Downloaded file to {output_path}")
+
+def extract_json(text):
+  match = re.search(r"```json(.*?)```", text, re.DOTALL)
+  if match:
+    return match.group(1).strip()
+  else:
+    return None
+
+def clean_bold(text):
+  return re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+
+def clean_header(text):
+  clean_text = re.sub(r'^##+ .*$', '', text, flags=re.MULTILINE)
+  clean_text = re.sub(r'^--+$', '', clean_text, flags=re.MULTILINE)
+  return clean_text
+
+def fix_multiline_strings(json_text):
+  """
+  There are a few CRs (values of the "CR" key of the dictionary) that contain new lines in bad formats, which make `json.loads` fail.
+  This function aims to fix them.
+  """
+  def replacer(match):
+    content = match.group(1)
+    content = (content
+               .replace('"', '\\"')
+               .replace('\\\\"', '\\"')
+               .replace("\n", "\\n"))
+    formulation_wording = match.group(2)
+    return f'"CR": "{content}"{formulation_wording}'
+
+  fixed = re.sub(r'"CR":\s*"(.*?)"(,\s*"formulations")', replacer, json_text, flags=re.DOTALL)
+  return fixed
+
+def delete_comments(json_text):
+  """
+  There are a few annotations (values of the "formulations" key of the dictionary) that contain comments of the format: // or /* */, which make `json.loads` fail.
+  This function aims to fix them.
+  """
+  json_text = re.sub(r'//.*', '', json_text)
+  json_text = re.sub(r'/\*.*?(?:\*/|\n)', '', json_text, flags=re.DOTALL)
+  return json_text
+
+def extract_generations_annotations(response):
+
+  response = extract_json(response)
+  if response ==None :
+    return (None, None, None)
+
+  response = fix_multiline_strings(response)
+  response = delete_comments(response)
+  try:
+    response_dict = json.loads(response)
+  except json.JSONDecodeError:
+    return (None, None, None)
+
+  if isinstance(response_dict, dict):
+    if ("CR" in response_dict) and ("formulations" in response_dict):
+      if isinstance(response_dict["formulations"], dict):
+        if ("diagnostics" in response_dict["formulations"]) and ("informations" in response_dict["formulations"]):
+          return (clean_bold(clean_header(response_dict["CR"])).strip(), response_dict["formulations"]["diagnostics"], response_dict["formulations"]["informations"])
+        else:
+          return (None, None, None)
+      else:
+        return (None, None, None)
+    else:
+      return (None, None, None)
+  else:
+    return (None, None, None)
+
+def get_icd_coding_target(case) : 
+
+    case_management_type = case.case_management_type
+    case_management_type_description = case.case_management_type_description
+    diagnosis = case.response_diagnosis
+
+    #Regular expressions 
+
+    PCID = "- Diagnostic principal : \n"
+    SICD = "- Diagnotics associés : \n"
+    CMT = "- Motif de recours au soin (code en Z du chapitre XXI): \n"
+
+    if case_management_type == "DP":
+        CMT+= "* Aucun\n"
+    else :
+        CMT+= "* " + case_management_type_description + "(" + case_management_type + ")\n"
+    icd_primary_pred = ""
+    icd_secondary_pred = []
+    icd_coding_list  = []
+
+    
+    for k,v in diagnosis.items():
+        text_code = k
+        code_list =  re.findall(r'\(([A-Z]\d{2,5}\+?\d*)\)', k)
+        code = code_list[0] if code_list else ""
+
+        if(len(code)==0):
+            code_list = re.findall(r'[A-Z]\d{2,5}\+?\d*', k)
+            code = code_list[0] if code_list else ""
+            description_list = re.findall(r'[A-Z][a-z].*',k)
+            description = description_list[0] if description_list else ""
+            text_code = description + '('+ code +')'
+        
+        if  re.findall(code,case.icd_primary_code) :
+                PCID += "* " + text_code +" - " +   ",".join(v) + "\n"
+                icd_primary_pred = code
+                icd_coding_list+= [code]
+        else :
+                SICD += "* " + text_code +" - " +   ",".join(v) + "\n"
+                icd_secondary_pred += [code]
+                icd_coding_list+= [code]
+                
+    return icd_primary_pred,icd_secondary_pred, PCID+SICD+CMT,icd_coding_list
+
+
+def prepare_training_files(path_results,job_name,nb_examples = None):
+
+    df_res_final = pd.DataFrame()
+    j = 0
+
+    json_files = [f for f in listdir(path_results + job_name) if isfile(os.path.join(path_results + job_name, f)) and 'json' in f and 'batch' in f]
+
+    for file_name in json_files :
+        file_path = os.path.join(path_results + job_name ,file_name )
+        i = int(re.findall('\d',file_name)[0])
+        if os.path.exists(file_path):
+            results = []
+            with open(file_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    results.append(json.loads(line.strip()))
+                    j+=1
+                    if nb_examples is not None:
+                        if j> nb_examples:
+                            break
+            
+            prep_dict=[]
+            
+            for result_item in results:
+                    # Check if the item has a response and extract it
+                    if "response" in result_item and result_item["response"] and "body" in result_item["response"] and "choices" in result_item["response"]["body"]:
+                        response = result_item["response"]["body"]["choices"][0]["message"]["content"]
+                        clinical_report,response_diagnosis,response_structured_data = extract_generations_annotations(response)
+                        prep_dict.append({"bacth":i,"num_in_":result_item['custom_id'],"clinical_report":clinical_report,"response_diagnosis":response_diagnosis,"response_structured_data":response_structured_data })
+            
+            df_scenarios_save = pd.read_csv(os.path.join(path_results + job_name ,file_name.replace("json","csv") ),index_col=0)
+            df_res_tmp = pd.DataFrame(prep_dict)
+            df_res_tmp["num_in_"]=  df_res_tmp["num_in_"].astype(int)
+            df_res_tmp = df_scenarios_save.merge(df_res_tmp,right_on="num_in_",left_index=True)
+            now = dt.datetime.now()
+            now_string = now.strftime("%Y%m%d%H%M%S%f")
+            df_res_tmp = df_res_tmp.assign(encounter_id = now_string + df_res_tmp.bacth.apply(str) + df_res_tmp.num_in_.apply(str))
+            df_res_tmp.encounter_id = df_res_tmp.encounter_id.str.pad(width=10, side='left', fillchar='0')
+            df_res_final = pd.concat([df_res_final,df_res_tmp]) 
+
+    df_res_final = df_res_final[df_res_final.clinical_report.notna()]
+
+    df_res_final["icd_primary_pred"], df_res_final["icd_secondary_pred"],df_res_final["icd_coding_text"],df_res_final["icd_coding_list"] = zip(*df_res_final.apply(get_icd_coding_target,axis=1))
+
+    return df_res_final
