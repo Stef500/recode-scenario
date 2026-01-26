@@ -211,6 +211,8 @@ class generate_scenario:
         self.df_chronic.loc[self.df_chronic.code.isin(self.icd_codes_cancer),"chronic"]=3
         self.icd_codes_chronic = self.df_chronic.code[self.df_chronic.chronic.isin([1,2,3])].to_list()
 
+        self.df_complications = pd.read_csv(path_ref + "cma.csv").dropna()
+
         self.drg_parents_groups = pd.read_excel(self.path_ref + "ghm_rghm_regroupement_2024.xlsx")
         self.drg_parents_groups.rename(columns={"racine":"drg_parent_code","libelle_racine":"drg_parent_description"},inplace=True)
 
@@ -279,12 +281,16 @@ class generate_scenario:
      
     def load_offical_icd(self,
                         file_name : str,
-                        col_names: dict | None = None ):
+                        col_names: [] ):
 
-        self.df_icd_official = pd.read_excel(self.path_ref + file_name )
+        df_icd = pd.read_csv(self.path_ref + file_name, sep="|",
+                                header=None,
+                                names=col_names,
+                                encoding="latin-1")
+        df_icd.code = df_icd.code.str.replace(" ","")
+        self.df_icd_valid = df_icd.loc[df_icd.aut_mco!=3,["code","icd_code_description"]]
+        self.df_icd_official = df_icd[["code","icd_code_description"]]
 
-        if col_names is not None : 
-            self.df_icd_official.rename(columns = col_names, inplace = True)
             
     def load_offical_procedures(self,
                         file_name : str,
@@ -320,9 +326,9 @@ class generate_scenario:
 
     def load_classification_profile(self,
                        file_name : str,
-                        col_names: dict | None = None ):
+                       col_names: dict | None = None ):
 
-        table= pq.read_table("data/scenarios_bn_final")
+        table= pq.read_table("data/" + file_name)
         self.df_classification_profile =  table.to_pandas()
         
         if col_names is not None : 
@@ -332,9 +338,10 @@ class generate_scenario:
             self.df_classification_profile = self.df_classification_profile[(~ (self.df_classification_profile.icd_primary_code.str.slice(0,3).isin(self.icd_exclusions) ) )  & 
                                                                             (~ (self.df_classification_profile.case_management_type.str.slice(0,3).isin(self.icd_exclusions)) ) 
                                                                            ]
+        #Split codes in str format into list
+        self.df_classification_profile = self.df_classification_profile.assign( icd_secondary_code =self.df_classification_profile.icd_secondary_code.apply(
+                                lambda x: [] if x == "" else x.split() ))
 
-        
-        ### Add DRG statistics : mlos,dslos
         self.df_classification_profile = self.df_classification_profile.merge(self.drg_statistics,how="left")
 
         ### Add DRG groups : 
@@ -884,7 +891,7 @@ class generate_scenario:
         for k,v in profile.items():
             scenario[k]=v
             #Cases were secondary diagnosis are in the profile
-            if k=="icd_secondaray_code":
+            if k=="icd_secondary_code":
                 icd_secondary_profile = 1
 
         
