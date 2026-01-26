@@ -139,10 +139,6 @@ class generate_scenario:
         ----------
         - params : 
         """
-
-        self.name = "bed_capacity_gilda_extraction_management"
-        self.description = "Import and preprocess GILDA extraction data for further update of the bedcapacity table."
-
         #Params
 
         self.path_ref = path_ref
@@ -793,6 +789,7 @@ class generate_scenario:
 
                 if case["chemotherapy_regimen"] is not None and not (isinstance(case["chemotherapy_regimen"], float)):
                     situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
+            
             #  Règle T1 traitement répétitifs chimio
             if case["case_management_type"] in ["Z512"]:
                 coding_rule = "T1"
