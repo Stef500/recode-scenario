@@ -602,6 +602,17 @@ class generate_scenario:
             return "" # Return empty string if code not found in official list
 
     def define_text_managment_type(self,case):
+        """
+        The care management approach is a concept developed within the project to incorporate
+        the hospitalization typology established by the ATIH within the framework of rules
+        defining the ICD-10 diagnostic hierarchy. 
+
+        Given the content of the clinical case the function will define :
+        - The coding rule from ATIH rules defining the ICD-10 diagnostic hierarchy
+        - A text that will be given to the model to describe precisely the context of the hospitalisation
+        - The template of the document that will be generated
+
+        """
 
         #The clinical situation in a text format that will be add to the final prompt
         situa = ""
@@ -803,10 +814,11 @@ class generate_scenario:
 
                 if case["chemotherapy_regimen"] is not None and not (isinstance(case["chemotherapy_regimen"], float)):
                     situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
+            
             #  Règle T1 traitement répétitifs chimio
             if case["case_management_type"] in ["Z512"]:
                 coding_rule = "T1"
-                situa = "Prise en charge "+ text_admission_type +"pour d'un traitement médicamenteux"
+                situa = "Prise en charge "+ text_admission_type +"pour administration d'un traitement médicamenteux nécessitant une hospitalisation"
                 template_name = "medical_"+ ind_template +"patient.txt"
 
             #  Règle T1 traitement répétitifs radiothérapie
