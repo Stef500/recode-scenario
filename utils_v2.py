@@ -24,7 +24,7 @@ def random_date(year,exclude_weekends=False):
   """
 
   while True:
-    year = 2024
+
     month = random.randint(1, 12)
     # Get the number of days in the randomly chosen month
     if month == 2:
@@ -58,25 +58,31 @@ def random_date_between(start_date, end_date):
     random_date = start_date + datetime.timedelta(days=random_number_of_days)
     return random_date
 
-def get_dates_of_stay(admission_type, admission_mode,mols,sdlos):
+def get_dates_of_stay(admission_type: str=None,
+                      admission_mode: str=None,
+                      mols:  float | None = None,
+                      sdlos: float| None = None,
+                      los: int| None= None,
+                      year : int= None ):
     """
     Generate date of entry and date of discharge from Mean Length of Stay (MLOS) and Standard Deviaton length of stay (DSLOS)
     """
 
     if admission_type == "Outpatient" :
-        date_entry = date_discharge = random_date(2024,exclude_weekends=False)
+        date_entry = date_discharge = random_date(years,exclude_weekends=False)
 
-    else:
-        # los can be negative if we do like this
-        #los = int(np.round(np.random.normal(mols, sdlos, 1))[0]) 
-        
-        los = int(np.abs(np.random.normal(mols, sdlos, 1)[0])) 
+    else : 
+        if los == None:
+            # los can be negative if we do like this
+            #los = int(np.round(np.random.normal(mols, sdlos, 1))[0]) 
+            
+            los = int(np.abs(np.random.normal(mols, sdlos, 1)[0])) 
 
 
         if admission_mode=="URGENCES":
-            date_entry = random_date(2024,exclude_weekends=False)
+            date_entry = random_date(year,exclude_weekends=False)
         else :
-            date_entry = random_date(2024,exclude_weekends=True)
+            date_entry = random_date(year,exclude_weekends=True)
 
         date_discharge = date_entry + datetime.timedelta(days=los)
 
@@ -122,6 +128,16 @@ def prepare_prompt(prompt_path, case):
           .replace("[INSTRUCTIONS_CANCER here]", case["INSTRUCTIONS_CANCER"])
           # .replace("[ICD_ALTERNATIVES here]", case["ICD_ALTERNATIVES"])
           )
+  
+def weighted_code_sample(self,code):
+    
+    if code in self.icd_categ_weight:
+
+        return random.choices(population=self.icd_categ_weight[code]["code"],
+                              weights=self.icd_categ_weight[code]["weight"],
+                              k=1)[0]
+    else:
+        return code  # Retourne le code original si la catégorie n'existe pas
 class generate_scenario:
 
     def __init__(self,
@@ -150,6 +166,7 @@ class generate_scenario:
         self.path_ref = path_ref
         self.path_data = path_data
         self.grouping_secondary_diag = grouping_secondary_diag
+        self.simulations_years = [dt.date.today().year-2,dt.date.today().year-1,dt.date.today().year]
 
         # Recoding french names
         #TODO : other variables : adminission mode
@@ -278,6 +295,9 @@ class generate_scenario:
         self.coding_rules={}
         for d in rules["regles"] :
             self.coding_rules[d["id"]] = {"texte": d["clinical_coding_scenario"], "criteres" : d["classification_profile_criteria"] }
+            
+        # DataFrame to load scenarios
+        self.df_classification_profile = pd.DataFrame()
      
     def load_offical_icd(self,
                         file_name : str,
@@ -287,9 +307,29 @@ class generate_scenario:
                                 header=None,
                                 names=col_names,
                                 encoding="latin-1")
-        df_icd.code = df_icd.code.str.replace(" ","")
-        self.df_icd_valid = df_icd.loc[df_icd.aut_mco!=3,["code","icd_code_description"]]
-        self.df_icd_official = df_icd[["code","icd_code_description"]]
+        
+        df_icd.code = df_icd.icd_code.str.replace(" ","")
+        self.df_icd_valid = df_icd.loc[df_icd.aut_mco!=3,["icd_code","icd_code_description"]]
+        self.df_icd_official = df_icd[["icd_code","icd_code_description"]]
+        
+        self.df_term_icd  =self.df_icd_valid[~(self.df_icd_valid.icd_code.isin(self.df_complications.icd_code))]
+        self.df_term_icd = self.df_term_icd.assign(categ  =self.df_term_icd.icd_code.str.slice(0,3))
+        
+        
+    def load_icd_categ_weight(self,
+                        file_name : str,
+                        col_names: [] ):
+        
+
+        df_icd_categ_weight = pd.read_csv(self.path_ref + file_name,sep=";",decimal=",")
+        
+        if col_names is not None : 
+            df_icd_categ_weight.rename(columns = col_names, inplace = True) 
+            
+        categ_9 = df_icd_categ_weight.loc[(df_icd_categ_weight.icd_code.str.slice(-1)=="9")& (df_icd_categ_weight.weight>80) & (df_icd_categ_weight.icd_code.isin(self.df_icd_valid.icd_code)),"categ"]
+        df_icd_categ_weight = df_icd_categ_weight.assign(weight = np.where(  (df_icd_categ_weight.icd_code.str.slice(-1)=="9") & (~ df_icd_categ_weight.categ.isin(categ_9)) ,0.5,df_icd_categ_weight.weight))
+        icd_categ_weight = df_icd_categ_weight[~(df_icd_categ_weight.icd_code.isin(self.df_complications.icd_code))].groupby(["categ"]).agg(list).drop( columns= ["nb","nb_categ"]).reset_index()
+        self.icd_categ_weight = icd_categ_weight.set_index("categ").to_dict(orient="index")
 
             
     def load_offical_procedures(self,
@@ -326,34 +366,38 @@ class generate_scenario:
 
     def load_classification_profile(self,
                        file_name : str,
-                       col_names: dict | None = None ):
+                       col_names: dict | None = None ,
+                       replace : bool = True):
 
         table= pq.read_table("data/" + file_name)
-        self.df_classification_profile =  table.to_pandas()
+        df =  table.to_pandas()
+        df.reset_index(inplace=True)
         
         if col_names is not None : 
-            self.df_classification_profile.rename(columns = col_names, inplace = True) 
+            df.rename(columns = col_names, inplace = True) 
         
         if self.icd_exclusions is not None :        
-            self.df_classification_profile = self.df_classification_profile[(~ (self.df_classification_profile.icd_primary_code.str.slice(0,3).isin(self.icd_exclusions) ) )  & 
-                                                                            (~ (self.df_classification_profile.case_management_type.str.slice(0,3).isin(self.icd_exclusions)) ) 
-                                                                           ]
+            df = df[(~ (df.icd_primary_code.str.slice(0,3).isin(self.icd_exclusions) ) )  & 
+                    (~ (df.case_management_type.str.slice(0,3).isin(self.icd_exclusions)) ) ]
         #Split codes in str format into list
-        self.df_classification_profile = self.df_classification_profile.assign( icd_secondary_code =self.df_classification_profile.icd_secondary_code.apply(
+        df = df.assign( icd_secondary_code =df.icd_secondary_code.apply(
                                 lambda x: [] if x == "" else x.split() ))
-
-        self.df_classification_profile = self.df_classification_profile.merge(self.drg_statistics,how="left")
+        if "los" not in df.columns :
+            df = df.merge(self.drg_statistics,how="left")
+            df = df.assign(los_mean = np.where(df.los_mean.isna(),0,df.los_mean) )
+            df = self.df.assign(los_sd = np.where(df.los_sd.isna(),0,df.los_sd) )
 
         ### Add DRG groups : 
-        self.df_classification_profile= self.df_classification_profile.merge(self.drg_parents_groups,how="left")
-        self.df_classification_profile = self.df_classification_profile.assign(admission_type = self.df_classification_profile.admission_type.replace(self.recoding_dict))
+        df= df.merge(self.drg_parents_groups,how="left")
+        df = df.assign(admission_type = df.admission_type.replace(self.recoding_dict))
         
         ### Add medical speciality
-        self.df_classification_profile = self.df_classification_profile.merge(self.ref_sep[["age","specialty","drg_parent_code"]],how="left")
-        
-        self.df_classification_profile = self.df_classification_profile.assign(los_mean = np.where(self.df_classification_profile.los_mean.isna(),0,self.df_classification_profile.los_mean) )
-        self.df_classification_profile = self.df_classification_profile.assign(los_sd = np.where(self.df_classification_profile.los_sd.isna(),0,self.df_classification_profile.los_sd) )
+        df = df.merge(self.ref_sep[["age","specialty","drg_parent_code"]],how="left")
 
+        if len(self.df_classification_profile) !=0  and replace!= True:
+            self.df_classification_profile = pd.concat([self.df_classification_profile,df.copy()])
+        else:
+            self.df_classification_profile = df.copy()
 
 
     def load_referential_hospital(self,
@@ -419,7 +463,7 @@ class generate_scenario:
                        df_values : pd.DataFrame ,
                        nb : int | None = None,
                        col_weights : str = 'nb',
-                       max_nb : int | None = 5 ,
+                       max_nb : int | None = 2 ,
                        distinct_chapter : bool = False,
                        ):
 
@@ -504,7 +548,8 @@ class generate_scenario:
                 # 'icd_primary_code_definition': None,
                 # 'icd_primary_code_definition_alternatives': None,
                 'case_management_type':None,
-                'icd_secondaray_code':[],
+                'icd_secondary_code':[],
+                'text_secondary_icd_official':"",
                 'procedure':None,
                 'icd_primary_description':None,
                 'admission_mode':None,
@@ -891,7 +936,8 @@ class generate_scenario:
 
 
     def generate_scenario_from_profile(self,
-                                       profile):
+                                       profile,
+                                       add_icd_secondary_code : int=0):
         
         profile["icd_parent_code"] = profile["icd_primary_code"][0:3]
 
@@ -899,17 +945,37 @@ class generate_scenario:
 
         is_cancer = 0
         icd_secondary_profile = 0
-
+        age_profile = 0
+        los_profile= 0
+        los_mean_profile = None
+        los_sd_profile  = None
+        los_profile = None
+          
         for k,v in profile.items():
             scenario[k]=v
             #Cases were secondary diagnosis are in the profile
             if k=="icd_secondary_code":
                 icd_secondary_profile = 1
-
+            if k=="age2":
+                age_profile = 1
+            if k=="los":
+                los_profile=profile.los
+            if k=="los_mean":
+                los_mean_profile=profile.los_mean
+            if k=="os_sd":
+                los_sd_profile=profile.os_sd      
+        
+        if isinstance(profile.sexe,str) :
+                    profile.sexe = int(profile.sexe)           
+       
+        profile.year = random.sample(self.simulations_years,1)[0]
         
         ### Administratives elements
-        scenario["age"] = get_age(profile.cage)
-        scenario["date_entry"],scenario["date_discharge"] = get_dates_of_stay(profile.admission_type,profile.admission_mode,profile.los_mean,profile.los_sd)
+        if age_profile==0 : 
+            scenario["age"] = get_age(profile.cage)
+        else : 
+            scenario["age"] = scenario["age2"]
+        scenario["date_entry"],scenario["date_discharge"] = get_dates_of_stay(profile.admission_type,profile.admission_mode,los_mean_profile,los_sd_profile,los_profile,profile.year)
         scenario["date_of_birth"] = random_date_between( scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"]+1)) , scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"])))
         scenario["first_name"] , scenario["last_name"] = self.get_names(profile.sexe)
         scenario["first_name_med"] , scenario["last_name_med"] = self.get_names(random.randint(1, 2))
@@ -918,6 +984,32 @@ class generate_scenario:
 
         scenario["hospital"] =   self.df_hospitals.sample(1)['hospital'].iloc[0]
         
+        
+        ##Get additional informations for cancer case from treatment recommandation
+        if scenario["icd_primary_code"] in self.icd_codes_cancer:
+                is_cancer =1
+        ## When care pathway is related to the treatment of cancer and when recommandations are availabe, the clinical case will be create from those recommandation
+        if scenario["case_management_type"] in ['DP','Z511'] : 
+                
+            treatment_recommendations = self.sample_from_df(profile =profile,df_values= self.df_cancer_treatment_recommandation,nb=1) 
+            if treatment_recommendations.shape[0]>0 :
+                scenario["histological_type"] = treatment_recommendations["histological_type"].iloc[0] 
+            
+                score_TNM = treatment_recommendations["TNM"].iloc[0]
+                if score_TNM not in ['Variable','Non pertinent'] :
+                    scenario["score_TNM"] = score_TNM
+            
+                stage = treatment_recommendations["stage"].iloc[0]
+                if stage not in ['Variable','Non pertinent'] :
+                    scenario["cancer_stage"] = stage
+                
+                scenario["treatment_recommandation"] = treatment_recommendations["treatment_recommandation"].iloc[0] 
+                if treatment_recommendations.chemotherapy_regimen.notna().bool:
+                    scenario["chemotherapy_regimen"] = treatment_recommendations["chemotherapy_regimen"].iloc[0]  
+
+                scenario["biomarkers"] = treatment_recommendations["biomarkers"].iloc[0]
+            
+            
 
 
 
@@ -928,11 +1020,11 @@ class generate_scenario:
         scenario["case_management_type_description"] = self.get_icd_description(profile.case_management_type)
 
         if icd_secondary_profile==1:
-            if len(scenario["icd_secondaray_code"])>0:
-                for code in scenario["icd_secondaray_code"]:    
+            if len(scenario["icd_secondary_code"])>0:
+                for code in scenario["icd_secondary_code"]:    
                     scenario["text_secondary_icd_official"] += "- " + self.get_icd_description(code) + " ("+ code +")\n"
         
-        else :
+        if add_icd_secondary_code==1:
             ### Secondary diagnosis :
             ### We sample secondary diagnosis by steps : metastases, metastases ln, chronic,complications
             ### Each time build :
@@ -958,33 +1050,9 @@ class generate_scenario:
             #* choose randomly the number of complications in regard with df_das_new_complication_n_distinct taking into account a zero option
             #* choose randomly the list of complications in the df_das_new_complication dataset regarding distribution of case (nb_das)
 
-            if scenario["icd_primary_code"] in self.icd_codes_cancer:
-                is_cancer =1
-            ## When care pathway is related to the treatment of cancer and when recommandations are availabe, the clinical case will be create from those recommandation
-            if scenario["case_management_type"] in ['DP','Z511'] : 
-                
-                treatment_recommendations = self.sample_from_df(profile =profile,df_values= self.df_cancer_treatment_recommandation,nb=1) 
-                if treatment_recommendations.shape[0]>0 :
-                    scenario["histological_type"] = treatment_recommendations["histological_type"].iloc[0] 
-                
-                    score_TNM = treatment_recommendations["TNM"].iloc[0]
-                    if score_TNM not in ['Variable','Non pertinent'] :
-                        scenario["score_TNM"] = score_TNM
-                
-                    stage = treatment_recommendations["stage"].iloc[0]
-                    if stage not in ['Variable','Non pertinent'] :
-                        scenario["cancer_stage"] = stage
-                    
-                    scenario["treatment_recommandation"] = treatment_recommendations["treatment_recommandation"].iloc[0] 
-                    if treatment_recommendations.chemotherapy_regimen.notna().bool:
-                        scenario["chemotherapy_regimen"] = treatment_recommendations["chemotherapy_regimen"].iloc[0]  
+ 
+            ### Categories of chronic desease : when cancer you don't sample chronic diseases over cancer icd codes
 
-                    scenario["biomarkers"] = treatment_recommendations["biomarkers"].iloc[0]
-                
-                ### Categories of chronic desease : when cancer you don't sample chronic diseases over cancer icd codes
-
-
-            ### Treatment recommandations for cancer :
             if is_cancer ==1 :
                 chronic_diseases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary], distinct_chapter=True)
 
@@ -1001,11 +1069,11 @@ class generate_scenario:
                     scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                     # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                 
-                scenario["icd_secondaray_code"] = chronic_diseases.icd_secondary_code.to_list()
+                scenario["icd_secondary_code"] = chronic_diseases.icd_secondary_code.to_list()
 
             ### Is we sampled cancer codes in the chronic disease we will also sample metastasis
-            if len(scenario["icd_secondaray_code"])>0 :
-                if bool(set(scenario["icd_secondaray_code"]) & set(self.icd_codes_cancer)) :
+            if len(scenario["icd_secondary_code"])>0 :
+                if bool(set(scenario["icd_secondary_code"]) & set(self.icd_codes_cancer)) :
                     is_cancer = 1
                 
 
@@ -1022,7 +1090,7 @@ class generate_scenario:
                                 scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                                 # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
 
-                            scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases_ln.icd_secondary_code.to_list()
+                            scenario["icd_secondary_code"] = scenario["icd_secondary_code"] + metastases_ln.icd_secondary_code.to_list()
 
                     if bool(re.search("M[123x+]",scenario["score_TNM"])) :
                         metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary])  
@@ -1032,7 +1100,7 @@ class generate_scenario:
                                     scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                                     # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
 
-                                scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
+                                scenario["icd_secondary_code"] = scenario["icd_secondary_code"] + metastases.icd_secondary_code.to_list()
                         
                 
                 #When TNM is not known, sample metastasis among all possible situations
@@ -1044,7 +1112,7 @@ class generate_scenario:
                             scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                             # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                             
-                        scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
+                        scenario["icd_secondary_code"] = scenario["icd_secondary_code"] + metastases.icd_secondary_code.to_list()
 
             #For complication drg_parent_code we choose grouping profile only on ICD
             grouping_secondary =["drg_parent_code","icd_secondary_code","cage2","sexe","nb"]
@@ -1056,13 +1124,13 @@ class generate_scenario:
                     scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                     # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
                 
-            scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + complications.icd_secondary_code.to_list()
+            scenario["icd_secondary_code"] = scenario["icd_secondary_code"] + complications.icd_secondary_code.to_list()
 
         ## Actes
 
         grouping_procedure =["procedure","drg_parent_code","icd_primary_code","cage2","sexe"]
         procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1) 
-        
+
         if len(procedures) > 0 :
             scenario["procedure"] = procedures.procedure.values[0]
             scenario["text_procedure"] =procedures.procedure_description_official.values[0]
