@@ -6,6 +6,18 @@ Create prompts to guide LLM in generation of clinical discharge report.  Prompts
 - clinical scenario = medico-economic data sampled from french national hospitalization claims data (Base nationale PMSI)
 - documents templates
 - instruction for the model
+
+The script describe an example of utilisation with Mistral API to generate a complete clinical report.
+# How to 
+
+Config file : you need a file name config.py with de variables 
+
+api_key = "xxxx" # Mistral API key
+
+path_results = "/path/to/result/"
+
+Data repository containing files with data extracted from claims data.
+
 ## Variables definition
 
 ***Variables dictionary*** :
