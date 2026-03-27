@@ -69,13 +69,17 @@ def get_dates_of_stay(admission_type: str=None,
     """
 
     if admission_type == "Outpatient" :
-        date_entry = date_discharge = random_date(years,exclude_weekends=False)
+        date_entry = date_discharge = random_date(year,exclude_weekends=False)
 
     else : 
         if los == None:
             # los can be negative if we do like this
             #los = int(np.round(np.random.normal(mols, sdlos, 1))[0]) 
-            
+            if mols == None :
+                mols =1
+            if sdlos == None:
+                sdlos = 1
+                
             los = int(np.abs(np.random.normal(mols, sdlos, 1)[0])) 
 
 
@@ -385,7 +389,7 @@ class generate_scenario:
         if "los" not in df.columns :
             df = df.merge(self.drg_statistics,how="left")
             df = df.assign(los_mean = np.where(df.los_mean.isna(),0,df.los_mean) )
-            df = self.df.assign(los_sd = np.where(df.los_sd.isna(),0,df.los_sd) )
+            df = df.assign(los_sd = np.where(df.los_sd.isna(),0,df.los_sd) )
 
         ### Add DRG groups : 
         df= df.merge(self.drg_parents_groups,how="left")
