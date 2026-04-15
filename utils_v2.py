@@ -966,8 +966,8 @@ class generate_scenario:
                 los_profile=profile.los
             if k=="los_mean":
                 los_mean_profile=profile.los_mean
-            if k=="os_sd":
-                los_sd_profile=profile.os_sd      
+            if k=="los_sd":
+                los_sd_profile=profile.los_sd
         
         if isinstance(profile.sexe,str) :
                     profile.sexe = int(profile.sexe)           
