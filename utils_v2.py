@@ -182,7 +182,7 @@ class generate_scenario:
         
         self.icd_codes_contact_tt_rep = ["Z491","Z511","Z512","Z5101","Z513","Z516"]
 
-        self.idc_code_chmio_non_tum = ["Z512"]
+        self.icd_code_chemo_non_tumoral = ["Z512"]
 
         self.drg_parent_code_chimio = ['28Z07','17M05','17M06']
         self.drg_parent_code_radio = ["17K04","17K05","17K08","17K09","28Z10","28Z11","28Z18","28Z19",
@@ -303,7 +303,7 @@ class generate_scenario:
         # DataFrame to load scenarios
         self.df_classification_profile = pd.DataFrame()
      
-    def load_offical_icd(self,
+    def load_official_icd(self,
                         file_name : str,
                         col_names: [] ):
 
@@ -336,7 +336,7 @@ class generate_scenario:
         self.icd_categ_weight = icd_categ_weight.set_index("categ").to_dict(orient="index")
 
             
-    def load_offical_procedures(self,
+    def load_official_procedures(self,
                         file_name : str,
                         col_names: dict | None = None ):
         
@@ -348,7 +348,7 @@ class generate_scenario:
         self.pathology_procedure = self.df_procedure_official.procedure[self.df_procedure_official.procedure_description.str.contains("Examen anatomopathologique")]
 
         
-    def load_cancer_treatement_recommandations(self,
+    def load_cancer_treatment_recommendations(self,
                         file_name : str,
                         col_names: dict | None = None ):
         
@@ -357,7 +357,7 @@ class generate_scenario:
         if col_names is not None : 
             self.df_cancer_treatment_recommandation.rename(columns = col_names, inplace = True) 
 
-    def load_specialty_refential(self,
+    def load_specialty_referential(self,
                         file_name : str,
                         col_names: dict | None = None ):
         
@@ -650,7 +650,7 @@ class generate_scenario:
         else:
             return "" # Return empty string if code not found in official list
 
-    def define_text_managment_type(self,case):
+    def define_text_management_type(self,case):
         """
         The care management approach is a concept developed within the project to incorporate
         the hospitalization typology established by the ATIH within the framework of rules
@@ -984,7 +984,7 @@ class generate_scenario:
         scenario["first_name"] , scenario["last_name"] = self.get_names(profile.sexe)
         scenario["first_name_med"] , scenario["last_name_med"] = self.get_names(random.randint(1, 2))
 
-        scenario["departement"] = profile["specialty"]
+        scenario["department"] = profile["specialty"]
 
         scenario["hospital"] =   self.df_hospitals.sample(1)['hospital'].iloc[0]
         
@@ -1147,7 +1147,7 @@ class generate_scenario:
         #        scenario["procedure"] = row.procedure
 
 
-        scenario["case_management_type_text"] , scenario["coding_rule"],  scenario["template_name"] = self.define_text_managment_type(scenario)
+        scenario["case_management_type_text"] , scenario["coding_rule"],  scenario["template_name"] = self.define_text_management_type(scenario)
 
         if scenario["coding_rule"] in self.coding_rules :
             scenario["case_management_description"] = self.coding_rules[scenario["coding_rule"]]['texte']
