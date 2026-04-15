@@ -252,3 +252,31 @@ def test_prompt_section_string_secondary_codes_defensive(gs):
     # No char-by-char iteration (which would produce lines for '[', "'", 'E', etc.)
     assert "   - [" not in prompt
     assert "   - '" not in prompt
+
+
+from scripts.build_cim10_enrichment import parse_rdf_to_dataframes
+
+
+def test_parse_rdf_produces_hierarchy_rows():
+    hierarchy_df, notes_df = parse_rdf_to_dataframes(
+        str(FIXTURES / "cim10_sample.ttl")
+    )
+    codes = set(hierarchy_df["code"])
+    assert {"I", "A00-A09", "A04", "A048"} <= codes
+
+    a048 = hierarchy_df[hierarchy_df["code"] == "A048"].iloc[0]
+    assert a048["parent_code"] == "A04"
+    assert a048["level"] == "leaf"
+    assert a048["chapter_code"] == "I"
+    assert a048["block_code"] == "A00-A09"
+    assert a048["category_code"] == "A04"
+
+
+def test_parse_rdf_produces_notes_rows():
+    _, notes_df = parse_rdf_to_dataframes(str(FIXTURES / "cim10_sample.ttl"))
+    assert "A048" in set(notes_df["code"])
+    a048 = notes_df[notes_df["code"] == "A048"].iloc[0]
+    inclusion_items = a048["inclusion_notes"].split("|")
+    assert "infections à Clostridium" in inclusion_items
+    assert "infections à Yersinia" in inclusion_items
+    assert a048["exclusion_notes"] == "intoxication alimentaire bactérienne (A05.-)"
