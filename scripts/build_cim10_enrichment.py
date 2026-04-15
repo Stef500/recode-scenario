@@ -18,12 +18,10 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-from rdflib import Graph, Namespace
-from rdflib.namespace import SKOS, RDFS
+from rdflib import Graph, Namespace, RDF
+from rdflib.namespace import SKOS
 
 ANS = Namespace("https://smt.esante.gouv.fr/terminologie/ans#")
-
-LEVEL_ORDER = {"chapter": 0, "block": 1, "category": 2, "leaf": 3}
 
 
 def parse_rdf_to_dataframes(source_path: str) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -43,8 +41,10 @@ def parse_rdf_to_dataframes(source_path: str) -> tuple[pd.DataFrame, pd.DataFram
     g.parse(source_path)
 
     # Pass 1: collect per-concept data keyed by URI.
+    # Restrict to explicit SKOS Concepts to avoid picking up OWL axioms, blank
+    # nodes, or other non-concept subjects that happen to have a skos:notation.
     concepts: dict = {}
-    for subj in set(g.subjects()):
+    for subj in g.subjects(predicate=RDF.type, object=SKOS.Concept):
         code = g.value(subj, SKOS.notation)
         if code is None:
             continue
@@ -133,21 +133,44 @@ def validate_hierarchy(df: pd.DataFrame, expected_count: int = 19075, tolerance:
     if abs(count - expected_count) > tolerance:
         warnings.append(f"Unexpected concept count: {count} (expected ~{expected_count} ± {tolerance})")
 
+    # Level distribution sanity check — catches predicate-mapping drift where
+    # ans:level is missed entirely and all concepts get level="".
+    level_counts = df["level"].value_counts().to_dict()
+    if level_counts.get("chapter", 0) == 0:
+        warnings.append(
+            "No concepts with level='chapter' — ans:level predicate mapping likely wrong. "
+            f"Observed levels: {sorted(level_counts.keys())}"
+        )
+    if level_counts.get("leaf", 0) < expected_count // 2:
+        warnings.append(
+            f"Suspiciously few leaves: {level_counts.get('leaf', 0)} "
+            f"(expected > {expected_count // 2})"
+        )
+
     return warnings
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True, help="Path to the ANS RDF dump (OWL/Turtle)")
     parser.add_argument("--out-dir", required=True, help="Directory where CSVs will be written")
     args = parser.parse_args()
 
-    print(f"Parsing {args.source} ...")
-    hierarchy_df, notes_df = parse_rdf_to_dataframes(args.source)
+    source_path = Path(args.source)
+    if not source_path.exists():
+        print(f"ERROR: source file not found: {source_path}", file=sys.stderr)
+        return 2
+
+    print(f"Parsing {source_path} ...")
+    try:
+        hierarchy_df, notes_df = parse_rdf_to_dataframes(str(source_path))
+    except Exception as exc:  # pragma: no cover — surfaced to operator
+        print(f"ERROR: RDF parsing failed: {exc}", file=sys.stderr)
+        return 2
 
     warnings = validate_hierarchy(hierarchy_df)
     for w in warnings:
-        print(f"  WARN: {w}")
+        print(f"  WARN: {w}", file=sys.stderr)
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -163,6 +186,9 @@ def main():
     exclusion_count = (notes_df['exclusion_notes'] != '').sum() if len(notes_df) else 0
     print(f"Codes with inclusion notes: {inclusion_count}")
     print(f"Codes with exclusion notes: {exclusion_count}")
+
+    # Non-zero exit when validation found something worth the operator's attention.
+    return 1 if warnings else 0
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 """Tests for CIM-10 enrichment loading and prompt formatting."""
 from pathlib import Path
+import pandas as pd
 import pytest
 from utils_v2 import generate_scenario
 
@@ -254,7 +255,7 @@ def test_prompt_section_string_secondary_codes_defensive(gs):
     assert "   - '" not in prompt
 
 
-from scripts.build_cim10_enrichment import parse_rdf_to_dataframes
+from scripts.build_cim10_enrichment import parse_rdf_to_dataframes, validate_hierarchy
 
 
 def test_parse_rdf_produces_hierarchy_rows():
@@ -280,3 +281,23 @@ def test_parse_rdf_produces_notes_rows():
     assert "infections à Clostridium" in inclusion_items
     assert "infections à Yersinia" in inclusion_items
     assert a048["exclusion_notes"] == "intoxication alimentaire bactérienne (A05.-)"
+
+
+def test_validate_hierarchy_flags_missing_chapter_level():
+    """If no concept has level='chapter', warn about predicate mapping."""
+    df = pd.DataFrame([
+        {"code": "A00", "level": "", "parent_code": ""},
+        {"code": "A000", "level": "", "parent_code": "A00"},
+    ])
+    warnings = validate_hierarchy(df, expected_count=2, tolerance=0)
+    assert any("ans:level predicate mapping likely wrong" in w for w in warnings)
+
+
+def test_validate_hierarchy_flags_suspiciously_few_leaves():
+    """If leaf count is < expected/2, warn."""
+    df = pd.DataFrame([
+        {"code": "I", "level": "chapter", "parent_code": ""},
+        {"code": "A000", "level": "leaf", "parent_code": "I"},
+    ])
+    warnings = validate_hierarchy(df, expected_count=100, tolerance=200)
+    assert any("Suspiciously few leaves" in w for w in warnings)
