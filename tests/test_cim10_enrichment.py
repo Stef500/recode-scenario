@@ -75,3 +75,38 @@ def test_format_enrichment_hierarchy_only(gs):
         "                  > Catégorie E11 — Diabète sucré de type 2\n"
     )
     assert result == expected
+
+
+def test_format_enrichment_full_hierarchy_and_notes(gs):
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    result = gs._format_cim10_enrichment("A048", include_notes=True)
+    expected = (
+        "     Hiérarchie : Chapitre I — Maladies infectieuses et parasitaires\n"
+        "                  > Bloc A00-A09 — Maladies intestinales infectieuses\n"
+        "                  > Catégorie A04 — Autres infections intestinales bactériennes\n"
+        "     Inclus : infections à Clostridium ; infections à Yersinia ; entérocolite à C. difficile non précisée\n"
+        "     Exclus : intoxication alimentaire bactérienne (A05.-) ; tuberculose intestinale (A18.3+ K93.0*)\n"
+    )
+    assert result == expected
+
+
+def test_format_enrichment_only_exclusion(gs):
+    """Code with only exclusion note, no inclusion."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    result = gs._format_cim10_enrichment("A049", include_notes=True)
+    assert "Inclus :" not in result
+    assert "Exclus : diarrhée SAI (A09)" in result
+
+
+def test_format_enrichment_silent_fallback_missing_code(gs):
+    """Code not present in any loaded referential → empty string."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    assert gs._format_cim10_enrichment("Z999") == ""
+
+
+def test_format_enrichment_silent_fallback_nothing_loaded(gs):
+    """No referential loaded at all → empty string, no exception."""
+    assert gs._format_cim10_enrichment("A048") == ""
