@@ -5,3 +5,4 @@ __pycache__/
 config.py
 test_1.ipynb
 test_2.ipynb
+.worktrees/
