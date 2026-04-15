@@ -18,46 +18,57 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-from rdflib import Graph, Namespace, RDF
-from rdflib.namespace import SKOS
+from rdflib import Graph, Namespace, RDF, RDFS, OWL
+from rdflib.namespace import SKOS, DC
 
-ANS = Namespace("https://smt.esante.gouv.fr/terminologie/ans#")
+XKOS = Namespace("http://rdf-vocabulary.ddialliance.org/xkos#")
 
 
 def parse_rdf_to_dataframes(source_path: str) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Parse an RDF file and return (hierarchy_df, notes_df).
+    """Parse an RDF file (ANS CIM-10 FR dump) and return (hierarchy_df, notes_df).
 
-    Predicates expected:
-      skos:notation         → code
-      skos:prefLabel (@fr)  → label
-      skos:broader          → parent concept
-      ans:level             → one of {chapter, block, category, leaf}
-      ans:inclusionNote     → (multi) inclusion notes
-      ans:exclusionNote     → (multi) exclusion notes
+    Predicates expected (ANS convention):
+      skos:notation       → code (dots stripped to match PMSI convention)
+      rdfs:label (@fr)    → label
+      rdfs:subClassOf     → parent concept
+      dc:type             → one of {chapter, block, category}
+      xkos:inclusionNote  → (multi) inclusion notes
+      xkos:exclusionNote  → (multi) exclusion notes
 
-    If the real ANS dump uses different predicates, adjust this function.
+    Only subjects typed as owl:Class with a skos:notation are considered concepts.
     """
     g = Graph()
     g.parse(source_path)
 
-    # Pass 1: collect per-concept data keyed by URI.
-    # Restrict to explicit SKOS Concepts to avoid picking up OWL axioms, blank
-    # nodes, or other non-concept subjects that happen to have a skos:notation.
     concepts: dict = {}
-    for subj in g.subjects(predicate=RDF.type, object=SKOS.Concept):
-        code = g.value(subj, SKOS.notation)
-        if code is None:
+    for subj in g.subjects(predicate=RDF.type, object=OWL.Class):
+        notation = g.value(subj, SKOS.notation)
+        if notation is None:
             continue
-        code = str(code)
-        label = g.value(subj, SKOS.prefLabel)
-        level = g.value(subj, ANS.level)
-        parent = g.value(subj, SKOS.broader)
-        inclusion = [str(o) for o in g.objects(subj, ANS.inclusionNote)]
-        exclusion = [str(o) for o in g.objects(subj, ANS.exclusionNote)]
+        # ANS notation contains dots (e.g. F02.00); PMSI runtime uses dotless codes.
+        code = str(notation).replace(".", "").strip()
+        if not code:
+            continue
+
+        # Prefer French label; fall back to any label.
+        label_fr = next(
+            (o for o in g.objects(subj, RDFS.label) if getattr(o, "language", None) == "fr"),
+            None,
+        )
+        label = str(label_fr) if label_fr is not None else (str(g.value(subj, RDFS.label) or ""))
+
+        level_value = g.value(subj, DC.type)
+        level = str(level_value) if level_value is not None else ""
+
+        parent = g.value(subj, RDFS.subClassOf)
+
+        inclusion = [str(o).strip() for o in g.objects(subj, XKOS.inclusionNote) if str(o).strip()]
+        exclusion = [str(o).strip() for o in g.objects(subj, XKOS.exclusionNote) if str(o).strip()]
+
         concepts[str(subj)] = {
             "code": code,
-            "label": str(label) if label is not None else "",
-            "level": str(level) if level is not None else "",
+            "label": label,
+            "level": level,
             "parent_uri": str(parent) if parent is not None else "",
             "inclusion_notes": inclusion,
             "exclusion_notes": exclusion,
@@ -71,7 +82,9 @@ def parse_rdf_to_dataframes(source_path: str) -> tuple[pd.DataFrame, pd.DataFram
         block_code = block_label = ""
         category_code = category_label = ""
 
-        # Walk up the parent chain to find chapter/block/category.
+        # Walk up the parent chain. Since ANS uses 3 levels, the "category" slot
+        # gets overwritten at each ancestor step — the topmost (3-char) category
+        # wins, which is the intended prompt-breadcrumb value.
         cursor_uri = uri
         seen = set()
         while cursor_uri and cursor_uri not in seen:
@@ -80,11 +93,14 @@ def parse_rdf_to_dataframes(source_path: str) -> tuple[pd.DataFrame, pd.DataFram
             if node is None:
                 break
             if node["level"] == "chapter":
-                chapter_code = node["code"]; chapter_label = node["label"]
+                chapter_code = node["code"]
+                chapter_label = node["label"]
             elif node["level"] == "block":
-                block_code = node["code"]; block_label = node["label"]
+                block_code = node["code"]
+                block_label = node["label"]
             elif node["level"] == "category":
-                category_code = node["code"]; category_label = node["label"]
+                category_code = node["code"]
+                category_label = node["label"]
             cursor_uri = node["parent_uri"]
 
         hierarchy_rows.append({
@@ -102,7 +118,6 @@ def parse_rdf_to_dataframes(source_path: str) -> tuple[pd.DataFrame, pd.DataFram
 
     hierarchy_df = pd.DataFrame(hierarchy_rows).sort_values("code").reset_index(drop=True)
 
-    # Notes rows: only concepts with at least one note.
     note_rows = []
     for c in concepts.values():
         if c["inclusion_notes"] or c["exclusion_notes"]:
@@ -133,17 +148,16 @@ def validate_hierarchy(df: pd.DataFrame, expected_count: int = 19075, tolerance:
     if abs(count - expected_count) > tolerance:
         warnings.append(f"Unexpected concept count: {count} (expected ~{expected_count} ± {tolerance})")
 
-    # Level distribution sanity check — catches predicate-mapping drift where
-    # ans:level is missed entirely and all concepts get level="".
+    # Level distribution sanity check — ANS uses {chapter, block, category}.
     level_counts = df["level"].value_counts().to_dict()
     if level_counts.get("chapter", 0) == 0:
         warnings.append(
-            "No concepts with level='chapter' — ans:level predicate mapping likely wrong. "
+            "No concepts with level='chapter' — dc:type predicate mapping likely wrong. "
             f"Observed levels: {sorted(level_counts.keys())}"
         )
-    if level_counts.get("leaf", 0) < expected_count // 2:
+    if level_counts.get("category", 0) < expected_count // 2:
         warnings.append(
-            f"Suspiciously few leaves: {level_counts.get('leaf', 0)} "
+            f"Suspiciously few categories: {level_counts.get('category', 0)} "
             f"(expected > {expected_count // 2})"
         )
 

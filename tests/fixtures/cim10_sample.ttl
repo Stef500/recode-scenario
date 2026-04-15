@@ -1,30 +1,32 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix cim: <https://smt.esante.gouv.fr/terminologie-cim-10/> .
-@prefix ans: <https://smt.esante.gouv.fr/terminologie/ans#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix xkos: <http://rdf-vocabulary.ddialliance.org/xkos#> .
+@prefix cim: <http://data.esante.gouv.fr/atih/cim10/> .
 
-cim:A04 a skos:Concept ;
+cim:A04 a owl:Class ;
     skos:notation "A04" ;
-    skos:prefLabel "Autres infections intestinales bactériennes"@fr ;
-    skos:broader cim:A00-A09 ;
-    ans:level "category" .
+    rdfs:label "Autres infections intestinales bactériennes"@fr ;
+    rdfs:subClassOf <http://data.esante.gouv.fr/atih/cim10/A00-A09> ;
+    dc:type "category" .
 
-cim:A048 a skos:Concept ;
-    skos:notation "A048" ;
-    skos:prefLabel "Autres infections intestinales bactériennes précisées"@fr ;
-    skos:broader cim:A04 ;
-    ans:level "leaf" ;
-    ans:inclusionNote "infections à Clostridium" ;
-    ans:inclusionNote "infections à Yersinia" ;
-    ans:exclusionNote "intoxication alimentaire bactérienne (A05.-)" .
+cim:A04.8 a owl:Class ;
+    skos:notation "A04.8" ;
+    rdfs:label "Autres infections intestinales bactériennes précisées"@fr ;
+    rdfs:subClassOf cim:A04 ;
+    dc:type "category" ;
+    xkos:inclusionNote "infections à Clostridium" ;
+    xkos:inclusionNote "infections à Yersinia" ;
+    xkos:exclusionNote "intoxication alimentaire bactérienne (A05.-)" .
 
-cim:A00-A09 a skos:Concept ;
+<http://data.esante.gouv.fr/atih/cim10/A00-A09> a owl:Class ;
     skos:notation "A00-A09" ;
-    skos:prefLabel "Maladies intestinales infectieuses"@fr ;
-    skos:broader cim:I ;
-    ans:level "block" .
+    rdfs:label "Maladies intestinales infectieuses"@fr ;
+    rdfs:subClassOf cim:I ;
+    dc:type "block" .
 
-cim:I a skos:Concept ;
+cim:I a owl:Class ;
     skos:notation "I" ;
-    skos:prefLabel "Maladies infectieuses et parasitaires"@fr ;
-    ans:level "chapter" .
+    rdfs:label "Maladies infectieuses et parasitaires"@fr ;
+    dc:type "chapter" .
