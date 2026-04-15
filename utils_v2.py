@@ -135,15 +135,6 @@ def prepare_prompt(prompt_path, case):
           # .replace("[ICD_ALTERNATIVES here]", case["ICD_ALTERNATIVES"])
           )
   
-def weighted_code_sample(self,code):
-    
-    if code in self.icd_categ_weight:
-
-        return random.choices(population=self.icd_categ_weight[code]["code"],
-                              weights=self.icd_categ_weight[code]["weight"],
-                              k=1)[0]
-    else:
-        return code  # Retourne le code original si la catégorie n'existe pas
 class generate_scenario:
 
     def __init__(self,
