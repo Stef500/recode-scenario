@@ -1,0 +1,7 @@
+code,level,parent_code,label,chapter_code,chapter_label,block_code,block_label,category_code,category_label
+I,chapter,,"Maladies infectieuses et parasitaires",I,"Maladies infectieuses et parasitaires",,,,,
+A00-A09,block,I,"Maladies intestinales infectieuses",I,"Maladies infectieuses et parasitaires",A00-A09,"Maladies intestinales infectieuses",,,
+A04,category,A00-A09,"Autres infections intestinales bactériennes",I,"Maladies infectieuses et parasitaires",A00-A09,"Maladies intestinales infectieuses",A04,"Autres infections intestinales bactériennes"
+A048,leaf,A04,"Autres infections intestinales bactériennes précisées",I,"Maladies infectieuses et parasitaires",A00-A09,"Maladies intestinales infectieuses",A04,"Autres infections intestinales bactériennes"
+A049,leaf,A04,"Infection intestinale bactérienne, sans précision",I,"Maladies infectieuses et parasitaires",A00-A09,"Maladies intestinales infectieuses",A04,"Autres infections intestinales bactériennes"
+E119,leaf,E11,"Diabète sucré de type 2, sans complication",IV,"Maladies endocriniennes",E10-E14,"Diabète sucré",E11,"Diabète sucré de type 2"

@@ -6,3 +6,10 @@ config.py
 test_1.ipynb
 test_2.ipynb
 .worktrees/
+
+# CIM-10 ANS source dumps (large, not redistributable under CC BY-NC-ND)
+referentials/CIM_ATIH_2025/source/
+
+# Python
+.pytest_cache/
+.venv/

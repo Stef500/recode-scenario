@@ -1,0 +1,30 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix cim: <https://smt.esante.gouv.fr/terminologie-cim-10/> .
+@prefix ans: <https://smt.esante.gouv.fr/terminologie/ans#> .
+
+cim:A04 a skos:Concept ;
+    skos:notation "A04" ;
+    skos:prefLabel "Autres infections intestinales bactériennes"@fr ;
+    skos:broader cim:A00-A09 ;
+    ans:level "category" .
+
+cim:A048 a skos:Concept ;
+    skos:notation "A048" ;
+    skos:prefLabel "Autres infections intestinales bactériennes précisées"@fr ;
+    skos:broader cim:A04 ;
+    ans:level "leaf" ;
+    ans:inclusionNote "infections à Clostridium" ;
+    ans:inclusionNote "infections à Yersinia" ;
+    ans:exclusionNote "intoxication alimentaire bactérienne (A05.-)" .
+
+cim:A00-A09 a skos:Concept ;
+    skos:notation "A00-A09" ;
+    skos:prefLabel "Maladies intestinales infectieuses"@fr ;
+    skos:broader cim:I ;
+    ans:level "block" .
+
+cim:I a skos:Concept ;
+    skos:notation "I" ;
+    skos:prefLabel "Maladies infectieuses et parasitaires"@fr ;
+    ans:level "chapter" .
