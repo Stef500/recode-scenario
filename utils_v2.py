@@ -4,6 +4,7 @@ import datetime as dt
 import re
 import datetime
 import random
+import hashlib
 import yaml
 import pyarrow.parquet as pq
 
@@ -17,78 +18,91 @@ from os.path import isfile
 _DEFAULT_GROUPING = ("sexe", "cage2", "drg_parent_code", "icd_primary_code")
 
 
-def random_date(year,exclude_weekends=False):
-  """   
-  Generates a random date in the year 2024.
+def derive_scenario_rng(profile, base_seed):
+    """Dérive un np.random.Generator reproductible depuis un profil + seed."""
+    profile_key = (
+        f"{profile.icd_primary_code}|{profile.drg_parent_code}|"
+        f"{profile.case_management_type}|{profile.sexe}|{profile.cage}"
+    )
+    digest = hashlib.blake2b(profile_key.encode(), digest_size=8).digest()
+    profile_hash = int.from_bytes(digest, "big")
+    seed = (base_seed * 2_654_435_761) ^ profile_hash
+    return np.random.default_rng(seed & 0xFFFFFFFF)
+
+
+def random_date(year, exclude_weekends=False, *, rng=None):
+  """
+  Generates a random date in the given year.
 
   Args:
     exclude_weekends: If True, excludes Saturdays and Sundays.
+    rng: Optional np.random.Generator. Si None, utilise random global (back-compat).
   """
+  rnd = rng.integers if rng is not None else lambda lo, hi: random.randint(lo, hi - 1)
 
   while True:
 
-    month = random.randint(1, 12)
+    month = int(rnd(1, 13))
     # Get the number of days in the randomly chosen month
     if month == 2:
       if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0): # Check for leap year
-        day = random.randint(1, 29)
+        day = int(rnd(1, 30))
       else:
-        day = random.randint(1, 28)
+        day = int(rnd(1, 29))
     elif month in [4, 6, 9, 11]:
-      day = random.randint(1, 30)
+      day = int(rnd(1, 31))
     else:
-      day = random.randint(1, 31)
+      day = int(rnd(1, 32))
 
-    random_date = datetime.date(year, month, day)
+    random_date_val = datetime.date(year, month, day)
 
     if exclude_weekends:
-      if random_date.weekday() < 5:  # Monday is 0, Sunday is 6
+      if random_date_val.weekday() < 5:  # Monday is 0, Sunday is 6
         break
     else:
       break
-  return random_date
+  return random_date_val
 
 
-def random_date_between(start_date, end_date):
+def random_date_between(start_date, end_date, *, rng=None):
     """
     Generates a random date between two datetime.date objects (inclusive).
     """
-
-    time_between_dates = end_date - start_date
-    days_between_dates = time_between_dates.days
-    random_number_of_days = random.randrange(days_between_dates + 1)
-    random_date = start_date + datetime.timedelta(days=random_number_of_days)
-    return random_date
+    rnd = rng.integers if rng is not None else lambda lo, hi: random.randrange(lo, hi)
+    days_between_dates = (end_date - start_date).days
+    random_number_of_days = int(rnd(0, days_between_dates + 1))
+    return start_date + datetime.timedelta(days=random_number_of_days)
 
 def get_dates_of_stay(admission_type: str=None,
                       admission_mode: str=None,
                       mols:  float | None = None,
                       sdlos: float| None = None,
                       los: int| None= None,
-                      year : int= None ):
+                      year : int= None,
+                      *, rng=None):
     """
     Generate date of entry and date of discharge from Mean Length of Stay (MLOS) and Standard Deviaton length of stay (DSLOS)
     """
 
     if admission_type == "Outpatient" :
-        date_entry = date_discharge = random_date(year,exclude_weekends=False)
+        date_entry = date_discharge = random_date(year, exclude_weekends=False, rng=rng)
 
-    else : 
-        if los == None:
+    else :
+        if los is None:
             # los can be negative if we do like this
-            #los = int(np.round(np.random.normal(mols, sdlos, 1))[0]) 
-            if mols == None :
-                mols =1
-            if sdlos == None:
+            #los = int(np.round(np.random.normal(mols, sdlos, 1))[0])
+            if mols is None :
+                mols = 1
+            if sdlos is None:
                 sdlos = 1
-                
-            los = int(np.abs(np.random.normal(mols, sdlos, 1)[0])) 
 
+            if rng is not None:
+                los = int(np.abs(rng.normal(mols, sdlos)))
+            else:
+                los = int(np.abs(np.random.normal(mols, sdlos, 1)[0]))
 
-        if admission_mode=="URGENCES":
-            date_entry = random_date(year,exclude_weekends=False)
-        else :
-            date_entry = random_date(year,exclude_weekends=True)
+        exclude_we = admission_mode != "URGENCES"
+        date_entry = random_date(year, exclude_weekends=exclude_we, rng=rng)
 
         date_discharge = date_entry + datetime.timedelta(days=los)
 
@@ -114,12 +128,14 @@ def extract_integers_from_cage(cage_string):
         else:
             return [] # Return empty list if no match
 
-def get_age(cage):
+def get_age(cage, *, rng=None):
     """
     Get random age from age categorie
 
     """
-    age_min,age_max = extract_integers_from_cage(cage)
+    age_min, age_max = extract_integers_from_cage(cage)
+    if rng is not None:
+        return int(rng.integers(age_min, age_max + 1))
     return random.randint(age_min, age_max)
 
 def interpret_sexe(sexe):
@@ -450,12 +466,17 @@ class generate_scenario:
 
 
     def get_names(self,
-                  gender : int):
+                  gender : int,
+                  *, rng=None):
 
-        first_name = self.df_names.prenom[(self.df_names.sexe==gender) & (self.df_names.prenom.str.len()>3)].sample(1).iloc[0]
-        last_name = self.df_names.nom[ (self.df_names.nom.str.len()>3)].sample(1).iloc[0]
+        candidates_first = self.df_names.prenom[(self.df_names.sexe==gender) & (self.df_names.prenom.str.len()>3)]
+        candidates_last = self.df_names.nom[(self.df_names.nom.str.len()>3)]
+        first_state = int(rng.integers(0, 2**31)) if rng is not None else None
+        last_state = int(rng.integers(0, 2**31)) if rng is not None else None
+        first_name = candidates_first.sample(1, random_state=first_state).iloc[0]
+        last_name = candidates_last.sample(1, random_state=last_state).iloc[0]
 
-        return first_name[0].upper() + first_name[1:].lower() ,last_name[0].upper() + last_name[1:].lower()
+        return first_name[0].upper() + first_name[1:].lower(), last_name[0].upper() + last_name[1:].lower()
     
     def sample_from_df(self,
                        profile : pd.Series ,
@@ -464,12 +485,13 @@ class generate_scenario:
                        col_weights : str = 'nb',
                        max_nb : int | None = 2 ,
                        distinct_chapter : bool = False,
+                       *, rng=None,
                        ):
 
         """
 
-        
-        
+
+
 
 
         """
@@ -477,13 +499,13 @@ class generate_scenario:
         query = ' & '.join(['{}=={}'.format(k, "'{}'".format(v) if isinstance(v, str) else v) for k, v in profile.items() if k in df_values.columns  ])
 
         df_sel = df_values.query(query)
-        
+
         if(col_weights not in df_sel.columns):
             df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
-        
+
         if df_sel[col_weights].sum() == 0:
             df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
-        
+
         if df_sel.shape[0] ==0 :
             return pd.DataFrame(columns=df_values.columns)
 
@@ -494,7 +516,10 @@ class generate_scenario:
         if nb is not None :
             nb_final_sample = np.minimum(df_sel.shape[0],nb)
         else:
-            nb_final_sample = np.random.randint(nb_sample_max+1, size=1)[0]
+            if rng is not None:
+                nb_final_sample = int(rng.integers(0, nb_sample_max + 1))
+            else:
+                nb_final_sample = np.random.randint(nb_sample_max+1, size=1)[0]
 
         if nb_final_sample > 0:
 
@@ -509,12 +534,14 @@ class generate_scenario:
                     candidates = df_sel[~df_sel.icd_secondary_code.str.slice(0, 1).isin(chapter)]
                     if len(candidates) == 0:
                         break
-                    df_sample = pd.concat([df_sample, candidates.sample(1, replace=False, weights=col_weights)])
+                    state_i = int(rng.integers(0, 2**31)) if rng is not None else None
+                    df_sample = pd.concat([df_sample, candidates.sample(1, replace=False, weights=col_weights, random_state=state_i)])
                     chapter = df_sample.icd_secondary_code.str.slice(0, 1).to_list()
-           
+
 
             else:
-                df_sample= df_sel.sample(nb_final_sample, replace=False, weights =col_weights)
+                state = int(rng.integers(0, 2**31)) if rng is not None else None
+                df_sample= df_sel.sample(nb_final_sample, replace=False, weights =col_weights, random_state=state)
 
             # Add description codes
             if  "icd_secondary_code" in df_sample.columns   :
@@ -646,7 +673,7 @@ class generate_scenario:
         else:
             return "" # Return empty string if code not found in official list
 
-    def define_text_management_type(self,case):
+    def define_text_management_type(self, case, *, rng=None):
         """
         The care management approach is a concept developed within the project to incorporate
         the hospitalization typology established by the ATIH within the framework of rules
@@ -816,7 +843,10 @@ class generate_scenario:
             coding_rule = "T12"
             
             # 85% through emergecies (normal) , 15% preceded by and admission in hopsitalisation
-            option_delivery = np.random.choice(2, p=[0.85, 0.15])
+            if rng is not None:
+                option_delivery = int(rng.choice(2, p=[0.85, 0.15]))
+            else:
+                option_delivery = np.random.choice(2, p=[0.85, 0.15])
             if option_delivery==1:
                 suffix_temp_delivery = "_urg"
             else:
@@ -874,7 +904,10 @@ class generate_scenario:
             
             #  Rules D1,D5,D9 cases where chronic disease is the icd primary diagnosis
             elif case["case_management_type"] =="DP" :
-                option = np.random.choice(4, p=[0.4, 0.2,0.2,0.2])
+                if rng is not None:
+                    option = int(rng.choice(4, p=[0.4, 0.2, 0.2, 0.2]))
+                else:
+                    option = np.random.choice(4, p=[0.4, 0.2, 0.2, 0.2])
                 if option == 0:
                         coding_rule = "D1"
                         situa = "Première hospitalisation "  + text_admission_type + " pour découverte de " + case["icd_primary_description"] # 40%
@@ -937,8 +970,9 @@ class generate_scenario:
 
     def generate_scenario_from_profile(self,
                                        profile,
-                                       add_icd_secondary_code : int=0):
-        
+                                       add_icd_secondary_code : int=0,
+                                       *, rng: "np.random.Generator | None" = None):
+
         profile["icd_parent_code"] = profile["icd_primary_code"][0:3]
 
         scenario = self.get_clinical_scenario_template()
@@ -966,32 +1000,37 @@ class generate_scenario:
                 los_sd_profile=profile.los_sd
         
         if isinstance(profile.sexe,str) :
-                    profile.sexe = int(profile.sexe)           
-       
-        profile.year = random.sample(self.simulations_years,1)[0]
-        
+                    profile.sexe = int(profile.sexe)
+
+        if rng is not None:
+            profile.year = self.simulations_years[int(rng.integers(0, len(self.simulations_years)))]
+        else:
+            profile.year = random.sample(self.simulations_years,1)[0]
+
         ### Administratives elements
-        if age_profile==0 : 
-            scenario["age"] = get_age(profile.cage)
-        else : 
+        if age_profile==0 :
+            scenario["age"] = get_age(profile.cage, rng=rng)
+        else :
             scenario["age"] = scenario["age2"]
-        scenario["date_entry"],scenario["date_discharge"] = get_dates_of_stay(profile.admission_type,profile.admission_mode,los_mean_profile,los_sd_profile,los_profile,profile.year)
-        scenario["date_of_birth"] = random_date_between( scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"]+1)) , scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"])))
-        scenario["first_name"] , scenario["last_name"] = self.get_names(profile.sexe)
-        scenario["first_name_med"] , scenario["last_name_med"] = self.get_names(random.randint(1, 2))
+        scenario["date_entry"],scenario["date_discharge"] = get_dates_of_stay(profile.admission_type,profile.admission_mode,los_mean_profile,los_sd_profile,los_profile,profile.year, rng=rng)
+        scenario["date_of_birth"] = random_date_between( scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"]+1)) , scenario["date_entry"] - datetime.timedelta(days = 365*(scenario["age"])), rng=rng)
+        scenario["first_name"] , scenario["last_name"] = self.get_names(profile.sexe, rng=rng)
+        med_gender = int(rng.integers(1, 3)) if rng is not None else random.randint(1, 2)
+        scenario["first_name_med"] , scenario["last_name_med"] = self.get_names(med_gender, rng=rng)
 
         scenario["department"] = profile["specialty"]
 
-        scenario["hospital"] =   self.df_hospitals.sample(1)['hospital'].iloc[0]
+        hospital_state = int(rng.integers(0, 2**31)) if rng is not None else None
+        scenario["hospital"] =   self.df_hospitals.sample(1, random_state=hospital_state)['hospital'].iloc[0]
         
         
         ##Get additional informations for cancer case from treatment recommandation
         if scenario["icd_primary_code"] in self.icd_codes_cancer:
                 is_cancer =1
         ## When care pathway is related to the treatment of cancer and when recommandations are availabe, the clinical case will be create from those recommandation
-        if scenario["case_management_type"] in ['DP','Z511'] : 
-                
-            treatment_recommendations = self.sample_from_df(profile =profile,df_values= self.df_cancer_treatment_recommandation,nb=1) 
+        if scenario["case_management_type"] in ['DP','Z511'] :
+
+            treatment_recommendations = self.sample_from_df(profile =profile,df_values= self.df_cancer_treatment_recommandation,nb=1, rng=rng)
             if treatment_recommendations.shape[0]>0 :
                 scenario["histological_type"] = treatment_recommendations["histological_type"].iloc[0] 
             
@@ -1054,15 +1093,15 @@ class generate_scenario:
             ### Categories of chronic desease : when cancer you don't sample chronic diseases over cancer icd codes
 
             if is_cancer ==1 :
-                chronic_diseases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary], distinct_chapter=True)
+                chronic_diseases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary], distinct_chapter=True, rng=rng)
 
-            else :     
-                # chronic_diseases =  self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary]) 
+            else :
+                # chronic_diseases =  self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary])
                 df_values = self.df_secondary_icd.query("type.isin(['Chronic','Cancer'])")[grouping_secondary]
                 #df_secondary_cancer = self.df_secondary_icd[self.df_secondary_icd.icd_secondary_code.isin(self.icd_codes_cancer)][grouping_secondary]
-                
+
                 #df_values = pd.concat([df_values, df_secondary_cancer])
-                chronic_diseases =  self.sample_from_df(profile =profile,df_values=df_values, distinct_chapter=True)  
+                chronic_diseases =  self.sample_from_df(profile =profile,df_values=df_values, distinct_chapter=True, rng=rng)
 
             if chronic_diseases.shape[0] > 0 :
                 for index, row in chronic_diseases.iterrows():
@@ -1083,7 +1122,7 @@ class generate_scenario:
                 ##If TNM is know sample metastasis regarding this status
                 if scenario["score_TNM"] is not None and not (isinstance(scenario["score_TNM"], float)):
                     if bool(re.search("N[123x+]",scenario["score_TNM"])) :
-                        metastases_ln = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis LN'")[grouping_secondary],nb = 1)  
+                        metastases_ln = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis LN'")[grouping_secondary],nb = 1, rng=rng)
                 
                         if metastases_ln.shape[0] > 0 :
                             for index, row in metastases_ln.iterrows():
@@ -1093,7 +1132,7 @@ class generate_scenario:
                             scenario["icd_secondary_code"] = scenario["icd_secondary_code"] + metastases_ln.icd_secondary_code.to_list()
 
                     if bool(re.search("M[123x+]",scenario["score_TNM"])) :
-                        metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary])  
+                        metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary], rng=rng)
                 
                         if metastases.shape[0] > 0 :
                                 for index, row in metastases.iterrows():
@@ -1105,7 +1144,7 @@ class generate_scenario:
                 
                 #When TNM is not known, sample metastasis among all possible situations
                 else:
-                    metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Metastasis','Metastasis LN'])")[grouping_secondary])  
+                    metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Metastasis','Metastasis LN'])")[grouping_secondary], rng=rng)
                 
                     if metastases.shape[0] > 0 :
                         for index, row in metastases.iterrows():
@@ -1117,7 +1156,7 @@ class generate_scenario:
             #For complication drg_parent_code we choose grouping profile only on ICD
             grouping_secondary =["drg_parent_code","icd_secondary_code","cage2","sexe","nb"]
 
-            complications = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Acute'])")[grouping_secondary]) 
+            complications = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Acute'])")[grouping_secondary], rng=rng)
 
             if complications.shape[0] > 0 :
                 for index, row in complications.iterrows():
@@ -1129,7 +1168,7 @@ class generate_scenario:
         ## Actes
 
         grouping_procedure =["procedure","drg_parent_code","icd_primary_code","cage2","sexe"]
-        procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1) 
+        procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1, rng=rng)
 
         if len(procedures) > 0 :
             scenario["procedure"] = procedures.procedure.values[0]
@@ -1143,7 +1182,7 @@ class generate_scenario:
         #        scenario["procedure"] = row.procedure
 
 
-        scenario["case_management_type_text"] , scenario["coding_rule"],  scenario["template_name"] = self.define_text_management_type(scenario)
+        scenario["case_management_type_text"] , scenario["coding_rule"],  scenario["template_name"] = self.define_text_management_type(scenario, rng=rng)
 
         if scenario["coding_rule"] in self.coding_rules :
             scenario["case_management_description"] = self.coding_rules[scenario["coding_rule"]]['texte']
