@@ -1,3 +1,13 @@
+# Test tooling
 pytest>=7.0
-rdflib>=7.0
+
+# Runtime deps re-exposed here because utils_v2.py imports them at module
+# top-level; tests need them to simply import the module.
 pandas>=2.0
+pyyaml>=6.0
+pyarrow>=14.0
+mistralai>=1.9,<2.0
+httpx>=0.27
+
+# Build-script dep (parses ANS OWL dump — used only by scripts/build_cim10_enrichment.py)
+rdflib>=7.0
