@@ -102,6 +102,50 @@ Use the col_names options when import files in the load function of the project 
 | Hospital admission for relapse or recurrence of the cancer| Hospital admission for change in therapeutic strategy          | Hospital admission for acute exacerbation of the disease     |
 | Hospital admission for surgery                            |                                                                |                                                              |
 
+## CIM-10 enrichment (optional)
+
+The prompt section "Codage CIM10" can be enriched with the official hierarchy
+(Chapter > Block > Category) and Inclus / Exclus notes for:
+- the principal diagnosis (always),
+- secondary diagnoses that are 4-character codes ending in `8` (residual "autres"
+  categories where the notes disambiguate the clinical entity).
+
+### One-time setup
+
+1. Download the CIM-10 FR PMSI RDF/OWL dump from the ANS Serveur Multi-Terminologies:
+   https://smt.esante.gouv.fr/terminologie-cim-10/ (license CC BY-NC-ND 3.0 IGO).
+2. Extract the archive and save the `terminologie-cim-10-*.rdf` file to
+   `referentials/CIM_ATIH_2025/source/cim10-fr-2025.owl` (gitignored — not committed).
+3. Create a dev virtualenv with uv and install deps:
+   ```bash
+   uv venv
+   uv pip install -r requirements-dev.txt
+   ```
+4. Generate the two CSV referentials:
+   ```bash
+   uv run python scripts/build_cim10_enrichment.py \
+       --source referentials/CIM_ATIH_2025/source/cim10-fr-2025.owl \
+       --out-dir referentials/CIM_ATIH_2025/
+   ```
+   The script produces `cim10_hierarchy.csv` (~19,000 rows) and
+   `cim10_notes.csv` (~9,000 rows with Inclus / Exclus notes).
+
+### Runtime
+
+Cell 8 of `generate_scenarios_v4.ipynb` calls `gs.load_cim10_hierarchy()` and
+`gs.load_cim10_notes()`. If either CSV is absent, the prompt reverts to its
+plain format (silent fallback with a one-line `warnings.warn` so the operator
+sees it in logs).
+
+### Tests
+
+```bash
+uv run pytest tests/ -v
+```
+Runs 21 unit + integration tests covering the loaders, the enrichment
+formatter, the `make_prompts_marks_from_scenario` integration, and the RDF
+build script's validation logic.
+
 ## TODO
 - Referentials
   * Transfrom all referentials into config files
