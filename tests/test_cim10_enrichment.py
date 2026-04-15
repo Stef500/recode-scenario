@@ -62,3 +62,16 @@ def test_load_notes_missing_file_silent(gs, recwarn):
     assert gs.cim10_notes == {}
     assert any("not found" in str(w.message) for w in recwarn.list), \
         "expected a UserWarning about missing file"
+
+
+def test_format_enrichment_hierarchy_only(gs):
+    """Code present in hierarchy, no notes → only the Hiérarchie line."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    # notes NOT loaded → cim10_notes is {}
+    result = gs._format_cim10_enrichment("E119", include_notes=True)
+    expected = (
+        "     Hiérarchie : Chapitre IV — Maladies endocriniennes\n"
+        "                  > Bloc E10-E14 — Diabète sucré\n"
+        "                  > Catégorie E11 — Diabète sucré de type 2\n"
+    )
+    assert result == expected

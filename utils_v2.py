@@ -379,6 +379,54 @@ class generate_scenario:
             }
 
 
+    def _format_cim10_enrichment(self,
+                                  code: str,
+                                  include_notes: bool = True) -> str:
+        """Return a multi-line string enriching a CIM-10 code.
+
+        Structure:
+          - Hiérarchie : Chapitre <X> — <label>
+                         > Bloc <Y> — <label>
+                         > Catégorie <Z> — <label>
+          - Inclus : item1 ; item2 ; ...
+          - Exclus : item1 ; item2 ; ...
+
+        Silent fallback: returns '' if the code is not found in any loaded
+        referential (preserves original prompt format).
+        """
+        lines = []
+
+        hierarchy = self.cim10_hierarchy.get(code) if self.cim10_hierarchy else None
+        if hierarchy:
+            chapter_code = hierarchy.get("chapter_code", "")
+            chapter_label = hierarchy.get("chapter_label", "")
+            block_code = hierarchy.get("block_code", "")
+            block_label = hierarchy.get("block_label", "")
+            category_code = hierarchy.get("category_code", "")
+            category_label = hierarchy.get("category_label", "")
+
+            if chapter_code:
+                lines.append(f"     Hiérarchie : Chapitre {chapter_code} — {chapter_label}")
+                if block_code:
+                    lines.append(f"                  > Bloc {block_code} — {block_label}")
+                if category_code:
+                    lines.append(f"                  > Catégorie {category_code} — {category_label}")
+
+        if include_notes and self.cim10_notes:
+            notes = self.cim10_notes.get(code)
+            if notes:
+                inclusion = notes.get("inclusion_notes", [])
+                exclusion = notes.get("exclusion_notes", [])
+                if inclusion:
+                    lines.append("     Inclus : " + " ; ".join(inclusion))
+                if exclusion:
+                    lines.append("     Exclus : " + " ; ".join(exclusion))
+
+        if not lines:
+            return ""
+        return "\n".join(lines) + "\n"
+
+
     def load_icd_categ_weight(self,
                         file_name : str,
                         col_names: [] ):
