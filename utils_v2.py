@@ -1008,7 +1008,7 @@ class generate_scenario:
                     scenario["cancer_stage"] = stage
                 
                 scenario["treatment_recommandation"] = treatment_recommendations["treatment_recommandation"].iloc[0] 
-                if treatment_recommendations.chemotherapy_regimen.notna().bool:
+                if treatment_recommendations.chemotherapy_regimen.notna().any():
                     scenario["chemotherapy_regimen"] = treatment_recommendations["chemotherapy_regimen"].iloc[0]  
 
                 scenario["biomarkers"] = treatment_recommendations["biomarkers"].iloc[0]
