@@ -509,16 +509,17 @@ class generate_scenario:
 
             #Codes are from different chapter of ICD10
             # if distinct_chapter == True and "icd_secondary_code" in df_sample.columns:
-            if distinct_chapter == True and "icd_secondary_code" in df_sel.columns:
+            if distinct_chapter and "icd_secondary_code" in df_sel.columns:
 
-                df_sample=None
-                chapter = []
+                df_sample = pd.DataFrame(columns=df_sel.columns)
+                chapter: list[str] = []
 
-                for i in range(1,nb_final_sample+1):
-                    df_sample=pd.concat([df_sample,df_sel[~(df_sel.icd_secondary_code.str.slice(0,1).isin(chapter))].sample(1, replace=False, weights = col_weights  )])
-                    chapter = df_sample.icd_secondary_code.str.slice(0,1).to_list()
-                    if len(df_sel[~(df_sel.icd_secondary_code.str.slice(0,1).isin(chapter))]) == 0:
+                for i in range(1, nb_final_sample + 1):
+                    candidates = df_sel[~df_sel.icd_secondary_code.str.slice(0, 1).isin(chapter)]
+                    if len(candidates) == 0:
                         break
+                    df_sample = pd.concat([df_sample, candidates.sample(1, replace=False, weights=col_weights)])
+                    chapter = df_sample.icd_secondary_code.str.slice(0, 1).to_list()
            
 
             else:
