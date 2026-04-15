@@ -4,6 +4,7 @@ import datetime as dt
 import re
 import datetime
 import random
+import warnings
 import yaml
 import pyarrow.parquet as pq
 
@@ -327,13 +328,18 @@ class generate_scenario:
                              file_name: str = "CIM_ATIH_2025/cim10_hierarchy.csv"):
         """Load CIM-10 hierarchy (chapter > block > category > leaf).
 
-        Silent fallback: if the file does not exist, self.cim10_hierarchy stays
-        as {} and the prompt enrichment is skipped (original behavior preserved).
+        Emits a UserWarning and falls back silently to an empty dict if the file
+        is absent — so prompts still render (original behavior preserved) but a
+        missing referential is visible in logs rather than silently degraded.
         """
         full_path = self.path_ref + file_name
         try:
             df = pd.read_csv(full_path, dtype=str, keep_default_na=False)
         except FileNotFoundError:
+            warnings.warn(
+                f"CIM-10 hierarchy file not found at {full_path}; prompt enrichment disabled.",
+                stacklevel=2,
+            )
             self.cim10_hierarchy = {}
             return
         self.cim10_hierarchy = df.set_index("code").to_dict(orient="index")

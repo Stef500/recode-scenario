@@ -27,3 +27,10 @@ def test_load_hierarchy_indexes_by_code(gs):
     assert entry["category_code"] == "A04"
     assert entry["category_label"] == "Autres infections intestinales bactériennes"
     assert entry["level"] == "leaf"
+
+
+def test_load_hierarchy_missing_file_warns_and_falls_back(gs, recwarn):
+    gs.load_cim10_hierarchy("does_not_exist.csv")
+    assert gs.cim10_hierarchy == {}
+    assert any("not found" in str(w.message) for w in recwarn.list), \
+        "expected a UserWarning about missing file"
