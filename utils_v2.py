@@ -1321,17 +1321,24 @@ class generate_scenario:
             if k == "discharge_disposition" and v is not None:  
                 SCENARIO +="- Mode de sortie' : "+ v + "\n" 
 
-            if k == "case_management_type" and v is not None:  
-                SCENARIO +="- Contexte de l'hospitalisation : "+ scenario["case_management_type_text"] +". " +scenario["case_management_description"] + "\n"
+            if k == "case_management_type" and v is not None:
+                SCENARIO += "- Contexte de l'hospitalisation : " + scenario["case_management_type_text"] + ". " + scenario["case_management_description"] + "\n"
 
-                SCENARIO +="- Codage CIM10 :\n" 
-                #if scenario["case_management_type"]!="DP":
-                #    SCENARIO +="   * Code CIM prise en charge :\n"  +  scenario["case_management_type_description"] + " ("+ scenario["case_management_type"] + ")\n"  
-               
-                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + " ("+ scenario["icd_primary_code"] + ")\n"          
-                               
-                SCENARIO +="   * Diagnostic associés : \n"
-                SCENARIO +=  scenario["text_secondary_icd_official"]  + "\n" 
+                SCENARIO += "- Codage CIM10 :\n"
+                dp_code = scenario["icd_primary_code"]
+                SCENARIO += "   * Diagnostic principal : " + scenario["icd_primary_description"] + " (" + dp_code + ")\n"
+                SCENARIO += self._format_cim10_enrichment(dp_code, include_notes=True)
+
+                SCENARIO += "   * Diagnostic associés : \n"
+                secondary_codes = scenario.get("icd_secondary_code") or []
+                if secondary_codes:
+                    for das_code in secondary_codes:
+                        SCENARIO += "   - " + self.get_icd_description(das_code) + " (" + das_code + ")\n"
+                        if len(das_code) == 4 and das_code.endswith("8"):
+                            SCENARIO += self._format_cim10_enrichment(das_code, include_notes=True)
+                elif scenario.get("text_secondary_icd_official"):
+                    # Fallback to pre-computed text (backward-compat path)
+                    SCENARIO += scenario["text_secondary_icd_official"] + "\n"
             
             if k == "procedure" and v is not None and scenario["drg_parent_code"][2:3] in ["C","K"] : 
                 SCENARIO +=  "* Acte CCAM :\n" + scenario["text_procedure"].lower()+ "\n"  

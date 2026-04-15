@@ -110,3 +110,75 @@ def test_format_enrichment_silent_fallback_missing_code(gs):
 def test_format_enrichment_silent_fallback_nothing_loaded(gs):
     """No referential loaded at all → empty string, no exception."""
     assert gs._format_cim10_enrichment("A048") == ""
+
+
+def test_prompt_section_enriches_dp_and_skips_non_eight_das(gs):
+    """The 'Codage CIM10' section enriches DP always, DAS only when 4-char ending in 8."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+
+    # Minimal helpers used by make_prompts_marks_from_scenario
+    gs.icd_codes_cancer = []   # not a cancer case
+
+    def fake_get_icd_description(code):
+        table = {
+            "A048": "Autres infections intestinales bactériennes précisées",
+            "E119": "Diabète sucré de type 2, sans complication",
+            "A049": "Infection intestinale bactérienne, sans précision",
+        }
+        return table.get(code, code)
+    gs.get_icd_description = fake_get_icd_description
+
+    scenario = {
+        "age": 65,
+        "sexe": 1,
+        "icd_primary_code": "A048",
+        "icd_primary_description": "Autres infections intestinales bactériennes précisées",
+        "icd_secondary_code": ["E119", "A049"],
+        "text_secondary_icd_official": "",
+        "case_management_type": "DP",
+        "case_management_type_text": "Diagnostic principal",
+        "case_management_description": "",
+        "drg_parent_code": "06M05",
+    }
+    prompt = gs.make_prompts_marks_from_scenario(scenario)
+
+    # DP enrichment present
+    assert "Hiérarchie : Chapitre I — Maladies infectieuses et parasitaires" in prompt
+    assert "Inclus : infections à Clostridium" in prompt
+
+    # DAS A049 is 4-char ending in 9, NOT enriched (no Exclus block under it)
+    assert "Exclus : diarrhée SAI (A09)" not in prompt
+
+    # DAS E119 not ending in 8, NOT enriched
+    e119_index = prompt.index("E119")
+    after_e119 = prompt[e119_index:e119_index + 300]
+    assert "Hiérarchie" not in after_e119
+
+
+def test_prompt_section_enriches_das_in_eight(gs):
+    """A DAS code with 4 chars ending in 8 gets its own enrichment block."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    gs.icd_codes_cancer = []
+
+    def fake_get_icd_description(code):
+        return {"A048": "Autres infections intestinales bactériennes précisées"}.get(code, code)
+    gs.get_icd_description = fake_get_icd_description
+
+    scenario = {
+        "age": 50, "sexe": 2,
+        "icd_primary_code": "E119",
+        "icd_primary_description": "Diabète sucré de type 2, sans complication",
+        "icd_secondary_code": ["A048"],     # 4-char ending in 8 → enriched
+        "text_secondary_icd_official": "",
+        "case_management_type": "DP",
+        "case_management_type_text": "Diagnostic principal",
+        "case_management_description": "",
+        "drg_parent_code": "10M05",
+    }
+    prompt = gs.make_prompts_marks_from_scenario(scenario)
+    # DP enrichment (E119)
+    assert "Chapitre IV — Maladies endocriniennes" in prompt
+    # DAS enrichment (A048)
+    assert "Inclus : infections à Clostridium" in prompt
