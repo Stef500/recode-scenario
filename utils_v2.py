@@ -14,6 +14,8 @@ from os.path import isfile
 # Usefull functions
 
 
+_DEFAULT_GROUPING = ("sexe", "cage2", "drg_parent_code", "icd_primary_code")
+
 
 def random_date(year,exclude_weekends=False):
   """   
@@ -145,9 +147,9 @@ def weighted_code_sample(self,code):
 class generate_scenario:
 
     def __init__(self,
-                 path_ref : str = "referentials/",
-                 path_data : str = "data/",
-                 grouping_secondary_diag :list = ["sexe","cage2","drg_parent_code","icd_primary_code"]):
+                 path_ref: str = "referentials/",
+                 path_data: str = "data/",
+                 grouping_secondary_diag: list[str] | None = None):
 
         """
         Generate scenario from DRG statistics
@@ -169,7 +171,9 @@ class generate_scenario:
 
         self.path_ref = path_ref
         self.path_data = path_data
-        self.grouping_secondary_diag = grouping_secondary_diag
+        self.grouping_secondary_diag = list(grouping_secondary_diag
+                                             if grouping_secondary_diag is not None
+                                             else _DEFAULT_GROUPING)
         self.simulations_years = [dt.date.today().year-2,dt.date.today().year-1,dt.date.today().year]
 
         # Recoding french names
