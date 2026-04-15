@@ -345,6 +345,40 @@ class generate_scenario:
         self.cim10_hierarchy = df.set_index("code").to_dict(orient="index")
 
 
+    def load_cim10_notes(self,
+                         file_name: str = "CIM_ATIH_2025/cim10_notes.csv"):
+        """Load Inclus/Exclus notes per CIM-10 code.
+
+        Multi-valued note columns use '|' as internal separator in the CSV;
+        this method splits them into Python lists.
+
+        Emits a UserWarning and falls back to an empty dict if the file is
+        absent — matches the behavior of load_cim10_hierarchy for consistency.
+        """
+        full_path = self.path_ref + file_name
+        try:
+            df = pd.read_csv(full_path, dtype=str, keep_default_na=False)
+        except FileNotFoundError:
+            warnings.warn(
+                f"CIM-10 notes file not found at {full_path}; prompt enrichment disabled.",
+                stacklevel=2,
+            )
+            self.cim10_notes = {}
+            return
+
+        def _split(value: str) -> list[str]:
+            if not value:
+                return []
+            return [item.strip() for item in value.split("|") if item.strip()]
+
+        self.cim10_notes = {}
+        for _, row in df.iterrows():
+            self.cim10_notes[row["code"]] = {
+                "inclusion_notes": _split(row.get("inclusion_notes", "")),
+                "exclusion_notes": _split(row.get("exclusion_notes", "")),
+            }
+
+
     def load_icd_categ_weight(self,
                         file_name : str,
                         col_names: [] ):

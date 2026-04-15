@@ -34,3 +34,31 @@ def test_load_hierarchy_missing_file_warns_and_falls_back(gs, recwarn):
     assert gs.cim10_hierarchy == {}
     assert any("not found" in str(w.message) for w in recwarn.list), \
         "expected a UserWarning about missing file"
+
+
+def test_load_notes_splits_pipe_separator(gs):
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    assert "A048" in gs.cim10_notes
+    notes = gs.cim10_notes["A048"]
+    assert notes["inclusion_notes"] == [
+        "infections à Clostridium",
+        "infections à Yersinia",
+        "entérocolite à C. difficile non précisée",
+    ]
+    assert notes["exclusion_notes"] == [
+        "intoxication alimentaire bactérienne (A05.-)",
+        "tuberculose intestinale (A18.3+ K93.0*)",
+    ]
+
+
+def test_load_notes_handles_empty_column(gs):
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    assert gs.cim10_notes["A049"]["inclusion_notes"] == []
+    assert gs.cim10_notes["A049"]["exclusion_notes"] == ["diarrhée SAI (A09)"]
+
+
+def test_load_notes_missing_file_silent(gs, recwarn):
+    gs.load_cim10_notes("does_not_exist.csv")
+    assert gs.cim10_notes == {}
+    assert any("not found" in str(w.message) for w in recwarn.list), \
+        "expected a UserWarning about missing file"
