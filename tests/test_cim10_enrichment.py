@@ -182,3 +182,73 @@ def test_prompt_section_enriches_das_in_eight(gs):
     assert "Chapitre IV — Maladies endocriniennes" in prompt
     # DAS enrichment (A048)
     assert "Inclus : infections à Clostridium" in prompt
+
+
+def test_prompt_section_full_golden_block(gs):
+    """Lock in the exact multi-line format of the 'Codage CIM10' block."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    gs.icd_codes_cancer = []
+
+    def fake_get_icd_description(code):
+        return {
+            "A048": "Autres infections intestinales bactériennes précisées",
+            "E119": "Diabète sucré de type 2, sans complication",
+            "A049": "Infection intestinale bactérienne, sans précision",
+        }.get(code, code)
+    gs.get_icd_description = fake_get_icd_description
+
+    scenario = {
+        "age": 65, "sexe": 1,
+        "icd_primary_code": "A048",
+        "icd_primary_description": "Autres infections intestinales bactériennes précisées",
+        "icd_secondary_code": ["E119", "A049"],
+        "text_secondary_icd_official": "",
+        "case_management_type": "DP",
+        "case_management_type_text": "Diagnostic principal",
+        "case_management_description": "",
+        "drg_parent_code": "06M05",
+    }
+    prompt = gs.make_prompts_marks_from_scenario(scenario)
+
+    expected_block = (
+        "- Codage CIM10 :\n"
+        "   * Diagnostic principal : Autres infections intestinales bactériennes précisées (A048)\n"
+        "     Hiérarchie : Chapitre I — Maladies infectieuses et parasitaires\n"
+        "                  > Bloc A00-A09 — Maladies intestinales infectieuses\n"
+        "                  > Catégorie A04 — Autres infections intestinales bactériennes\n"
+        "     Inclus : infections à Clostridium ; infections à Yersinia ; entérocolite à C. difficile non précisée\n"
+        "     Exclus : intoxication alimentaire bactérienne (A05.-) ; tuberculose intestinale (A18.3+ K93.0*)\n"
+        "   * Diagnostic associés : \n"
+        "   - Diabète sucré de type 2, sans complication (E119)\n"
+        "   - Infection intestinale bactérienne, sans précision (A049)\n"
+    )
+    assert expected_block in prompt, (
+        f"expected_block not found in prompt.\n\nPrompt was:\n{prompt}"
+    )
+
+
+def test_prompt_section_string_secondary_codes_defensive(gs):
+    """If icd_secondary_code is accidentally a string (CSV round-trip), don't iterate characters."""
+    gs.load_cim10_hierarchy("cim10_hierarchy_sample.csv")
+    gs.load_cim10_notes("cim10_notes_sample.csv")
+    gs.icd_codes_cancer = []
+    gs.get_icd_description = lambda code: code  # stub returns code itself
+
+    scenario = {
+        "age": 40, "sexe": 1,
+        "icd_primary_code": "A048",
+        "icd_primary_description": "Autres infections intestinales bactériennes précisées",
+        "icd_secondary_code": "['E119', 'A049']",  # string, not a list — simulates CSV reload
+        "text_secondary_icd_official": "- Fallback line (X00)\n",
+        "case_management_type": "DP",
+        "case_management_type_text": "Diagnostic principal",
+        "case_management_description": "",
+        "drg_parent_code": "06M05",
+    }
+    prompt = gs.make_prompts_marks_from_scenario(scenario)
+    # The defensive guard should have reset secondary_codes to [] and triggered the elif fallback
+    assert "Fallback line (X00)" in prompt
+    # No char-by-char iteration (which would produce lines for '[', "'", 'E', etc.)
+    assert "   - [" not in prompt
+    assert "   - '" not in prompt

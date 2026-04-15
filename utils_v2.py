@@ -1331,6 +1331,11 @@ class generate_scenario:
 
                 SCENARIO += "   * Diagnostic associés : \n"
                 secondary_codes = scenario.get("icd_secondary_code") or []
+                # Defensive guard: CSV round-trip can turn a Python list into a string
+                # like "['A048','E119']". In that case fall back to the pre-built text
+                # via the elif branch below instead of iterating the string char-by-char.
+                if isinstance(secondary_codes, str):
+                    secondary_codes = []
                 if secondary_codes:
                     for das_code in secondary_codes:
                         SCENARIO += "   - " + self.get_icd_description(das_code) + " (" + das_code + ")\n"
