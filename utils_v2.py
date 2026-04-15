@@ -302,7 +302,10 @@ class generate_scenario:
             
         # DataFrame to load scenarios
         self.df_classification_profile = pd.DataFrame()
-     
+
+        self.cim10_hierarchy = {}
+        self.cim10_notes = {}
+
     def load_offical_icd(self,
                         file_name : str,
                         col_names: [] ):
@@ -318,8 +321,24 @@ class generate_scenario:
         
         self.df_term_icd  =self.df_icd_valid[~(self.df_icd_valid.icd_code.isin(self.df_complications.icd_code))]
         self.df_term_icd = self.df_term_icd.assign(categ  =self.df_term_icd.icd_code.str.slice(0,3))
-        
-        
+
+
+    def load_cim10_hierarchy(self,
+                             file_name: str = "CIM_ATIH_2025/cim10_hierarchy.csv"):
+        """Load CIM-10 hierarchy (chapter > block > category > leaf).
+
+        Silent fallback: if the file does not exist, self.cim10_hierarchy stays
+        as {} and the prompt enrichment is skipped (original behavior preserved).
+        """
+        full_path = self.path_ref + file_name
+        try:
+            df = pd.read_csv(full_path, dtype=str, keep_default_na=False)
+        except FileNotFoundError:
+            self.cim10_hierarchy = {}
+            return
+        self.cim10_hierarchy = df.set_index("code").to_dict(orient="index")
+
+
     def load_icd_categ_weight(self,
                         file_name : str,
                         col_names: [] ):
