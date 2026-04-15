@@ -301,3 +301,36 @@ def test_validate_hierarchy_flags_suspiciously_few_leaves():
     ])
     warnings = validate_hierarchy(df, expected_count=100, tolerance=200)
     assert any("Suspiciously few leaves" in w for w in warnings)
+
+
+def test_validate_hierarchy_flags_missing_parent():
+    df = pd.DataFrame([
+        {"code": "A00", "level": "leaf", "parent_code": ""},
+        {"code": "B00", "level": "leaf", "parent_code": "B"},
+    ])
+    warnings = validate_hierarchy(df, expected_count=2, tolerance=0)
+    assert any("empty parent_code" in w for w in warnings)
+
+
+def test_validate_hierarchy_flags_unexpected_count():
+    df = pd.DataFrame([{"code": "A00", "level": "chapter", "parent_code": ""}])
+    warnings = validate_hierarchy(df, expected_count=100, tolerance=10)
+    assert any("Unexpected concept count" in w for w in warnings)
+
+
+def test_validate_hierarchy_clean_returns_empty():
+    # A sample where non-chapter codes all have parents, count matches, and
+    # level distribution is plausible (1 chapter + > expected/2 leaves).
+    rows = [{"code": "I", "level": "chapter", "parent_code": ""}]
+    # Add enough leaves so the "suspiciously few leaves" check passes.
+    # expected_count=10, tolerance=0 → need > 5 leaves. 6 leaves does it.
+    for i in range(6):
+        rows.append({"code": f"A00{i}", "level": "leaf", "parent_code": "A00"})
+    # Add 3 more rows (categories/blocks) to reach expected_count=10.
+    rows.append({"code": "A00", "level": "category", "parent_code": "I"})
+    rows.append({"code": "A00-A09", "level": "block", "parent_code": "I"})
+    rows.append({"code": "B00", "level": "leaf", "parent_code": "A00"})
+    df = pd.DataFrame(rows)
+    assert len(df) == 10
+    warnings = validate_hierarchy(df, expected_count=10, tolerance=0)
+    assert warnings == [], f"expected no warnings, got: {warnings}"
