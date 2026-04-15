@@ -86,8 +86,11 @@ def test_format_enrichment_full_hierarchy_and_notes(gs):
         "     Hiérarchie : Chapitre I — Maladies infectieuses et parasitaires\n"
         "                  > Bloc A00-A09 — Maladies intestinales infectieuses\n"
         "                  > Catégorie A04 — Autres infections intestinales bactériennes\n"
-        "     Inclus : infections à Clostridium ; infections à Yersinia ; entérocolite à C. difficile non précisée\n"
-        "     Exclus : intoxication alimentaire bactérienne (A05.-) ; tuberculose intestinale (A18.3+ K93.0*)\n"
+        "     Inclus : infections à Clostridium\n"
+        "              ; infections à Yersinia\n"
+        "              ; entérocolite à C. difficile non précisée\n"
+        "     Exclus : intoxication alimentaire bactérienne (A05.-)\n"
+        "              ; tuberculose intestinale (A18.3+ K93.0*)\n"
     )
     assert result == expected
 
@@ -111,6 +114,28 @@ def test_format_enrichment_silent_fallback_missing_code(gs):
 def test_format_enrichment_silent_fallback_nothing_loaded(gs):
     """No referential loaded at all → empty string, no exception."""
     assert gs._format_cim10_enrichment("A048") == ""
+
+
+def test_format_enrichment_multiline_note_indented(gs):
+    """An inclusion note with embedded newlines must be indented under its label."""
+    gs.cim10_hierarchy = {}
+    gs.cim10_notes = {
+        "K528": {
+            "inclusion_notes": [
+                "Colite :\n - collagène\n - lymphocytaire\n - microscopique\nGastrite ou gastroentérite à éosinophiles"
+            ],
+            "exclusion_notes": [],
+        }
+    }
+    result = gs._format_cim10_enrichment("K528", include_notes=True)
+    expected = (
+        "     Inclus : Colite :\n"
+        "              - collagène\n"
+        "              - lymphocytaire\n"
+        "              - microscopique\n"
+        "              Gastrite ou gastroentérite à éosinophiles\n"
+    )
+    assert result == expected
 
 
 def test_prompt_section_enriches_dp_and_skips_non_eight_das(gs):
@@ -218,8 +243,11 @@ def test_prompt_section_full_golden_block(gs):
         "     Hiérarchie : Chapitre I — Maladies infectieuses et parasitaires\n"
         "                  > Bloc A00-A09 — Maladies intestinales infectieuses\n"
         "                  > Catégorie A04 — Autres infections intestinales bactériennes\n"
-        "     Inclus : infections à Clostridium ; infections à Yersinia ; entérocolite à C. difficile non précisée\n"
-        "     Exclus : intoxication alimentaire bactérienne (A05.-) ; tuberculose intestinale (A18.3+ K93.0*)\n"
+        "     Inclus : infections à Clostridium\n"
+        "              ; infections à Yersinia\n"
+        "              ; entérocolite à C. difficile non précisée\n"
+        "     Exclus : intoxication alimentaire bactérienne (A05.-)\n"
+        "              ; tuberculose intestinale (A18.3+ K93.0*)\n"
         "   * Diagnostic associés : \n"
         "   - Diabète sucré de type 2, sans complication (E119)\n"
         "   - Infection intestinale bactérienne, sans précision (A049)\n"

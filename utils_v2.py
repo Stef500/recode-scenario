@@ -418,13 +418,37 @@ class generate_scenario:
                 inclusion = notes.get("inclusion_notes", [])
                 exclusion = notes.get("exclusion_notes", [])
                 if inclusion:
-                    lines.append("     Inclus : " + " ; ".join(inclusion))
+                    lines.append(self._format_note_block("Inclus", inclusion))
                 if exclusion:
-                    lines.append("     Exclus : " + " ; ".join(exclusion))
+                    lines.append(self._format_note_block("Exclus", exclusion))
 
         if not lines:
             return ""
         return "\n".join(lines) + "\n"
+
+    @staticmethod
+    def _format_note_block(label: str, items: list[str]) -> str:
+        """Render an 'Inclus' / 'Exclus' block with continuation lines aligned.
+
+        Each item is joined by ' ; '. Within an item, embedded newlines are
+        preserved but continuation lines are indented to line up with the text
+        after 'Inclus : ' / 'Exclus : ' so the prompt remains readable.
+        """
+        header = f"     {label} : "
+        cont_indent = " " * len(header)
+        rendered_items = []
+        for item in items:
+            # Preserve internal line breaks, trim each line, drop empty lines.
+            cleaned_lines = [ln.strip() for ln in item.splitlines() if ln.strip()]
+            if not cleaned_lines:
+                continue
+            rendered = cleaned_lines[0]
+            for cont in cleaned_lines[1:]:
+                rendered += "\n" + cont_indent + cont
+            rendered_items.append(rendered)
+        joiner = "\n" + cont_indent + "; "
+        body = joiner.join(rendered_items)
+        return header + body
 
 
     def load_icd_categ_weight(self,
