@@ -1,0 +1,7 @@
+# Runtime dependencies — required to import utils_v2 and run the generation pipeline.
+# Pinned bounds keep the currently-tested versions without locking to a single patch.
+pandas>=2.0
+pyyaml>=6.0
+pyarrow>=14.0
+mistralai>=1.9,<2.0
+httpx>=0.27,<1.0
