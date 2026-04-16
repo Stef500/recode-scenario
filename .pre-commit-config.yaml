@@ -26,6 +26,7 @@ repos:
       - id: mypy
         additional_dependencies:
           - pydantic>=2.8
+          - pydantic-settings>=2.5
           - pandas-stubs
           - types-pyyaml
         args: [--config-file=pyproject.toml]

@@ -85,7 +85,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["D", "S101", "PLR2004"]
+"tests/**/*.py" = ["D", "S101", "PLR2004", "PLC0415"]
 "scripts/**/*.py" = ["D", "T201", "PLC0415", "PLR0915", "C901", "PLR0912", "RUF002", "RUF003"]
 
 [tool.ruff.lint.pydocstyle]
@@ -98,7 +98,7 @@ files = ["src/recode"]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["pandera.*", "mistralai.*"]
+module = ["pandera.*", "mistralai.*", "pydantic_settings.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

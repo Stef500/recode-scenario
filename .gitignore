@@ -2,7 +2,12 @@
 data/
 __pycache__/
 *.pyc
-config.py
+/config.py
+.env
+runs/
+coverage.xml
+.coverage
+htmlcov/
 test_1.ipynb
 test_2.ipynb
 .worktrees/

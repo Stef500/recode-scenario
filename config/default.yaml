@@ -1,0 +1,6 @@
+mistral_model: mistral-large-latest
+batch_size: 100
+poll_interval_seconds: 2.0
+max_secondary_codes: 2
+distinct_chapter_default: true
+rng_base_seed: 42
