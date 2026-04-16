@@ -8,6 +8,8 @@ comfort_intervention:
 cosmetic_surgery:
 - Z410
 - Z411
+exclusion_specialty: []
+exclusions: []
 overnight_study:
 - Z040
 plastic_surgery:

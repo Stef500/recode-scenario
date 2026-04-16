@@ -119,6 +119,46 @@ pd.DataFrame({"hospital": ["CHU Test A", "CHU Test B", "Hôpital Test C"]}).to_p
     OUT / "hospitals.parquet", index=False
 )
 
+# --- Procedures (profile distribution) ---
+procedures = [
+    ("JQGA004", "14C06", "O829", "[18-50[", 2, 50),
+    ("JQGD001", "14Z10", "O800", "[18-50[", 2, 120),
+]
+pd.DataFrame(
+    procedures,
+    columns=["procedure", "drg_parent_code", "icd_primary_code", "cage2", "sexe", "nb"],
+).to_parquet(OUT / "procedures.parquet", index=False)
+
+# --- Procedure official (CCAM with descriptions) ---
+procedure_official = [
+    ("JQGA004", "Césarienne"),
+    ("JQGD001", "Accouchement spontané par voie basse"),
+    ("DAFA001", "Examen anatomopathologique"),
+]
+pd.DataFrame(procedure_official, columns=["procedure", "procedure_description"]).to_parquet(
+    OUT / "procedure_official.parquet", index=False
+)
+
+# --- Secondary ICD (profile distribution) ---
+secondary_icd = [
+    ("I10", "05M09", "I500", "[50-[", 2, 60, "Chronic", "I50"),
+    ("E785", "05M09", "I500", "[50-[", 2, 40, "Chronic", "E78"),
+    ("N183", "05M09", "I500", "[50-[", 2, 20, "Chronic", "N18"),
+]
+pd.DataFrame(
+    secondary_icd,
+    columns=[
+        "icd_secondary_code",
+        "drg_parent_code",
+        "icd_primary_code",
+        "cage2",
+        "sexe",
+        "nb",
+        "type",
+        "icd_primary_parent_code",
+    ],
+).to_parquet(OUT / "secondary_icd.parquet", index=False)
+
 # --- Specialty referential ---
 specialty = [
     ("02C05", "OPHTALMOLOGIE", 1.0, "[18-30["),
@@ -173,10 +213,13 @@ pd.DataFrame(specialty, columns=["drg_parent_code", "specialty", "ratio", "age"]
                 "14Z14",
             ],
             "c_section_groups": ["14C06", "14C07", "14C08"],
+            "transplant": ["27Z02", "27Z03", "27Z04"],
             "transfusion": ["28Z14"],
             "apheresis": ["28Z16"],
             "palliative_care": ["23Z02"],
+            "stomies": ["06M17"],
             "deceased": ["04M24"],
+            "diagnostic_workup": ["23M03"],
         }
     )
 )
@@ -192,8 +235,33 @@ pd.DataFrame(specialty, columns=["drg_parent_code", "specialty", "ratio", "age"]
             "comfort_intervention": ["Z4180"],
             "overnight_study": ["Z040"],
             "sensitization_tests": ["Z012"],
+            "exclusions": [],
+            "exclusion_specialty": [],
         }
     )
 )
+(OUT / "constants/procedure_codes.yaml").write_text(
+    yaml.safe_dump(
+        {
+            "vaginal_delivery": ["JQGD001", "JQGD002"],
+            "c_section": ["JQGA002", "JQGA003", "JQGA004", "JQGA005"],
+        }
+    )
+)
+
+# --- Chronic (mini, empty for fixtures) ---
+pd.DataFrame({"code": [], "chronic": [], "libelle": []}).astype(
+    {"code": str, "chronic": int, "libelle": str}
+).to_parquet(OUT / "chronic.parquet", index=False)
+
+# --- Complications (mini, empty) ---
+pd.DataFrame({"icd_code": pd.Series(dtype=str)}).to_parquet(
+    OUT / "complications.parquet", index=False
+)
+
+# --- ICD synonyms (mini) ---
+pd.DataFrame(
+    {"icd_code": ["I500"], "icd_code_description": ["Insuffisance cardiaque décompensée"]}
+).to_parquet(OUT / "icd_synonyms.parquet", index=False)
 
 print(f"Wrote mini-referentials to {OUT}")
