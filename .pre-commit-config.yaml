@@ -32,5 +32,7 @@ repos:
           - loguru>=0.7
           - typer>=0.12
           - pandera[pandas]>=0.20
+          - tenacity>=9.0
+          - tqdm>=4.66
         args: [--config-file=pyproject.toml]
         files: ^src/
