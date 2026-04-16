@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from loguru import logger
 
-from recode.models import CancerContext, Diagnosis, Profile
+from recode.models import CancerContext, Diagnosis, Procedure, Profile
 from recode.referentials import ReferentialRegistry
 
 _QUERY_SKIP_COLUMNS = frozenset({"nb", "los", "los_mean", "los_sd"})
@@ -139,6 +139,7 @@ def build_diagnosis(
     registry: ReferentialRegistry,
     cancer: CancerContext | None,
     rng: np.random.Generator,
+    procedure: Procedure | None = None,
 ) -> Diagnosis:
     """Assemble the Diagnosis sub-model (primary + secondary + coding rule)."""
     from recode.scenarios.coding_rules import resolve_coding_rule
@@ -152,7 +153,15 @@ def build_diagnosis(
         for _, row in secondary.iterrows()
     )
 
-    rule_id, rule_text, _template = resolve_coding_rule(profile, cancer, registry)
+    rule_id, rule_text, _template = resolve_coding_rule(
+        profile,
+        cancer,
+        registry,
+        procedure=procedure,
+        icd_primary_description=primary_desc,
+        case_management_type_description=cmt_desc,
+        rng=rng,
+    )
     rule_description = ""
     try:
         raw = registry.coding_rules_raw
