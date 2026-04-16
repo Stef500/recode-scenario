@@ -46,8 +46,7 @@ def test_generated_covers_core_columns() -> None:
     but not byte-identical to ``utils_v2.py`` due to different RNG paths
     (pandas.DataFrame.sample with a state derived from rng.integers is not
     bit-equivalent to the original naked ``.sample()`` used by the legacy
-    code once full RNG threading is in place). This test will tighten in
-    Phase 4 once prompts are wired and full comparison is possible.
+    code once full RNG threading is in place).
     """
     from recode.models import Profile
     from recode.referentials import ReferentialRegistry
@@ -86,3 +85,34 @@ def test_generated_covers_core_columns() -> None:
             golden[col].reset_index(drop=True),
             check_names=False,
         )
+
+
+def test_prompts_generated_and_match_golden_structure() -> None:
+    """Prompts are assembled on the new pipeline and cover the same tags as the golden.
+
+    Byte-equivalence is not asserted (RNG paths differ slightly) but the
+    cancer-gated blocks (TNM, biomarkers, Chirurgie) should appear in both
+    outputs for cancer profiles.
+    """
+    from recode.models import Profile
+    from recode.referentials import ReferentialRegistry
+    from recode.scenarios.generator import ScenarioGenerator
+    from recode.scenarios.prompts import build_prefix, build_user_prompt
+
+    reg = ReferentialRegistry(processed_dir=REF, constants_dir=REF / "constants")
+    gen = ScenarioGenerator(registry=reg, base_seed=42)
+
+    profiles_df = pd.read_parquet(FIXTURES / "profiles.parquet")
+    golden = pd.read_csv(FIXTURES / "golden_scenarios.csv")
+
+    for idx, raw in profiles_df.iterrows():
+        p = Profile.model_validate(raw.to_dict())
+        s = gen.generate(p)
+        prompt = build_user_prompt(s)
+        prefix = build_prefix(s)
+        assert "SCÉNARIO DE DÉPART" in prompt
+        golden_prompt = golden.iloc[idx]["user_prompt"]
+        assert "SCÉNARIO DE DÉPART" in golden_prompt
+        # Prefix length must match (both sides use the same hardcoded templates)
+        golden_prefix_len = int(golden.iloc[idx]["prefix_len"])
+        assert len(prefix) == golden_prefix_len

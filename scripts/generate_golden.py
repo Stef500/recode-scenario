@@ -121,6 +121,19 @@ def setup_generator():
     return gs
 
 
+_PREFIX_NON_CANCER = (
+    "Le compte rendu suivant respecte les élements suivants :\n"
+    "        - les diagnostics ont une formulation moins formelle que la définition du code\n"
+    "        - le plan du CRH est conforme aux recommandations.\n        "
+)
+_PREFIX_CANCER = (
+    "Le compte rendu suivant respecte les élements suivants :\n"
+    "        - les diagnostics ont une formulation moins formelle que la définition du code\n"
+    "        - le type histologique et la valeur des biomarqueurs si recherchés\n"
+    "        - le plan du CRH est conforme aux recommandations.\n        "
+)
+
+
 def main():
     from utils_v2 import derive_scenario_rng
 
@@ -132,7 +145,23 @@ def main():
         profile = raw.copy()
         rng = derive_scenario_rng(profile, base_seed=BASE_SEED)
         scenario = gs.generate_scenario_from_profile(profile, rng=rng)
-        rows.append(scenario)
+        # Build prompts + prefix via the baseline methods
+        user_prompt = gs.make_prompts_marks_from_scenario(scenario)
+        try:
+            system_prompt = gs.create_system_prompt(scenario)
+        except (FileNotFoundError, OSError):
+            system_prompt = ""
+        prefix = (
+            _PREFIX_CANCER
+            if scenario["icd_primary_code"] in gs.icd_codes_cancer
+            else _PREFIX_NON_CANCER
+        )
+        row = dict(scenario)
+        row["user_prompt"] = user_prompt
+        row["system_prompt"] = system_prompt
+        row["prefix"] = prefix
+        row["prefix_len"] = len(prefix)
+        rows.append(row)
 
     df = pd.DataFrame(rows)
     out = FIXTURES / "golden_scenarios.csv"
