@@ -216,3 +216,36 @@ class IcdSynonymsSchema(pa.DataFrameModel):
 
         strict = "filter"
         coerce = True
+
+
+class Cim10HierarchySchema(pa.DataFrameModel):
+    """Hiérarchie CIM-10 (chapter > block > category > leaf)."""
+
+    code: Series[str] = pa.Field(nullable=False, unique=True)
+    level: Series[str] = pa.Field(isin=["chapter", "block", "category", "leaf"])
+    parent_code: Series[str] = pa.Field(nullable=True)
+    label: Series[str] = pa.Field(nullable=False)
+    chapter_code: Series[str] = pa.Field(nullable=True)
+    chapter_label: Series[str] = pa.Field(nullable=True)
+    block_code: Series[str] = pa.Field(nullable=True)
+    block_label: Series[str] = pa.Field(nullable=True)
+    category_code: Series[str] = pa.Field(nullable=True)
+    category_label: Series[str] = pa.Field(nullable=True)
+
+    class Config:
+        """Pandera validation config."""
+
+        strict = True
+
+
+class Cim10NotesSchema(pa.DataFrameModel):
+    """Notes Inclus/Exclus CIM-10 par code (items joints par '|')."""
+
+    code: Series[str] = pa.Field(nullable=False, unique=True)
+    inclusion_notes: Series[str] = pa.Field(nullable=True)
+    exclusion_notes: Series[str] = pa.Field(nullable=True)
+
+    class Config:
+        """Pandera validation config."""
+
+        strict = True
