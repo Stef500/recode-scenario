@@ -17,6 +17,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, "src")
+sys.path.insert(0, "arXiv/legacy_v2")
 sys.path.insert(0, ".")
 
 FIXTURES = Path("tests/fixtures")

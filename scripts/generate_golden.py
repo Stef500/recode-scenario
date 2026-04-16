@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, ".")
+sys.path.insert(0, "arXiv/legacy_v2")
 
 FIXTURES = Path("tests/fixtures")
 REF = FIXTURES / "referentials"
