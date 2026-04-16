@@ -6,6 +6,7 @@ import numpy as np
 
 from recode.models import Procedure, Profile
 from recode.referentials import ReferentialRegistry
+from recode.scenarios.diagnosis import _weighted_sample
 
 
 def _procedure_description(registry: ReferentialRegistry, code: str) -> str:
@@ -22,8 +23,6 @@ def sample_procedure(
     Excludes pathology procedures (``Examen anatomopathologique``) per the
     original utils_v2 behaviour.
     """
-    from recode.scenarios.diagnosis import _weighted_sample
-
     pool = registry.procedures
     pathology = set(registry.pathology_procedures)
     pool = pool[~pool["procedure"].isin(pathology)]

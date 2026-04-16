@@ -8,6 +8,7 @@ from loguru import logger
 
 from recode.models import CancerContext, Diagnosis, Procedure, Profile
 from recode.referentials import ReferentialRegistry
+from recode.scenarios.coding_rules import resolve_coding_rule
 
 _QUERY_SKIP_COLUMNS = frozenset({"nb", "los", "los_mean", "los_sd"})
 
@@ -142,8 +143,6 @@ def build_diagnosis(
     procedure: Procedure | None = None,
 ) -> Diagnosis:
     """Assemble the Diagnosis sub-model (primary + secondary + coding rule)."""
-    from recode.scenarios.coding_rules import resolve_coding_rule
-
     primary_desc = _icd_description(registry, profile.icd_primary_code)
     cmt_desc = _icd_description(registry, profile.case_management_type)
 
