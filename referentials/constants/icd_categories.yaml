@@ -1,0 +1,69 @@
+# Catégories CIM-10 (extraites de utils_v2.py:190-198)
+
+ascites:
+  - R18
+
+pleural_effusion:
+  - J90
+  - J91
+  - J940
+  - J941
+  - J942
+  - J948
+  - J949
+
+chronic_intractable_pain:
+  - R5210
+  - R5218
+
+cosmetic_surgery:
+  - Z410
+  - Z411
+
+plastic_surgery:
+  - Z420
+  - Z421
+  - Z423
+  - Z424
+  - Z425
+  - Z426
+  - Z427
+  - Z428
+  - Z429
+
+comfort_intervention:
+  - Z4180
+
+prophylactic_intervention:
+  - Z400
+  - Z401
+  - Z408
+
+overnight_study:
+  - Z040
+
+sensitization_tests:
+  - Z012
+
+exclusions:
+  - Z40
+  - Z08
+  - Z09
+  - Z48
+  - Z71
+  - Z48
+  - Z34
+  - Z35
+  - Z39
+  - Z94
+  - Z95
+  - Z94
+  - Z96
+  - Z3908
+  - Z762
+
+exclusion_specialty:
+  - THERAPIE TRANSFUSION
+  - PSYCHIATRIE INFANTO-JUVENILE NON SECTORISE
+  - PHYSIOLOGIE
+  - PHYSIOLOGIE PEDIATRIQUE

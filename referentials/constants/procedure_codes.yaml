@@ -1,0 +1,19 @@
+# Procédures CCAM (extraites de utils_v2.py:215-216)
+
+vaginal_delivery:
+  - JQGD001
+  - JQGD002
+  - JQGD003
+  - JQGD004
+  - JQGD005
+  - JQGD007
+  - JQGD008
+  - JQGD010
+  - JQGD012
+  - JQGD013
+
+c_section:
+  - JQGA002
+  - JQGA003
+  - JQGA004
+  - JQGA005

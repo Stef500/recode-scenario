@@ -1,0 +1,59 @@
+# Groupes DRG/GHM (extraites de utils_v2.py:187-216)
+
+chemotherapy_root_codes:
+  - 28Z07
+  - 17M05
+  - 17M06
+
+radiotherapy_root_codes:
+  - 17K04
+  - 17K05
+  - 17K08
+  - 17K09
+  - 28Z10
+  - 28Z11
+  - 28Z18
+  - 28Z19
+  - 28Z20
+  - 28Z21
+  - 28Z22
+  - 28Z23
+  - 28Z24
+  - 28Z25
+
+vaginal_delivery_groups:
+  - 14C03
+  - 14Z09
+  - 14Z10
+  - 14Z11
+  - 14Z12
+  - 14Z13
+  - 14Z14
+
+c_section_groups:
+  - 14C06
+  - 14C07
+  - 14C08
+
+transplant:
+  - 27Z02
+  - 27Z03
+  - 27Z04
+
+transfusion:
+  - 28Z14
+
+apheresis:
+  - 28Z16
+
+palliative_care:
+  - 23Z02
+
+stomies:
+  - 06M17
+
+deceased:
+  - 04M24
+
+diagnostic_workup:
+  - 23M03
