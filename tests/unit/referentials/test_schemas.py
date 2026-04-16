@@ -48,76 +48,92 @@ def test_drg_statistics_rejects_negative_los() -> None:
         DrgStatisticsSchema.validate(df)
 
 
-def test_cim10_hierarchy_schema_valid():
+def test_cim10_hierarchy_schema_valid() -> None:
     from recode.referentials.schemas import Cim10HierarchySchema
 
-    df = pd.DataFrame({
-        "code": ["I", "A00-A09", "A04", "A048"],
-        "level": ["chapter", "block", "category", "leaf"],
-        "parent_code": ["", "I", "A00-A09", "A04"],
-        "label": ["chap", "bloc", "cat", "leaf"],
-        "chapter_code": ["", "", "", "I"],
-        "chapter_label": ["", "", "", "Mal. inf."],
-        "block_code": ["", "", "", "A00-A09"],
-        "block_label": ["", "", "", "Intest."],
-        "category_code": ["", "", "", "A04"],
-        "category_label": ["", "", "", "Autres inf."],
-    })
+    df = pd.DataFrame(
+        {
+            "code": ["I", "A00-A09", "A04", "A048"],
+            "level": ["chapter", "block", "category", "leaf"],
+            "parent_code": ["", "I", "A00-A09", "A04"],
+            "label": ["chap", "bloc", "cat", "leaf"],
+            "chapter_code": ["", "", "", "I"],
+            "chapter_label": ["", "", "", "Mal. inf."],
+            "block_code": ["", "", "", "A00-A09"],
+            "block_label": ["", "", "", "Intest."],
+            "category_code": ["", "", "", "A04"],
+            "category_label": ["", "", "", "Autres inf."],
+        }
+    )
     validated = Cim10HierarchySchema.validate(df)
     assert len(validated) == 4
 
 
-def test_cim10_hierarchy_schema_rejects_bad_level():
+def test_cim10_hierarchy_schema_rejects_bad_level() -> None:
     from recode.referentials.schemas import Cim10HierarchySchema
 
-    df = pd.DataFrame({
-        "code": ["X"],
-        "level": ["bogus"],
-        "parent_code": [""],
-        "label": ["x"],
-        "chapter_code": [""], "chapter_label": [""],
-        "block_code": [""], "block_label": [""],
-        "category_code": [""], "category_label": [""],
-    })
-    with pytest.raises(Exception):  # pandera raises SchemaError / pandera.errors.SchemaError
+    df = pd.DataFrame(
+        {
+            "code": ["X"],
+            "level": ["bogus"],
+            "parent_code": [""],
+            "label": ["x"],
+            "chapter_code": [""],
+            "chapter_label": [""],
+            "block_code": [""],
+            "block_label": [""],
+            "category_code": [""],
+            "category_label": [""],
+        }
+    )
+    with pytest.raises(pae.SchemaError):
         Cim10HierarchySchema.validate(df)
 
 
-def test_cim10_hierarchy_schema_rejects_duplicate_code():
+def test_cim10_hierarchy_schema_rejects_duplicate_code() -> None:
     from recode.referentials.schemas import Cim10HierarchySchema
 
-    df = pd.DataFrame({
-        "code": ["A048", "A048"],
-        "level": ["leaf", "leaf"],
-        "parent_code": ["A04", "A04"],
-        "label": ["x", "x"],
-        "chapter_code": ["I", "I"], "chapter_label": ["", ""],
-        "block_code": ["", ""], "block_label": ["", ""],
-        "category_code": ["", ""], "category_label": ["", ""],
-    })
-    with pytest.raises(Exception):
+    df = pd.DataFrame(
+        {
+            "code": ["A048", "A048"],
+            "level": ["leaf", "leaf"],
+            "parent_code": ["A04", "A04"],
+            "label": ["x", "x"],
+            "chapter_code": ["I", "I"],
+            "chapter_label": ["", ""],
+            "block_code": ["", ""],
+            "block_label": ["", ""],
+            "category_code": ["", ""],
+            "category_label": ["", ""],
+        }
+    )
+    with pytest.raises(pae.SchemaError):
         Cim10HierarchySchema.validate(df)
 
 
-def test_cim10_notes_schema_valid():
+def test_cim10_notes_schema_valid() -> None:
     from recode.referentials.schemas import Cim10NotesSchema
 
-    df = pd.DataFrame({
-        "code": ["A048", "E119"],
-        "inclusion_notes": ["a|b", ""],
-        "exclusion_notes": ["", "c"],
-    })
+    df = pd.DataFrame(
+        {
+            "code": ["A048", "E119"],
+            "inclusion_notes": ["a|b", ""],
+            "exclusion_notes": ["", "c"],
+        }
+    )
     validated = Cim10NotesSchema.validate(df)
     assert len(validated) == 2
 
 
-def test_cim10_notes_schema_rejects_duplicate_code():
+def test_cim10_notes_schema_rejects_duplicate_code() -> None:
     from recode.referentials.schemas import Cim10NotesSchema
 
-    df = pd.DataFrame({
-        "code": ["A048", "A048"],
-        "inclusion_notes": ["", ""],
-        "exclusion_notes": ["", ""],
-    })
-    with pytest.raises(Exception):
+    df = pd.DataFrame(
+        {
+            "code": ["A048", "A048"],
+            "inclusion_notes": ["", ""],
+            "exclusion_notes": ["", ""],
+        }
+    )
+    with pytest.raises(pae.SchemaError):
         Cim10NotesSchema.validate(df)
