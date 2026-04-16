@@ -27,8 +27,8 @@ class DrgStatisticsSchema(pa.DataFrameModel):
     """DRG length-of-stay statistics (mean + std)."""
 
     drg_parent_code: Series[str] = pa.Field(str_matches=r"^\d{2}[A-Z]\d{2}$")
-    los_mean: Series[float] = pa.Field(ge=0)
-    los_sd: Series[float] = pa.Field(ge=0)
+    los_mean: Series[float] = pa.Field(ge=0, nullable=True)
+    los_sd: Series[float] = pa.Field(ge=0, nullable=True)
 
     class Config:
         """Pandera validation config."""
@@ -177,10 +177,13 @@ class ClassificationProfileSchema(pa.DataFrameModel):
 
 
 class ChronicSchema(pa.DataFrameModel):
-    """Chronic-disease flag for ICD codes."""
+    """Chronic-disease flag for ICD codes.
+
+    ``chronic`` is a severity/type code (observed values: 0-6 in ATIH data).
+    """
 
     code: Series[str]
-    chronic: Series[int] = pa.Field(isin=[0, 1, 2, 3])
+    chronic: Series[int] = pa.Field(ge=0, le=9)
     libelle: Series[str] = pa.Field(nullable=True)
 
     class Config:
