@@ -30,5 +30,6 @@ repos:
           - pandas-stubs
           - types-pyyaml
           - loguru>=0.7
+          - typer>=0.12
         args: [--config-file=pyproject.toml]
         files: ^src/
