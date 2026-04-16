@@ -30,6 +30,7 @@ class CancerCodes:
     metastasis_other: frozenset[str]
     contact_treatment: frozenset[str]
     chemotherapy_non_tumoral: frozenset[str]
+    all_cancer: frozenset[str] = frozenset()
 
     @classmethod
     def from_yaml(cls, path: Path) -> CancerCodes:
