@@ -64,13 +64,20 @@ def build_jsonl_buffer(requests: Iterable[BatchRequest]) -> BytesIO:
 
 @retry(wait=wait_exponential(multiplier=2, min=4, max=60), stop=stop_after_attempt(5))
 def upload_input(client: Mistral, requests: list[BatchRequest]) -> Any:
-    """Upload the JSONL batch file to Mistral, with exponential retry."""
-    # Import File lazily: its location depends on the installed mistralai version.
-    from mistralai.models import File
+    """Upload the JSONL batch file to Mistral, with exponential retry.
 
+    ``File`` is imported lazily because its location differs across mistralai
+    versions. We look it up on the ``mistralai`` namespace at call time.
+    """
+    import mistralai
+
+    file_cls = getattr(mistralai, "File", None) or getattr(mistralai.client, "File", None)
+    if file_cls is None:
+        msg = "mistralai File class not found; install mistralai>=1.2"
+        raise RuntimeError(msg)
     buf = build_jsonl_buffer(requests)
     return client.files.upload(
-        file=File(file_name="batch.jsonl", content=buf.getvalue()), purpose="batch"
+        file=file_cls(file_name="batch.jsonl", content=buf.getvalue()), purpose="batch"
     )
 
 
@@ -122,7 +129,7 @@ def run_batch(
 def download_output(client: Mistral, file_id: str, dest: Path) -> None:
     """Download a batch output file to ``dest`` (creates parent dirs)."""
     dest.parent.mkdir(parents=True, exist_ok=True)
-    stream = client.files.download(file_id=file_id)
+    stream: Any = client.files.download(file_id=file_id)
     with dest.open("wb") as f:
         for chunk in stream.stream:
             f.write(chunk)

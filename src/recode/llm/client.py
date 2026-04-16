@@ -2,12 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from mistralai.client import Mistral
 
-if TYPE_CHECKING:
-    from recode.config import Settings
+from recode.config import Settings
 
 
 def make_client(settings: Settings | None = None) -> Mistral:
@@ -19,7 +16,5 @@ def make_client(settings: Settings | None = None) -> Mistral:
     Returns:
         A Mistral client ready for batch/chat operations.
     """
-    from recode.config import Settings
-
     cfg = settings or Settings()
     return Mistral(api_key=cfg.mistral_api_key.get_secret_value())

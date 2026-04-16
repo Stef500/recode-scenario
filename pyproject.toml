@@ -88,6 +88,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["D", "S101", "PLR2004", "PLC0415"]
 "scripts/**/*.py" = ["D", "T201", "PLC0415", "PLR0915", "C901", "PLR0912", "RUF002", "RUF003"]
+"src/recode/llm/batch.py" = ["PLC0415"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
