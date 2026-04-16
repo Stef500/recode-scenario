@@ -37,7 +37,9 @@ def generate(
     df = pd.read_parquet(profile_file)
     if query:
         df = df.query(query)
-    sample = df.sample(n=n_scenarios, weights="nb", random_state=seed).reset_index(drop=True)
+    sample = df.sample(n=n_scenarios, weights="nb", replace=True, random_state=seed).reset_index(
+        drop=True
+    )
     logger.info("Sampled {} profiles from {} candidates", len(sample), len(df))
 
     generator = ScenarioGenerator(registry=registry, base_seed=seed)
