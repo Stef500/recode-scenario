@@ -8,12 +8,26 @@ from recode.models.profile import (
     IcdCode,
     Profile,
 )
+from recode.models.scenario import (
+    CancerContext,
+    Diagnosis,
+    Patient,
+    Procedure,
+    Scenario,
+    Stay,
+)
 
 __all__ = [
     "AdmissionType",
     "AgeClass",
+    "CancerContext",
+    "Diagnosis",
     "DrgCode",
     "Gender",
     "IcdCode",
+    "Patient",
+    "Procedure",
     "Profile",
+    "Scenario",
+    "Stay",
 ]
