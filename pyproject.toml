@@ -1,0 +1,115 @@
+[project]
+name = "recode"
+version = "0.1.0"
+description = "Generate synthetic clinical scenarios from French PMSI data for LLM training"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "SO"}]
+license = {text = "MIT"}
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=2.0",
+    "pyarrow>=17.0",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.5",
+    "loguru>=0.7",
+    "typer>=0.12",
+    "pyyaml>=6.0",
+    "pandera[pandas]>=0.20",
+    "mistralai>=1.2",
+    "tenacity>=9.0",
+    "tqdm>=4.66",
+    "openpyxl>=3.1",
+    "xlrd>=2.0",
+]
+
+[project.scripts]
+recode = "recode.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=5.0",
+    "pytest-randomly>=3.15",
+    "pytest-mock>=3.14",
+    "hypothesis>=6.112",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pandas-stubs>=2.2",
+    "types-pyyaml>=6.0",
+    "pre-commit>=3.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/recode"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",
+    "I",
+    "B",
+    "C4",
+    "D",
+    "UP",
+    "N",
+    "S",
+    "T201",
+    "RET",
+    "SIM",
+    "PL",
+    "RUF",
+]
+ignore = [
+    "D203", "D213",
+    "PLR0913",
+    "PLR2004",
+    "S101",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D", "S101", "PLR2004"]
+"scripts/**/*.py" = ["D", "T201"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/recode"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["pandera.*", "mistralai.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --strict-markers --cov=src/recode --cov-report=term-missing"
+testpaths = ["tests"]
+markers = [
+    "slow: tests lents (>1s)",
+    "network: appels réseau réels (skip par défaut)",
+    "regression: régression golden",
+]
+
+[tool.coverage.run]
+source = ["src/recode"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
