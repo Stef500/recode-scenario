@@ -98,7 +98,7 @@ files = ["src/recode"]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["pandera.*", "mistralai.*", "pydantic_settings.*"]
+module = ["pandera.*", "mistralai.*", "pydantic_settings.*", "loguru.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

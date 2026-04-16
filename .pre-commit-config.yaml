@@ -29,5 +29,6 @@ repos:
           - pydantic-settings>=2.5
           - pandas-stubs
           - types-pyyaml
+          - loguru>=0.7
         args: [--config-file=pyproject.toml]
         files: ^src/
