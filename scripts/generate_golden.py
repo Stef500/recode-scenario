@@ -5,8 +5,10 @@ tests/fixtures/referentials/.
 C'est la référence de régression pour le nouveau code Phase 3+.
 Exécuter avec le même seed (42) produira toujours le même CSV.
 """
-from pathlib import Path
+
 import sys
+from pathlib import Path
+
 import pandas as pd
 
 sys.path.insert(0, ".")
@@ -34,10 +36,19 @@ def _patch_pandas_readers():
         try:
             return original_read_excel(path, *args, **kwargs)
         except (FileNotFoundError, OSError):
-            return pd.DataFrame({"code": [], "icd_code": [], "CIM10": [],
-                                 "racine": [], "dms": [], "dsd": [],
-                                 "libelle_racine": [], "chronic": [],
-                                 "libelle": []})
+            return pd.DataFrame(
+                {
+                    "code": [],
+                    "icd_code": [],
+                    "CIM10": [],
+                    "racine": [],
+                    "dms": [],
+                    "dsd": [],
+                    "libelle_racine": [],
+                    "chronic": [],
+                    "libelle": [],
+                }
+            )
 
     pd.read_csv = safe_read_csv
     pd.read_excel = safe_read_excel
@@ -54,6 +65,7 @@ def setup_generator():
     original_csv, original_excel = _patch_pandas_readers()
     try:
         from utils_v2 import generate_scenario
+
         gs = generate_scenario(path_ref=str(REF) + "/", path_data=str(REF) + "/")
     finally:
         _restore_pandas_readers(original_csv, original_excel)
@@ -62,34 +74,44 @@ def setup_generator():
     # vides créés par la constructor sous monkey-patch).
     gs.df_icd_official = pd.read_parquet(REF / "icd_official.parquet")
     gs.df_icd_valid = gs.df_icd_official.copy()
-    gs.df_term_icd = gs.df_icd_official.assign(
-        categ=gs.df_icd_official.icd_code.str.slice(0, 3))
+    gs.df_term_icd = gs.df_icd_official.assign(categ=gs.df_icd_official.icd_code.str.slice(0, 3))
 
     gs.drg_statistics = pd.read_parquet(REF / "drg_statistics.parquet")
     gs.drg_parents_groups = pd.read_parquet(REF / "drg_groups.parquet")
-    gs.df_cancer_treatment_recommandation = pd.read_parquet(
-        REF / "cancer_treatments.parquet")
+    gs.df_cancer_treatment_recommandation = pd.read_parquet(REF / "cancer_treatments.parquet")
     gs.df_names = pd.read_parquet(REF / "names.parquet")
     gs.df_hospitals = pd.read_parquet(REF / "hospitals.parquet")
     gs.ref_sep = pd.read_parquet(REF / "specialty.parquet")
 
     # Frames vides pour les référentiels non couverts par les fixtures.
-    gs.df_secondary_icd = pd.DataFrame(columns=[
-        "icd_secondary_code", "drg_parent_code", "icd_primary_code",
-        "cage2", "sexe", "nb", "type", "icd_primary_parent_code",
-    ])
-    gs.df_procedures = pd.DataFrame(columns=[
-        "procedure", "drg_parent_code", "icd_primary_code",
-        "cage2", "sexe", "nb",
-    ])
-    gs.df_procedure_official = pd.DataFrame(
-        columns=["procedure", "procedure_description"])
+    gs.df_secondary_icd = pd.DataFrame(
+        columns=[
+            "icd_secondary_code",
+            "drg_parent_code",
+            "icd_primary_code",
+            "cage2",
+            "sexe",
+            "nb",
+            "type",
+            "icd_primary_parent_code",
+        ]
+    )
+    gs.df_procedures = pd.DataFrame(
+        columns=[
+            "procedure",
+            "drg_parent_code",
+            "icd_primary_code",
+            "cage2",
+            "sexe",
+            "nb",
+        ]
+    )
+    gs.df_procedure_official = pd.DataFrame(columns=["procedure", "procedure_description"])
     gs.pathology_procedure = pd.Series([], dtype=str)
     gs.df_complications = pd.DataFrame(columns=["icd_code"])
     gs.df_chronic = pd.DataFrame(columns=["code", "chronic", "libelle"])
     gs.icd_codes_chronic = []
-    gs.df_icd_synonyms = pd.DataFrame(
-        columns=["icd_code", "icd_code_description"])
+    gs.df_icd_synonyms = pd.DataFrame(columns=["icd_code", "icd_code_description"])
     gs.icd_codes_cancer = ["C509", "C50", "C349", "C34"]
     gs.df_classification_profile = pd.DataFrame()
 

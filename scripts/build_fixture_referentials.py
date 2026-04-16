@@ -3,7 +3,9 @@
 utilisés par tests/fixtures/profiles.parquet, suffisants pour faire tourner
 le pipeline de génération de bout en bout dans les tests unitaires.
 """
+
 from pathlib import Path
+
 import pandas as pd
 import yaml
 
@@ -31,18 +33,26 @@ icd_data = [
     ("C780", "Tumeur maligne secondaire du poumon", 1),
     ("C770", "Métastase ganglionnaire de la tête, du cou", 1),
 ]
-pd.DataFrame(icd_data, columns=["icd_code", "icd_code_description", "aut_mco"]
-              ).to_parquet(OUT / "icd_official.parquet", index=False)
+pd.DataFrame(icd_data, columns=["icd_code", "icd_code_description", "aut_mco"]).to_parquet(
+    OUT / "icd_official.parquet", index=False
+)
 
 # --- DRG statistics ---
 drg_stats = [
-    ("02C05", 0.5, 0.3), ("04M05", 5.2, 1.8), ("05M09", 7.5, 2.5),
-    ("06C12", 2.8, 0.9), ("09C04", 4.5, 1.5), ("10M11", 6.8, 2.1),
-    ("14C06", 5.5, 1.2), ("14Z10", 3.2, 0.8), ("28Z07", 0.0, 0.0),
+    ("02C05", 0.5, 0.3),
+    ("04M05", 5.2, 1.8),
+    ("05M09", 7.5, 2.5),
+    ("06C12", 2.8, 0.9),
+    ("09C04", 4.5, 1.5),
+    ("10M11", 6.8, 2.1),
+    ("14C06", 5.5, 1.2),
+    ("14Z10", 3.2, 0.8),
+    ("28Z07", 0.0, 0.0),
     ("28Z14", 0.0, 0.0),
 ]
-pd.DataFrame(drg_stats, columns=["drg_parent_code", "los_mean", "los_sd"]
-              ).to_parquet(OUT / "drg_statistics.parquet", index=False)
+pd.DataFrame(drg_stats, columns=["drg_parent_code", "los_mean", "los_sd"]).to_parquet(
+    OUT / "drg_statistics.parquet", index=False
+)
 
 # --- DRG groups (libellés) ---
 drg_groups = [
@@ -57,34 +67,57 @@ drg_groups = [
     ("28Z07", "Chimiothérapie pour tumeur"),
     ("28Z14", "Transfusion"),
 ]
-pd.DataFrame(drg_groups, columns=["drg_parent_code", "drg_parent_description"]
-              ).to_parquet(OUT / "drg_groups.parquet", index=False)
+pd.DataFrame(drg_groups, columns=["drg_parent_code", "drg_parent_description"]).to_parquet(
+    OUT / "drg_groups.parquet", index=False
+)
 
 # --- Cancer treatments (mini) ---
 cancer = [
-    ("C50", "Sein", "Carcinome canalaire infiltrant", "II", "RH+/HER2-",
-     "Chirurgie + radiothérapie + hormonothérapie", "AC-T"),
-    ("C34", "Poumon", "Adénocarcinome", "IV", "EGFR+",
-     "Thérapie ciblée", "Osimertinib"),
+    (
+        "C50",
+        "Sein",
+        "Carcinome canalaire infiltrant",
+        "II",
+        "RH+/HER2-",
+        "Chirurgie + radiothérapie + hormonothérapie",
+        "AC-T",
+    ),
+    ("C34", "Poumon", "Adénocarcinome", "IV", "EGFR+", "Thérapie ciblée", "Osimertinib"),
 ]
-pd.DataFrame(cancer, columns=["icd_parent_code", "primary_site", "histological_type",
-                                "stage", "biomarkers", "treatment_recommendation",
-                                "chemotherapy_regimen"]
-              ).to_parquet(OUT / "cancer_treatments.parquet", index=False)
+pd.DataFrame(
+    cancer,
+    columns=[
+        "icd_parent_code",
+        "primary_site",
+        "histological_type",
+        "stage",
+        "biomarkers",
+        "treatment_recommendation",
+        "chemotherapy_regimen",
+    ],
+).to_parquet(OUT / "cancer_treatments.parquet", index=False)
 
 # --- Names (small fake list) ---
 names = [
-    ("Jean", "Dupont", 1), ("Marie", "Martin", 2), ("Pierre", "Durand", 1),
-    ("Sophie", "Bernard", 2), ("Luc", "Petit", 1), ("Claire", "Robert", 2),
-    ("Marc", "Richard", 1), ("Anne", "Moreau", 2), ("Paul", "Simon", 1),
+    ("Jean", "Dupont", 1),
+    ("Marie", "Martin", 2),
+    ("Pierre", "Durand", 1),
+    ("Sophie", "Bernard", 2),
+    ("Luc", "Petit", 1),
+    ("Claire", "Robert", 2),
+    ("Marc", "Richard", 1),
+    ("Anne", "Moreau", 2),
+    ("Paul", "Simon", 1),
     ("Julie", "Laurent", 2),
 ]
-pd.DataFrame(names, columns=["prenom", "nom", "sexe"]
-              ).to_parquet(OUT / "names.parquet", index=False)
+pd.DataFrame(names, columns=["prenom", "nom", "sexe"]).to_parquet(
+    OUT / "names.parquet", index=False
+)
 
 # --- Hospitals ---
-pd.DataFrame({"hospital": ["CHU Test A", "CHU Test B", "Hôpital Test C"]}
-              ).to_parquet(OUT / "hospitals.parquet", index=False)
+pd.DataFrame({"hospital": ["CHU Test A", "CHU Test B", "Hôpital Test C"]}).to_parquet(
+    OUT / "hospitals.parquet", index=False
+)
 
 # --- Specialty referential ---
 specialty = [
@@ -99,38 +132,68 @@ specialty = [
     ("28Z07", "ONCOLOGIE MEDICALE", 1.0, "[60-70["),
     ("28Z14", "MEDECINE INTERNE", 1.0, "[80-["),
 ]
-pd.DataFrame(specialty, columns=["drg_parent_code", "specialty", "ratio", "age"]
-              ).to_parquet(OUT / "specialty.parquet", index=False)
+pd.DataFrame(specialty, columns=["drg_parent_code", "specialty", "ratio", "age"]).to_parquet(
+    OUT / "specialty.parquet", index=False
+)
 
 # --- Constants YAML ---
 (OUT / "constants").mkdir(exist_ok=True)
-(OUT / "constants/cancer_codes.yaml").write_text(yaml.safe_dump({
-    "metastasis_lymph_nodes": ["C770", "C771", "C772", "C773", "C774", "C775", "C778", "C779"],
-    "metastasis_other": ["C780", "C781", "C782", "C783", "C784", "C785"],
-    "contact_treatment": ["Z491", "Z511", "Z512", "Z5101", "Z513", "Z516"],
-    "chemotherapy_non_tumoral": ["Z512"],
-    "all_cancer": ["C509", "C50", "C349", "C34"],
-}))
-(OUT / "constants/drg_categories.yaml").write_text(yaml.safe_dump({
-    "chemotherapy_root_codes": ["28Z07", "17M05", "17M06"],
-    "radiotherapy_root_codes": ["17K04", "17K05"],
-    "vaginal_delivery_groups": ["14C03", "14Z09", "14Z10", "14Z11", "14Z12", "14Z13", "14Z14"],
-    "c_section_groups": ["14C06", "14C07", "14C08"],
-    "transfusion": ["28Z14"],
-    "apheresis": ["28Z16"],
-    "palliative_care": ["23Z02"],
-    "deceased": ["04M24"],
-}))
-(OUT / "constants/icd_categories.yaml").write_text(yaml.safe_dump({
-    "ascites": ["R18"],
-    "pleural_effusion": ["J90", "J91", "J940", "J941"],
-    "chronic_intractable_pain": ["R5210", "R5218"],
-    "cosmetic_surgery": ["Z410", "Z411"],
-    "prophylactic_intervention": ["Z400", "Z401", "Z408"],
-    "plastic_surgery": ["Z420", "Z421"],
-    "comfort_intervention": ["Z4180"],
-    "overnight_study": ["Z040"],
-    "sensitization_tests": ["Z012"],
-}))
+(OUT / "constants/cancer_codes.yaml").write_text(
+    yaml.safe_dump(
+        {
+            "metastasis_lymph_nodes": [
+                "C770",
+                "C771",
+                "C772",
+                "C773",
+                "C774",
+                "C775",
+                "C778",
+                "C779",
+            ],
+            "metastasis_other": ["C780", "C781", "C782", "C783", "C784", "C785"],
+            "contact_treatment": ["Z491", "Z511", "Z512", "Z5101", "Z513", "Z516"],
+            "chemotherapy_non_tumoral": ["Z512"],
+            "all_cancer": ["C509", "C50", "C349", "C34"],
+        }
+    )
+)
+(OUT / "constants/drg_categories.yaml").write_text(
+    yaml.safe_dump(
+        {
+            "chemotherapy_root_codes": ["28Z07", "17M05", "17M06"],
+            "radiotherapy_root_codes": ["17K04", "17K05"],
+            "vaginal_delivery_groups": [
+                "14C03",
+                "14Z09",
+                "14Z10",
+                "14Z11",
+                "14Z12",
+                "14Z13",
+                "14Z14",
+            ],
+            "c_section_groups": ["14C06", "14C07", "14C08"],
+            "transfusion": ["28Z14"],
+            "apheresis": ["28Z16"],
+            "palliative_care": ["23Z02"],
+            "deceased": ["04M24"],
+        }
+    )
+)
+(OUT / "constants/icd_categories.yaml").write_text(
+    yaml.safe_dump(
+        {
+            "ascites": ["R18"],
+            "pleural_effusion": ["J90", "J91", "J940", "J941"],
+            "chronic_intractable_pain": ["R5210", "R5218"],
+            "cosmetic_surgery": ["Z410", "Z411"],
+            "prophylactic_intervention": ["Z400", "Z401", "Z408"],
+            "plastic_surgery": ["Z420", "Z421"],
+            "comfort_intervention": ["Z4180"],
+            "overnight_study": ["Z040"],
+            "sensitization_tests": ["Z012"],
+        }
+    )
+)
 
 print(f"Wrote mini-referentials to {OUT}")
