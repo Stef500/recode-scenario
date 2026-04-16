@@ -1,5 +1,6 @@
 """Pydantic v2 domain models (shared across all subpackages)."""
 
+from recode.models.coding_rule import CodingRule, CodingRuleCriteria
 from recode.models.profile import (
     AdmissionType,
     AgeClass,
@@ -16,11 +17,14 @@ from recode.models.scenario import (
     Scenario,
     Stay,
 )
+from recode.models.treatment import TreatmentRecommendation
 
 __all__ = [
     "AdmissionType",
     "AgeClass",
     "CancerContext",
+    "CodingRule",
+    "CodingRuleCriteria",
     "Diagnosis",
     "DrgCode",
     "Gender",
@@ -30,4 +34,5 @@ __all__ = [
     "Profile",
     "Scenario",
     "Stay",
+    "TreatmentRecommendation",
 ]
