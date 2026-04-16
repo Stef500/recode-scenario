@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 Gender = Literal[1, 2]
 AdmissionType = Literal["Inpatient", "Outpatient"]
@@ -43,3 +43,13 @@ class Profile(BaseModel):
     icd_secondary_codes: list[IcdCode] = Field(default_factory=list, alias="icd_secondary_code")
     specialty: str | None = None
     age_exact: int | None = Field(default=None, alias="age2")
+
+    @field_validator("icd_secondary_codes", mode="before")
+    @classmethod
+    def _coerce_secondary_codes(cls, v: object) -> object:
+        """Accept legacy space-separated string form from df_classification_profile."""
+        if v is None or v == "":
+            return []
+        if isinstance(v, str):
+            return v.split()
+        return v
