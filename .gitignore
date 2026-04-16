@@ -17,3 +17,6 @@ test_2.ipynb
 
 # Jupyter autosave checkpoints
 .ipynb_checkpoints/
+
+# CIM-10 RDF source (téléchargé manuellement depuis l'ANS, non redistribué)
+referentials/raw/**/source/

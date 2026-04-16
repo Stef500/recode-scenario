@@ -38,6 +38,7 @@ dev = [
     "pandas-stubs>=2.2",
     "types-pyyaml>=6.0",
     "pre-commit>=3.8",
+    "rdflib>=7.0",
 ]
 
 [build-system]
