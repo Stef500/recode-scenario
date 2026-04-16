@@ -14,7 +14,7 @@ from os.path import isfile
 
 
 def random_date(year,exclude_weekends=False):
-  """   
+  """
   Generates a random date in the year 2024.
 
   Args:
@@ -66,9 +66,9 @@ def get_dates_of_stay(admission_type, admission_mode,mols,sdlos):
 
     else:
         # los can be negative if we do like this
-        #los = int(np.round(np.random.normal(mols, sdlos, 1))[0]) 
-        
-        los = int(np.abs(np.random.normal(mols, sdlos, 1)[0])) 
+        #los = int(np.round(np.random.normal(mols, sdlos, 1))[0])
+
+        los = int(np.abs(np.random.normal(mols, sdlos, 1)[0]))
 
 
         if admission_mode=="URGENCES":
@@ -84,10 +84,10 @@ def get_dates_of_stay(admission_type, admission_mode,mols,sdlos):
 def extract_integers_from_cage(cage_string):
     """
             Extraction first and second age from age categorie
-            
-            Extracts integer values from a string 
+
+            Extracts integer values from a string
             in the format "[x-y[" or "[x-[" and considers y as 90 if missing.
-            
+
     """
     match = re.match(r"\[(\d+)-(\d+)\[", cage_string.strip())
     if match:
@@ -129,7 +129,7 @@ class generate_scenario:
 
         """
         Generate scenario from DRG statistics
-        
+
 
         Steps :
         - ...
@@ -137,7 +137,7 @@ class generate_scenario:
 
         Parameters
         ----------
-        - params : 
+        - params :
         """
         #Params
 
@@ -148,11 +148,11 @@ class generate_scenario:
         # Recoding french names
         #TODO : other variables : adminission mode
         self.recoding_dict ={"HP":"Outpatient","HC":"Inpatient"}
-        
+
         self.icd_codes_cancer_meta_ln= ["C770","C771","C772","C773","C774","C775","C778","C779"]
         self.icd_codes_cancer_meta = ["C780","C781","C782","C783","C784","C785","C786","C787","C788",
                     "C790","C791","C792","C793","C794","C795","C796","C797","C798"]
-        
+
         self.icd_codes_contact_tt_rep = ["Z491","Z511","Z512","Z5101","Z513","Z516"]
 
         self.idc_code_chmio_non_tum = ["Z512"]
@@ -165,9 +165,9 @@ class generate_scenario:
         self.icd_codes_pleural_effusion = ["J90", "J91", "J940","J941","J942","J948","J949"]
         self.icd_codes_cosmetic_surgery = ["Z410","Z411"]
         self.icd_codes_comfort_intervention = ["Z4180"]
-        
+
         self.icd_codes_plastic_surgery = ["Z420","Z421","Z423","Z424","Z425","Z426","Z427","Z428","Z429"]
-        
+
         self.icd_codes_prophylactic_intervention = ["Z400","Z401","Z408"]
 
         self.drg_parent_code_greffe = ["27Z02","27Z03","27Z04"]
@@ -190,7 +190,7 @@ class generate_scenario:
 
         self.icd_codes_cancer = pd.read_excel(path_ref + "REFERENTIEL_METHODE_DIM_CANCER_20140411.xls")
         self.icd_codes_cancer = self.icd_codes_cancer.CIM10.to_list()
-        # Add icd_parent_code to list, but not very elgant, it will be usefull as some of icd codes that will tested to be 
+        # Add icd_parent_code to list, but not very elgant, it will be usefull as some of icd codes that will tested to be
         # in that list are actualy icd_parent_code
         #TODO : Find an other way...
         self.icd_codes_cancer = list(set([code[0:3] for code in self.icd_codes_cancer])) + self.icd_codes_cancer
@@ -212,52 +212,52 @@ class generate_scenario:
 
 
         self.icd_codes_chronic_attack = pd.read_csv(path_ref + "icd_codes_chronic_attack.csv",sep=";").code.to_list()
-        
+
         #TODO complications of chronic diseases
         self.icd_codes_chronic_complications = None
         #--- Loading parameters file
         self.procedure_botulic_toxin = pd.read_csv(path_ref + "procedure_botulic_toxine.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_prophylactic_intervention = pd.read_csv(path_ref + "icd_codes_prophylactic_intervention.csv",sep=";").code.to_list()
-        
+
         self.attention_artificial_openings_external_prosthetic_device = pd.read_csv(path_ref + "attention_artificial_openings_external_prosthetic_device.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_iron_deficiency_anemia = pd.read_csv(path_ref + "icd_codes_iron_deficiency_anemia.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_sessions = pd.read_csv(path_ref + "icd_codes_sessions.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_diabetes_chronic = pd.read_csv(path_ref + "icd_codes_diabetes_chronic.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_spontaneous_vertex_delivery = pd.read_csv(path_ref + "icd_codes_spontaneous_vertex_delivery.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_liveborn_infants = pd.read_csv(path_ref + "icd_codes_liveborn_infants.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_medical_abortion =  pd.read_csv(path_ref + "icd_codes_medical_abortion.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_legal_abortion =  pd.read_csv(path_ref + "icd_codes_legal_abortion.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_supervision = pd.read_csv(path_ref + "icd_codes_supervision.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_supervision_chronic_disease = pd.read_csv(path_ref + "icd_codes_supervision_chronic_disease.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_surgical_followup = pd.read_csv(path_ref + "icd_codes_surgical_followup.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_supervision_pregnancy = pd.read_csv(path_ref + "icd_codes_supervision_pregnancy.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_supervision_post_partum =  pd.read_csv(path_ref + "icd_codes_supervision_post_partum.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_cardic_vascular_implants = pd.read_csv(path_ref + "icd_codes_cardic_vascular_implants.csv",sep=";").code.to_list()
 
         self.icd_codes_overnight_study = pd.read_csv(path_ref + "icd_codes_overnight_study.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_sensitization_tests = pd.read_csv(path_ref + "icd_codes_sensitization_tests.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_preoperative_assessment =  pd.read_csv(path_ref + "icd_codes_preoperative_assessment.csv",sep=";").code.to_list()
-        
+
         self.icd_codes_family_history = pd.read_csv(path_ref + "icd_codes_family_history.csv",sep=";").code.to_list()
-     
+
         self.icd_codes_personnel_history =  pd.read_csv(path_ref + "icd_codes_personnel_history.csv",sep=";").code.to_list()
-        
+
         #--- Exclusions
         self.icd_exclusions = ["Z40","Z08","Z09","Z48","Z71","Z48","Z34","Z35","Z39","Z94","Z95","Z94","Z96","Z3908","Z762"]
         self.exclusion_specialty = ["THERAPIE TRANSFUSION","PSYCHIATRIE INFANTO-JUVENILE NON SECTORISE","PHYSIOLOGIE","PHYSIOLOGIE PEDIATRIQUE"]
@@ -270,45 +270,45 @@ class generate_scenario:
         self.coding_rules={}
         for d in rules["regles"] :
             self.coding_rules[d["id"]] = {"texte": d["clinical_coding_scenario"], "criteres" : d["classification_profile_criteria"] }
-     
+
     def load_offical_icd(self,
                         file_name : str,
                         col_names: dict | None = None ):
 
         self.df_icd_official = pd.read_excel(self.path_ref + file_name )
 
-        if col_names is not None : 
+        if col_names is not None :
             self.df_icd_official.rename(columns = col_names, inplace = True)
-            
+
     def load_offical_procedures(self,
                         file_name : str,
                         col_names: dict | None = None ):
-        
+
         self.df_procedure_official =  pd.read_excel(self.path_ref + file_name )
 
-        if col_names is not None : 
-            self.df_procedure_official.rename(columns = col_names, inplace = True) 
+        if col_names is not None :
+            self.df_procedure_official.rename(columns = col_names, inplace = True)
 
         self.pathology_procedure = self.df_procedure_official.procedure[self.df_procedure_official.procedure_description.str.contains("Examen anatomopathologique")]
 
-        
+
     def load_cancer_treatement_recommandations(self,
                         file_name : str,
                         col_names: dict | None = None ):
-        
+
         self.df_cancer_treatment_recommandation =  pd.read_excel(self.path_ref + file_name )
 
-        if col_names is not None : 
-            self.df_cancer_treatment_recommandation.rename(columns = col_names, inplace = True) 
+        if col_names is not None :
+            self.df_cancer_treatment_recommandation.rename(columns = col_names, inplace = True)
 
     def load_specialty_refential(self,
                         file_name : str,
                         col_names: dict | None = None ):
-        
+
         self.ref_sep = pd.read_excel(self.path_ref + file_name)
 
-        if col_names is not None : 
-           self.ref_sep.rename(columns = col_names, inplace = True) 
+        if col_names is not None :
+           self.ref_sep.rename(columns = col_names, inplace = True)
 
         self.ref_sep = self.ref_sep[~self.ref_sep.specialty.isin(self.exclusion_specialty)]
 
@@ -317,26 +317,26 @@ class generate_scenario:
                         col_names: dict | None = None ):
 
         self.df_classification_profile = pd.read_csv(self.path_data + file_name,sep=";")
-        
-        if col_names is not None : 
-            self.df_classification_profile.rename(columns = col_names, inplace = True) 
-        
-        if self.icd_exclusions is not None :        
-            self.df_classification_profile = self.df_classification_profile[(~ (self.df_classification_profile.icd_primary_code.str.slice(0,3).isin(self.icd_exclusions) ) )  & 
-                                                                            (~ (self.df_classification_profile.case_management_type.str.slice(0,3).isin(self.icd_exclusions)) ) 
+
+        if col_names is not None :
+            self.df_classification_profile.rename(columns = col_names, inplace = True)
+
+        if self.icd_exclusions is not None :
+            self.df_classification_profile = self.df_classification_profile[(~ (self.df_classification_profile.icd_primary_code.str.slice(0,3).isin(self.icd_exclusions) ) )  &
+                                                                            (~ (self.df_classification_profile.case_management_type.str.slice(0,3).isin(self.icd_exclusions)) )
                                                                            ]
 
-        
+
         ### Add DRG statistics : mlos,dslos
         self.df_classification_profile = self.df_classification_profile.merge(self.drg_statistics,how="left")
 
-        ### Add DRG groups : 
+        ### Add DRG groups :
         self.df_classification_profile= self.df_classification_profile.merge(self.drg_parents_groups,how="left")
         self.df_classification_profile = self.df_classification_profile.assign(admission_type = self.df_classification_profile.admission_type.replace(self.recoding_dict))
-        
+
         ### Add medical speciality
         self.df_classification_profile = self.df_classification_profile.merge(self.ref_sep[["age","specialty","drg_parent_code"]],how="left")
-        
+
         self.df_classification_profile = self.df_classification_profile.assign(los_mean = np.where(self.df_classification_profile.los_mean.isna(),0,self.df_classification_profile.los_mean) )
         self.df_classification_profile = self.df_classification_profile.assign(los_sd = np.where(self.df_classification_profile.los_sd.isna(),0,self.df_classification_profile.los_sd) )
 
@@ -345,24 +345,24 @@ class generate_scenario:
     def load_referential_hospital(self,
                        file_name : str,
                        col_names: list = ["hospital"] ):
-        
+
         self.df_hospitals = pd.read_csv(self.path_ref+ file_name, names = col_names)
 
     def load_exclusions(self,
                        file_name : str,
                        col_names: dict | None = None):
-        
+
         self.df_exclusions = pd.read_csv(self.path_ref+ file_name)
 
-        if col_names is not None : 
-            self.df_exclusions.rename(columns = col_names, inplace = True) 
+        if col_names is not None :
+            self.df_exclusions.rename(columns = col_names, inplace = True)
 
 
     def load_secondary_icd(self,
                        file_name : str,
                        col_names: dict | None = None  ):
         """
-        Related diagnosis are segmented in chronical deseases and complications (acute diseases). 
+        Related diagnosis are segmented in chronical deseases and complications (acute diseases).
         For cancer we build specific categories : primitive, lymph node metastasis, other metastasis.
 
         To facilitate sample among related diagnosis, we calculate for each sitution the total number of possible related diagnosis.
@@ -370,7 +370,7 @@ class generate_scenario:
         """
         self.df_secondary_icd = pd.read_csv(self.path_data + file_name ,sep=";")
 
-        if col_names is not None : 
+        if col_names is not None :
             self.df_secondary_icd.rename(columns = col_names, inplace = True)
 
         self.df_secondary_icd = self.df_secondary_icd.assign(type = np.where(self.df_secondary_icd.icd_secondary_code.isin(self.icd_codes_cancer_meta),"Metastasis",
@@ -379,17 +379,17 @@ class generate_scenario:
                               np.where(self.df_secondary_icd.icd_secondary_code.isin(self.icd_codes_chronic),"Chronic",
                               "Acute")))))
 
-           
+
     def load_procedures(self,
                         file_name : str,
                         col_names: dict | None = None ):
-        
+
         self.df_procedures = pd.read_csv(self.path_data + file_name,sep=";")
 
-        if col_names is not None : 
+        if col_names is not None :
             self.df_procedures.rename(columns = col_names, inplace = True)
 
-        self.df_procedures = self.df_procedures[~(self.df_procedures.procedure.isin(self.pathology_procedure))] 
+        self.df_procedures = self.df_procedures[~(self.df_procedures.procedure.isin(self.pathology_procedure))]
 
 
     def get_names(self,
@@ -399,7 +399,7 @@ class generate_scenario:
         last_name = self.df_names.nom[ (self.df_names.nom.str.len()>3)].sample(1).iloc[0]
 
         return first_name[0].upper() + first_name[1:].lower() ,last_name[0].upper() + last_name[1:].lower()
-    
+
     def sample_from_df(self,
                        profile : pd.Series ,
                        df_values : pd.DataFrame ,
@@ -411,8 +411,8 @@ class generate_scenario:
 
         """
 
-        
-        
+
+
 
 
         """
@@ -420,13 +420,13 @@ class generate_scenario:
         query = ' & '.join(['{}=={}'.format(k, "'{}'".format(v) if isinstance(v, str) else v) for k, v in profile.items() if k in df_values.columns  ])
 
         df_sel = df_values.query(query)
-        
+
         if(col_weights not in df_sel.columns):
             df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
-        
+
         if df_sel[col_weights].sum() == 0:
             df_sel= df_sel.assign(col_weights = 1).rename(columns={"col_weights":col_weights})
-        
+
         if df_sel.shape[0] ==0 :
             return pd.DataFrame(columns=df_values.columns)
 
@@ -453,7 +453,7 @@ class generate_scenario:
                     chapter = df_sample.icd_secondary_code.str.slice(0,1).to_list()
                     if len(df_sel[~(df_sel.icd_secondary_code.str.slice(0,1).isin(chapter))]) == 0:
                         break
-           
+
 
             else:
                 df_sample= df_sel.sample(nb_final_sample, replace=False, weights =col_weights)
@@ -463,12 +463,12 @@ class generate_scenario:
                 df_sample.drop_duplicates("icd_secondary_code",inplace=True)
                 # df_sample["icd_code_description_alternative"] = df_sample.icd_secondary_code.apply(self.get_n_icd_alternative_descriptions)
                 df_sample["icd_code_description_official"] = df_sample.icd_secondary_code.apply(self.get_icd_description)
-                
+
                 # return df_sample[["icd_secondary_code","icd_code_description_official","icd_code_description_alternative"]].reset_index(  drop=True  )
                 return df_sample[["icd_secondary_code","icd_code_description_official"]].reset_index(  drop=True  )
 
             elif "procedure" in df_sample.columns  :
-                
+
                 df_sample["procedure_description_official"] = df_sample.procedure.apply(self.get_procedure_description)
                 return df_sample
             else:
@@ -503,20 +503,20 @@ class generate_scenario:
                 'biomarkers':None,
                 'department' : None,
                 'hospital':None,
-                'first_name_med':None, 
+                'first_name_med':None,
                 'last_name_med':None,
                 'template_name': None
-                
-             
+
+
         }
-        
-    
+
+
     def get_n_icd_alternative_descriptions(self,
                     icd_code : str,
                     nb : int = 5):
         """
         Get synomym from ICD10 code
-        
+
         """
 
         if icd_code in self.icd_codes_cancer_meta:
@@ -537,12 +537,12 @@ class generate_scenario:
                 return str(official_description.iloc[0])
             else:
                 return "" # Return empty string if code not found in official list
-    
+
     def get_icd_alternative_descriptions(self,
                     icd_code : str):
         """
         Get synomym from ICD10 code
-        
+
         """
 
         if icd_code in self.icd_codes_cancer_meta:
@@ -565,7 +565,7 @@ class generate_scenario:
                     icd_code : str):
         """
         Get official description from ICD10 code
-        
+
         """
 
         official_description = self.df_icd_official.icd_code_description[self.df_icd_official.icd_code==icd_code]
@@ -578,7 +578,7 @@ class generate_scenario:
                     procedure : str):
         """
         Get official _description from procdure code
-        
+
         """
 
         official__description = self.df_procedure_official.procedure_description[self.df_procedure_official.procedure==procedure].iloc[0]
@@ -604,7 +604,7 @@ class generate_scenario:
         if case["admission_type"]  == "Outpatient" :
             text_admission_type = " en hospitalisation ambulatoire"
             ind_template = "out"
-        else: 
+        else:
             text_admission_type = "en hospialisation complète"
             ind_template = "in"
 
@@ -615,9 +615,9 @@ class generate_scenario:
             ind_template_onco=""
 
 
-        # FIRST : SIMPLE CASES where situations do not dependant on the primary diagnosis   
+        # FIRST : SIMPLE CASES where situations do not dependant on the primary diagnosis
         # ---------------------------------------------------------------------------------
-         
+
         # Special treatment for some cancer where all the scenario is come from treatment recommandation
         if case["histological_type"] is not None and case["drg_parent_code"][2:3] not in ["C","K"]:
             situa = "Hospitalisation pour prise en charge du cancer"
@@ -631,52 +631,52 @@ class generate_scenario:
             template_name = "medical_outpatient.txt"
             situa =  "Prise en charge pour exploration nocturne ou apparentée telle"
 
-        # Règle D3-2 : séjour programmé pour test allergologiques        
+        # Règle D3-2 : séjour programmé pour test allergologiques
         elif case["case_management_type"] in self.icd_codes_sensitization_tests:
             coding_rule="D3-2"
             template_name = "medical_outpatient.txt"
             situa =  "Prise en charge en hospitalistion de jour pour réalisation de test de réactivité allergiques"
-        
-        # Règle T1 : Traitement répétifs transfusions        
+
+        # Règle T1 : Traitement répétifs transfusions
         elif case["drg_parent_code"] in self.drg_parent_code_transfusion :
             coding_rule = "T1"
             situa = "Prise en charge pour " + case["drg_parent_description"].lower()
             template_name = "medical_outpatient.txt"
-        
-        # Règle T1 : Traitement répétifs aphérèse    
+
+        # Règle T1 : Traitement répétifs aphérèse
         elif case["drg_parent_code"] in self.drg_parent_code_apheresis :
             coding_rule = "T1"
             situa = "Prise en charge pour " + case["drg_parent_description"].lower()
             template_name = "medical_outpatient.txt"
 
-        # Règle T1 : Traitement répétifs dialyse : pour l'instant exlcus 
+        # Règle T1 : Traitement répétifs dialyse : pour l'instant exlcus
         # Règle T1 : Traitement répétifs chimio cf
 
         # Règle T2 : Exceptions à T1 (douleur chronique, ascite, épanchement pleural, toxine botulique)
         elif case["icd_primary_code"] in self.icd_codes_ascites:
-            coding_rule = "T2-R18"  
+            coding_rule = "T2-R18"
             situa =  "Prise en charge pour ponction d'ascite  " + text_admission_type
             template_name = "medical_"+ ind_template +"patient.txt"
-        
-        # Règle T2 : Exceptions à T1 (douleur chronique, ascite, épanchement pleural, toxine botulique)        
+
+        # Règle T2 : Exceptions à T1 (douleur chronique, ascite, épanchement pleural, toxine botulique)
         elif case["icd_primary_code"] in self.icd_codes_pleural_effusion:
-            coding_rule = "T2-J9"  
+            coding_rule = "T2-J9"
             situa =  "Prise en charge pour ponction pleurale "+ text_admission_type
             template_name = "medical_"+ ind_template +"patient.txt"
 
-        
+
         # Règle T2 : Exceptions à T1 (douleur chronique, ascite, épanchement pleural, toxine botulique)
         elif case["procedure"]  in self.procedure_botulic_toxin and case["admission_type"]  == "Outpatient" :
-            coding_rule  = "T2-Toxine"  
+            coding_rule  = "T2-Toxine"
             situa =  "Prise en charge en hospitalisation ambulatoire pour injection de toxine botulique"
             template_name = "medical_"+ ind_template +"patient.txt"
-        
+
         # Règle T2 : Exceptions à T1 (douleur chronique, ascite, épanchement pleural, toxine botulique)
         elif case["icd_primary_code"]  in self.icd_codes_t2_chronic_intractable_pain:
-            coding_rule = "T2-R52"  
+            coding_rule = "T2-R52"
             situa =  "Prise en charge d'une douleur chronique rebelle " + text_admission_type
             template_name = "medical_"+ ind_template +"patient.txt"
-                                   
+
 
         # Règle T3 : Traitement unique chirurgical
         elif case["drg_parent_code"][2:3] == "C" and case["drg_parent_code"] not in self.drg_parents_groups_delivery :
@@ -685,13 +685,13 @@ class generate_scenario:
             template_name = "surgery_"+ ind_template +"patient.txt"
 
 
-        # Règle T4 : Cosmetic surgery     
+        # Règle T4 : Cosmetic surgery
         elif case["case_management_type"] in self.icd_codes_cosmetic_surgery:
             coding_rule = "T4"
             situa =  "Prise en charge "+text_admission_type + " pour " + case["text_procedure"].lower()
             template_name = "surgery_"+ ind_template +"patient.txt"
-            
- 
+
+
         # Règle T5 : Chirurgie plastique non esthétique
         elif case["case_management_type"] in self.icd_codes_plastic_surgery:
             coding_rule ="T5"
@@ -704,8 +704,8 @@ class generate_scenario:
             coding_rule = "T6"
             situa =  "Prise en charge "+ text_admission_type + " pour " + case["text_procedure"].lower()
             template_name = "surgery_"+ ind_template +"patient.txt"
-        
-        # Règle T7 : soins de stomies 
+
+        # Règle T7 : soins de stomies
         elif case["drg_parent_code"] in self.drg_parent_code_stomies:
             coding_rule ="T7"
             situa = "Prise en charge "+ text_admission_type  + " pour "+ case["drg_parent_description"].lower()
@@ -719,22 +719,22 @@ class generate_scenario:
             template_name = "medical_"+ ind_template +"patient.txt"
 
 
-           
+
         # Règle T11 : Soins palliatifs
-        elif case["drg_parent_code"] in self.drg_parent_code_palliative_care : 
+        elif case["drg_parent_code"] in self.drg_parent_code_palliative_care :
             coding_rule ="T11"
             situa = "Prise en charge "+ text_admission_type  + " pour soins palliatifs"
             template_name = "medical_"+ ind_template +"patient.txt"
-        
-            
-            
+
+
+
         # Règle IVG : interuption volontaire de grossesse
         elif case["case_management_type"] in self.icd_codes_legal_abortion:
             coding_rule = "Legal_Abortion"
             situa =  "Prise en charge pour interruption volontaire de grossesse"
             template_name = "medical_"+ ind_template +"patient.txt"
-            
-       
+
+
         # Règle IMG :interruption médicale de grossesse
         elif case["case_management_type"] in self.icd_codes_medical_abortion:
             coding_rule = "Medical_Abortion"
@@ -744,19 +744,19 @@ class generate_scenario:
         # Règle T12: Accouchements
         elif case["drg_parent_code"] in self.drg_parents_groups_delivery:
             coding_rule = "T12"
-            
+
             # 85% through emergecies (normal) , 15% preceded by and admission in hopsitalisation
             option_delivery = np.random.choice(2, p=[0.85, 0.15])
             if option_delivery==1:
                 suffix_temp_delivery = "_urg"
             else:
                 suffix_temp_delivery = "_hospit"
-            
+
             # Csection
             if case["procedure"] in self.procedure_csection :
                 situa =  "Prise en charge pour accouchement par césarienne"
                 template_name = "delivery_inpatient_csection"+ suffix_temp_delivery +".txt"
-                
+
             else :
                 situa =  "Prise en charge pour accouchement par voie basse"
                 template_name = "delivery_inpatient"+ suffix_temp_delivery +".txt"
@@ -764,22 +764,22 @@ class generate_scenario:
         elif (case["drg_parent_code"] in self.drg_parent_code_deceased) | (case["discharge_disposition"] == "DECES"):
             situa =  "Hospitalisation au cours de laquelle le patient est décédé"
             code = 10
-        #TODO : others cases of supervision 
-        
- 
+        #TODO : others cases of supervision
 
 
-        # SECOND : Situations where we need to take into account primary icd code   
+
+
+        # SECOND : Situations where we need to take into account primary icd code
         # ---------------------------------------------------------------------------------
 
         # - cancer
-        #   * Hospital admission with initial diagnosis of the cancer 
+        #   * Hospital admission with initial diagnosis of the cancer
         #   * Hospital admission for cancer workup
         #   * Hospital admission for initiation of treatment
         #   * Hospital admission for relapse or recurrence of the cancer
         #   * repeated treatment : chimio, radotherapy
         elif case["icd_primary_code"] in self.icd_codes_chronic :
-            
+
             #  Règle T1 traitement répétitifs chimio
             if case["drg_parent_code"] in self.drg_parent_code_chimio :
                 coding_rule = "T1"
@@ -789,7 +789,7 @@ class generate_scenario:
 
                 if case["chemotherapy_regimen"] is not None and not (isinstance(case["chemotherapy_regimen"], float)):
                     situa += ". Le protocole actuellement suivi est : "+ case["chemotherapy_regimen"]
-            
+
             #  Règle T1 traitement répétitifs chimio
             if case["case_management_type"] in ["Z512"]:
                 coding_rule = "T1"
@@ -801,7 +801,7 @@ class generate_scenario:
                 coding_rule = "T1"
                 situa = "Prise en charge "+ text_admission_type +" pour réalisation du traitement par radiothérapie"
                 template_name = "medical_"+ ind_template +"patient_onco.txt"
-            
+
             #  Rules D1,D5,D9 cases where chronic disease is the icd primary diagnosis
             elif case["case_management_type"] =="DP" :
                 option = np.random.choice(4, p=[0.4, 0.2,0.2,0.2])
@@ -814,7 +814,7 @@ class generate_scenario:
                         coding_rule = "D9"
                         situa = "Hospitalisation "+ text_admission_type +" pour bilan initial pré-trérapeutique de " + case["icd_primary_description"] # 20%
                         template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"
-                
+
                 elif option == 1:
                         coding_rule = "D9"
                         situa = "Hospitalisation "+ text_admission_type +" pour mise en route du traitement de " + case["icd_primary_description"] # 20%
@@ -828,26 +828,26 @@ class generate_scenario:
                     elif case["icd_primary_code"] in self.icd_codes_diabetes_chronic:
                         coding_rule = "D5"
                         situa = "Hospitalisation "+ text_admission_type +" pour changement de stratégie thérapeutique  " + case["icd_primary_description"] # 20%
-                        template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"                  
-                    
+                        template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"
+
                     elif case["icd_primary_code"][0:3] not in ["E05","J45","K85"] :
                         coding_rule = "D5"
                         situa = "Hospitalisation "+ text_admission_type +" pour poussée aigue de la maladie  " + case["icd_primary_description"] # 20%
-                        template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"  
-            
+                        template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"
+
             #  Rules S1-Chronic supervision of chronical diseases
             elif  case["case_management_type"] in self.icd_codes_supervision_chronic_disease :
                         coding_rule = "S1-Chronic"
-                        situa = "Surveillance "+ text_admission_type +" de " + case["icd_primary_description"] 
-                        template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"                     
-           
-        # Medical acute pathologies 
+                        situa = "Surveillance "+ text_admission_type +" de " + case["icd_primary_description"]
+                        template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"
+
+        # Medical acute pathologies
         else :
 
-         
+
             if case["case_management_type"]  == "DP":
                 situa =  "Pour prise en charge diagnostique et thérapeutique du diagnotic principal " + text_admission_type
-                
+
 
                 # print(code)
             else:
@@ -858,16 +858,16 @@ class generate_scenario:
             template_name = "medical_"+ ind_template +"patient"+ind_template_onco+".txt"
 
         return (situa, coding_rule,template_name)
-            
-        
 
 
-   
+
+
+
 
 
     def generate_scenario_from_profile(self,
                                        profile):
-        
+
         profile["icd_parent_code"] = profile["icd_primary_code"][0:3]
 
         scenario = self.get_clinical_scenario_template()
@@ -881,7 +881,7 @@ class generate_scenario:
             if k=="icd_secondaray_code":
                 icd_secondary_profile = 1
 
-        
+
         ### Administratives elements
         scenario["age"] = get_age(profile.cage)
         scenario["date_entry"],scenario["date_discharge"] = get_dates_of_stay(profile.admission_type,profile.admission_mode,profile.los_mean,profile.los_sd)
@@ -892,7 +892,7 @@ class generate_scenario:
         scenario["departement"] = profile["specialty"]
 
         scenario["hospital"] =   self.df_hospitals.sample(1)['hospital'].iloc[0]
-        
+
 
 
 
@@ -904,9 +904,9 @@ class generate_scenario:
 
         if icd_secondary_profile==1:
             if len(scenario["icd_secondaray_code"])>0:
-                for code in scenario["icd_secondaray_code"]:    
+                for code in scenario["icd_secondaray_code"]:
                     scenario["text_secondary_icd_official"] += "- " + self.get_icd_description(code) + " ("+ code +")\n"
-        
+
         else :
             ### Secondary diagnosis :
             ### We sample secondary diagnosis by steps : metastases, metastases ln, chronic,complications
@@ -916,7 +916,7 @@ class generate_scenario:
             scenario["text_secondary_icd_official"]=""
             # scenario["text_secondary_icd_alternative"]=""
 
-            grouping_secondary =["icd_primary_code","icd_secondary_code","cage2","sexe","nb"] 
+            grouping_secondary =["icd_primary_code","icd_secondary_code","cage2","sexe","nb"]
 
             ### Scenarios will be much more different when clinical case is about cancer
             ### Attribute DAS to each situations
@@ -936,26 +936,26 @@ class generate_scenario:
             if scenario["icd_primary_code"] in self.icd_codes_cancer:
                 is_cancer =1
             ## When care pathway is related to the treatment of cancer and when recommandations are availabe, the clinical case will be create from those recommandation
-            if scenario["case_management_type"] in ['DP','Z511'] : 
-                
-                treatment_recommendations = self.sample_from_df(profile =profile,df_values= self.df_cancer_treatment_recommandation,nb=1) 
+            if scenario["case_management_type"] in ['DP','Z511'] :
+
+                treatment_recommendations = self.sample_from_df(profile =profile,df_values= self.df_cancer_treatment_recommandation,nb=1)
                 if treatment_recommendations.shape[0]>0 :
-                    scenario["histological_type"] = treatment_recommendations["histological_type"].iloc[0] 
-                
+                    scenario["histological_type"] = treatment_recommendations["histological_type"].iloc[0]
+
                     score_TNM = treatment_recommendations["TNM"].iloc[0]
                     if score_TNM not in ['Variable','Non pertinent'] :
                         scenario["score_TNM"] = score_TNM
-                
+
                     stage = treatment_recommendations["stage"].iloc[0]
                     if stage not in ['Variable','Non pertinent'] :
                         scenario["cancer_stage"] = stage
-                    
-                    scenario["treatment_recommandation"] = treatment_recommendations["treatment_recommandation"].iloc[0] 
+
+                    scenario["treatment_recommandation"] = treatment_recommendations["treatment_recommandation"].iloc[0]
                     if treatment_recommendations.chemotherapy_regimen.notna().bool:
-                        scenario["chemotherapy_regimen"] = treatment_recommendations["chemotherapy_regimen"].iloc[0]  
+                        scenario["chemotherapy_regimen"] = treatment_recommendations["chemotherapy_regimen"].iloc[0]
 
                     scenario["biomarkers"] = treatment_recommendations["biomarkers"].iloc[0]
-                
+
                 ### Categories of chronic desease : when cancer you don't sample chronic diseases over cancer icd codes
 
 
@@ -963,26 +963,26 @@ class generate_scenario:
             if is_cancer ==1 :
                 chronic_diseases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary], distinct_chapter=True)
 
-            else :     
-                # chronic_diseases =  self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary]) 
+            else :
+                # chronic_diseases =  self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Chronic'])")[grouping_secondary])
                 df_values = self.df_secondary_icd.query("type.isin(['Chronic','Cancer'])")[grouping_secondary]
                 #df_secondary_cancer = self.df_secondary_icd[self.df_secondary_icd.icd_secondary_code.isin(self.icd_codes_cancer)][grouping_secondary]
-                
+
                 #df_values = pd.concat([df_values, df_secondary_cancer])
-                chronic_diseases =  self.sample_from_df(profile =profile,df_values=df_values, distinct_chapter=True)  
+                chronic_diseases =  self.sample_from_df(profile =profile,df_values=df_values, distinct_chapter=True)
 
             if chronic_diseases.shape[0] > 0 :
                 for index, row in chronic_diseases.iterrows():
                     scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                     # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
-                
+
                 scenario["icd_secondaray_code"] = chronic_diseases.icd_secondary_code.to_list()
 
             ### Is we sampled cancer codes in the chronic disease we will also sample metastasis
             if len(scenario["icd_secondaray_code"])>0 :
                 if bool(set(scenario["icd_secondaray_code"]) & set(self.icd_codes_cancer)) :
                     is_cancer = 1
-                
+
 
             ### LN metastasis
             if is_cancer ==1 :
@@ -990,8 +990,8 @@ class generate_scenario:
                 ##If TNM is know sample metastasis regarding this status
                 if scenario["score_TNM"] is not None and not (isinstance(scenario["score_TNM"], float)):
                     if bool(re.search("N[123x+]",scenario["score_TNM"])) :
-                        metastases_ln = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis LN'")[grouping_secondary],nb = 1)  
-                
+                        metastases_ln = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis LN'")[grouping_secondary],nb = 1)
+
                         if metastases_ln.shape[0] > 0 :
                             for index, row in metastases_ln.iterrows():
                                 scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
@@ -1000,50 +1000,50 @@ class generate_scenario:
                             scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases_ln.icd_secondary_code.to_list()
 
                     if bool(re.search("M[123x+]",scenario["score_TNM"])) :
-                        metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary])  
-                
+                        metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type=='Metastasis'")[grouping_secondary])
+
                         if metastases.shape[0] > 0 :
                                 for index, row in metastases.iterrows():
                                     scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                                     # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
 
                                 scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
-                        
-                
+
+
                 #When TNM is not known, sample metastasis among all possible situations
                 else:
-                    metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Metastasis','Metastasis LN'])")[grouping_secondary])  
-                
+                    metastases = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Metastasis','Metastasis LN'])")[grouping_secondary])
+
                     if metastases.shape[0] > 0 :
                         for index, row in metastases.iterrows():
                             scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                             # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
-                            
+
                         scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + metastases.icd_secondary_code.to_list()
 
             #For complication drg_parent_code we choose grouping profile only on ICD
             grouping_secondary =["drg_parent_code","icd_secondary_code","cage2","sexe","nb"]
 
-            complications = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Acute'])")[grouping_secondary]) 
+            complications = self.sample_from_df(profile =profile,df_values= self.df_secondary_icd.query("type.isin(['Acute'])")[grouping_secondary])
 
             if complications.shape[0] > 0 :
                 for index, row in complications.iterrows():
                     scenario["text_secondary_icd_official"] += "- " + row.icd_code_description_official + " ("+ row.icd_secondary_code+")\n"
                     # scenario["text_secondary_icd_alternative"] += "- " + row.icd_code_description_official + "("+ row.icd_secondary_code+") : " + row.icd_code_description_alternative + "\n"
-                
+
             scenario["icd_secondaray_code"] = scenario["icd_secondaray_code"] + complications.icd_secondary_code.to_list()
 
         ## Actes
 
         grouping_procedure =["procedure","drg_parent_code","icd_primary_code","cage2","sexe"]
-        procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1) 
-        
+        procedures = self.sample_from_df(profile =profile,df_values= self.df_procedures[grouping_procedure],nb=1)
+
         if len(procedures) > 0 :
             scenario["procedure"] = procedures.procedure.values[0]
             scenario["text_procedure"] =procedures.procedure_description_official.values[0]
         else:
             scenario["procedure"] = ""
-            scenario["text_procedure"] ="" 
+            scenario["text_procedure"] =""
 
         #for index, row in procedures.iterrows():
         #        scenario["text_procedure"] = row.procedure_description_official
@@ -1056,7 +1056,7 @@ class generate_scenario:
             scenario["case_management_description"] = self.coding_rules[scenario["coding_rule"]]['texte']
         else:
             scenario["case_management_description"] =""
-        
+
 
         return scenario
 
@@ -1070,93 +1070,93 @@ class generate_scenario:
         for k,v in scenario.items():
             if k == "age" and v is not None:
                 SCENARIO +="- Âge du patient : " + str(v) + " ans\n"
-           
-            if k == "sexe" and v is not None:  
-                SCENARIO +="- Sexe du patient : " + interpret_sexe(v) + "\n"
-            
-            if k == "date_entry" and v is not None:  
-                SCENARIO +="- Date d'entrée : "+ v.strftime("%d/%m/%Y") + "\n"
-            
-            if k == "date_discharge" and v is not None:  
-                SCENARIO +="- Date de sortie : "+ v.strftime("%d/%m/%Y") + "\n" 
-            
-            if k == "date_of_birth" and v is not None:  
-                SCENARIO +="- Date de naissance : "+ v.strftime("%d/%m/%Y") + "\n"  
-            
-            if k == "last_name" and v is not None:  
-                SCENARIO +="- Nom du patient : "+ v + "\n" 
-            
-            if k == "first_name" and v is not None:  
-                SCENARIO +="- Prénom du patient : "+ v + "\n" 
-                
-            if scenario["icd_primary_code"] in self.icd_codes_cancer: 
-                if k == "icd_primary_description" and v is not None:  
-                    SCENARIO +="- Localisation anatomique de la tumeur primaire : "+ v + " (" + scenario["icd_primary_code"] + ")\n" 
-                if k == "histological_type":
-                    if v is not None and not (isinstance(v, float)):  
-                        SCENARIO +="- Type anatomopathologique de la tumeur primaire : "+ v + "\n" 
-                    else :
-                        SCENARIO +="- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique\n" 
-                if k == "score_TNM":
-                    if v is not None and not (isinstance(v, float)):   
-                        SCENARIO +="- Score TNM : "+ v + "\n" 
-                    else :
-                        SCENARIO +="- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM\n" 
-                if k == "cancer_stage":
-                    if v is not None and not (isinstance(v, float)):   
-                        SCENARIO +="- Stade tumoral : " + v + "\n" 
-                if k == "biomarkers":
-                    if v is not None and not (isinstance(v, float)):   
-                        SCENARIO +="- Biomarqueurs tumoraux : "+ v + "\n" 
-                    else :
-                        SCENARIO +="- Biomarqueurs tumoraux : Vous choisirez des biomarqueurs tumoraux cohérents avec la localisation anatomique et l'histologie de la tumeur\n" 
-            
-            if k == "admission_mode" and v is not None:  
-                SCENARIO +="- Mode d'entrée' : "+ v + "\n" 
-           
-            if k == "discharge_disposition" and v is not None:  
-                SCENARIO +="- Mode de sortie' : "+ v + "\n" 
 
-            if k == "case_management_type" and v is not None:  
+            if k == "sexe" and v is not None:
+                SCENARIO +="- Sexe du patient : " + interpret_sexe(v) + "\n"
+
+            if k == "date_entry" and v is not None:
+                SCENARIO +="- Date d'entrée : "+ v.strftime("%d/%m/%Y") + "\n"
+
+            if k == "date_discharge" and v is not None:
+                SCENARIO +="- Date de sortie : "+ v.strftime("%d/%m/%Y") + "\n"
+
+            if k == "date_of_birth" and v is not None:
+                SCENARIO +="- Date de naissance : "+ v.strftime("%d/%m/%Y") + "\n"
+
+            if k == "last_name" and v is not None:
+                SCENARIO +="- Nom du patient : "+ v + "\n"
+
+            if k == "first_name" and v is not None:
+                SCENARIO +="- Prénom du patient : "+ v + "\n"
+
+            if scenario["icd_primary_code"] in self.icd_codes_cancer:
+                if k == "icd_primary_description" and v is not None:
+                    SCENARIO +="- Localisation anatomique de la tumeur primaire : "+ v + " (" + scenario["icd_primary_code"] + ")\n"
+                if k == "histological_type":
+                    if v is not None and not (isinstance(v, float)):
+                        SCENARIO +="- Type anatomopathologique de la tumeur primaire : "+ v + "\n"
+                    else :
+                        SCENARIO +="- Type anatomopathologique de la tumeur primaire : Vous choisirez vous même un type histologique cohérent avec la localisation anatomique\n"
+                if k == "score_TNM":
+                    if v is not None and not (isinstance(v, float)):
+                        SCENARIO +="- Score TNM : "+ v + "\n"
+                    else :
+                        SCENARIO +="- Score TNM : Si la notion de score de TNM est pertinente avec le type histologique et la localisation anatomique, vous choisirez un score TNM\n"
+                if k == "cancer_stage":
+                    if v is not None and not (isinstance(v, float)):
+                        SCENARIO +="- Stade tumoral : " + v + "\n"
+                if k == "biomarkers":
+                    if v is not None and not (isinstance(v, float)):
+                        SCENARIO +="- Biomarqueurs tumoraux : "+ v + "\n"
+                    else :
+                        SCENARIO +="- Biomarqueurs tumoraux : Vous choisirez des biomarqueurs tumoraux cohérents avec la localisation anatomique et l'histologie de la tumeur\n"
+
+            if k == "admission_mode" and v is not None:
+                SCENARIO +="- Mode d'entrée' : "+ v + "\n"
+
+            if k == "discharge_disposition" and v is not None:
+                SCENARIO +="- Mode de sortie' : "+ v + "\n"
+
+            if k == "case_management_type" and v is not None:
                 SCENARIO +="- Contexte de l'hospitalisation : "+ scenario["case_management_type_text"] +". " +scenario["case_management_description"] + "\n"
 
-                SCENARIO +="- Codage CIM10 :\n" 
+                SCENARIO +="- Codage CIM10 :\n"
                 #if scenario["case_management_type"]!="DP":
-                #    SCENARIO +="   * Code CIM prise en charge :\n"  +  scenario["case_management_type_description"] + " ("+ scenario["case_management_type"] + ")\n"  
-               
-                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + " ("+ scenario["icd_primary_code"] + ")\n"          
-                               
+                #    SCENARIO +="   * Code CIM prise en charge :\n"  +  scenario["case_management_type_description"] + " ("+ scenario["case_management_type"] + ")\n"
+
+                SCENARIO +="   * Diagnostic principal : "+  scenario["icd_primary_description"] + " ("+ scenario["icd_primary_code"] + ")\n"
+
                 SCENARIO +="   * Diagnostic associés : \n"
-                SCENARIO +=  scenario["text_secondary_icd_official"]  + "\n" 
-            
-            if k == "procedure" and v is not None and scenario["drg_parent_code"][2:3] in ["C","K"] : 
-                SCENARIO +=  "* Acte CCAM :\n" + scenario["text_procedure"].lower()+ "\n"  
-            
-            if k == "first_name_med" and v is not None:  
-                SCENARIO +="- Nom du médecin / signataire : "+ v + " " + scenario["last_name_med"] + "\n" 
-            
-            if k == "specialty" and v is not None and not (isinstance(v, float)):  
-                SCENARIO +="- Service : "+ v + "\n" 
-            
-            if k == "hospital" and v is not None and not (isinstance(v, float)):  
-                SCENARIO +="- Hôpital : "+ v + "\n" 
+                SCENARIO +=  scenario["text_secondary_icd_official"]  + "\n"
+
+            if k == "procedure" and v is not None and scenario["drg_parent_code"][2:3] in ["C","K"] :
+                SCENARIO +=  "* Acte CCAM :\n" + scenario["text_procedure"].lower()+ "\n"
+
+            if k == "first_name_med" and v is not None:
+                SCENARIO +="- Nom du médecin / signataire : "+ v + " " + scenario["last_name_med"] + "\n"
+
+            if k == "specialty" and v is not None and not (isinstance(v, float)):
+                SCENARIO +="- Service : "+ v + "\n"
+
+            if k == "hospital" and v is not None and not (isinstance(v, float)):
+                SCENARIO +="- Hôpital : "+ v + "\n"
         # ICD_ALTERNATIVES =""
 
 
-        #ICD_ALTERNATIVES +=" - " + scenario["icd_primary_description"] + "("+ scenario["icd_primary_code"] + ") : " 
+        #ICD_ALTERNATIVES +=" - " + scenario["icd_primary_description"] + "("+ scenario["icd_primary_code"] + ") : "
         #ICD_ALTERNATIVES +=": "+ scenario["icd_primary_description_alternative"] + "\n"
-        #ICD_ALTERNATIVES +=  scenario["text_secondary_icd_alternative"]  + "\n"  
+        #ICD_ALTERNATIVES +=  scenario["text_secondary_icd_alternative"]  + "\n"
 
-        
+
         # INSTRUCTIONS_CANCER
-        if scenario["icd_primary_code"] in self.icd_codes_cancer: 
+        if scenario["icd_primary_code"] in self.icd_codes_cancer:
             SCENARIO += "Ce cas clinique concerne un patient présentant un cancer\n"
             if scenario["histological_type"] is not None:
                 SCENARIO +="Vous choisirez un épisode de traitement sachant que les recommandations pour ce stade du cancer sont les suivantes :\n"
                 SCENARIO +="   - Schéma thérapeutique : " + scenario["treatment_recommandation"] + "\n"
-                if scenario["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)): 
+                if scenario["chemotherapy_regimen"] is not None and not (isinstance(scenario["chemotherapy_regimen"], float)):
                     SCENARIO += "   - Protocole de chimiothérapie : " + scenario["chemotherapy_regimen"]  + "\n"
-            
+
 
             SCENARIO += "Veillez à bien préciser le type histologique et la valeur des biomarqueurs si recherchés\n"
 
@@ -1164,7 +1164,7 @@ class generate_scenario:
         return SCENARIO
 
     def create_system_prompt(self,scenario):
-        if scenario["icd_primary_code"] in self.icd_codes_cancer: 
+        if scenario["icd_primary_code"] in self.icd_codes_cancer:
             if scenario['admission_type'] == "Inpatient" and scenario['drg_parent_code'][2:3]=="C" :
                 template_name = "surgery_inpatient_onco.txt"
             elif scenario['admission_type'] == "Outpatient" and scenario['drg_parent_code'][2:3]=="C" :
@@ -1173,20 +1173,20 @@ class generate_scenario:
                 template_name = "medical_outpatient_onco.txt"
             else:
                 template_name = "medical_inpatient_onco.txt"
-        
+
         else:
             if scenario['admission_type'] == "Inpatient" and scenario['drg_parent_code'][2:3]=="C" :
                 template_name = "surgery_inpatient.txt"
             elif scenario['admission_type'] == "Outpatient" and scenario['drg_parent_code'][2:3]=="C" :
                 template_name = "surgery_outpatient.txt"
             elif scenario['admission_type'] == "Outpatient" :
-                template_name = "medical_outpatient.txt" 
+                template_name = "medical_outpatient.txt"
             else:
-                template_name = "medical_inpatient.txt"            
-            
+                template_name = "medical_inpatient.txt"
+
         with open("templates/" + scenario['template_name'], "r", encoding="utf-8") as f:
             prompt = f.read()
-        
+
         return prompt
 
 
@@ -1391,13 +1391,13 @@ def extract_generations_annotations(response):
   else:
     return (None, None, None)
 
-def get_icd_coding_target(case) : 
+def get_icd_coding_target(case) :
 
     case_management_type = case.case_management_type
     case_management_type_description = case.case_management_type_description
     diagnosis = case.response_diagnosis
 
-    #Regular expressions 
+    #Regular expressions
 
     PCID = "- Diagnostic principal : \n"
     SICD = "- Diagnotics associés : \n"
@@ -1411,7 +1411,7 @@ def get_icd_coding_target(case) :
     icd_secondary_pred = []
     icd_coding_list  = []
 
-    
+
     for k,v in diagnosis.items():
         text_code = k
         code_list =  re.findall(r'\(([A-Z]\d{2,5}\+?\d*)\)', k)
@@ -1423,7 +1423,7 @@ def get_icd_coding_target(case) :
             description_list = re.findall(r'[A-Z][a-z].*',k)
             description = description_list[0] if description_list else ""
             text_code = description + '('+ code +')'
-        
+
         if  re.findall(code,case.icd_primary_code) :
                 PCID += "* " + text_code +" - " +   ",".join(v) + "\n"
                 icd_primary_pred = code
@@ -1432,7 +1432,7 @@ def get_icd_coding_target(case) :
                 SICD += "* " + text_code +" - " +   ",".join(v) + "\n"
                 icd_secondary_pred += [code]
                 icd_coding_list+= [code]
-                
+
     return icd_primary_pred,icd_secondary_pred, PCID+SICD+CMT,icd_coding_list
 
 
@@ -1455,16 +1455,16 @@ def prepare_training_files(path_results,job_name,nb_examples = None):
                     if nb_examples is not None:
                         if j> nb_examples:
                             break
-            
+
             prep_dict=[]
-            
+
             for result_item in results:
                     # Check if the item has a response and extract it
                     if "response" in result_item and result_item["response"] and "body" in result_item["response"] and "choices" in result_item["response"]["body"]:
                         response = result_item["response"]["body"]["choices"][0]["message"]["content"]
                         clinical_report,response_diagnosis,response_structured_data = extract_generations_annotations(response)
                         prep_dict.append({"bacth":i,"num_in_":result_item['custom_id'],"clinical_report":clinical_report,"response_diagnosis":response_diagnosis,"response_structured_data":response_structured_data })
-            
+
             df_scenarios_save = pd.read_csv(os.path.join(path_results + job_name ,file_name.replace("json","csv") ),index_col=0)
             df_res_tmp = pd.DataFrame(prep_dict)
             df_res_tmp["num_in_"]=  df_res_tmp["num_in_"].astype(int)
@@ -1473,7 +1473,7 @@ def prepare_training_files(path_results,job_name,nb_examples = None):
             now_string = now.strftime("%Y%m%d%H%M%S%f")
             df_res_tmp = df_res_tmp.assign(encounter_id = now_string + df_res_tmp.bacth.apply(str) + df_res_tmp.num_in_.apply(str))
             df_res_tmp.encounter_id = df_res_tmp.encounter_id.str.pad(width=10, side='left', fillchar='0')
-            df_res_final = pd.concat([df_res_final,df_res_tmp]) 
+            df_res_final = pd.concat([df_res_final,df_res_tmp])
 
     df_res_final = df_res_final[df_res_final.clinical_report.notna()]
 

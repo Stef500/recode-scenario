@@ -9,7 +9,7 @@ Vous devrez rédiger :
 
 **INSTRUCTIONS :**
 
-- Format des documents à produire : 
+- Format des documents à produire :
 	+ Il s'agit de documents officies réalisés au cours de l'hopsitalisation.
 	+ Les document doit être complet et autonome.
 	+ Ils comportent des informations obligatoires:
@@ -17,9 +17,9 @@ Vous devrez rédiger :
 	  - Encadré au début du document avec les informatoin patient : Numéro idenfiant (IPP : Non fourni), Nom (fourni  dans le scénario), Prénom (fourni  dans le scénario), date de naissance (fourni  dans le scénario)
 
 
-- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.		
+- Vous devez utiliser exclusivement les diagnostics fournis. Aucun autre diagnostic ne doit être ajouté ou inventé.
 
-- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code. 
+- Lors vous mentionnerez dans le texte les diagnostics, vous utiliserez autant que faire ce peut une formulation moins formelle que la définition du code.
 
 - Aucune partie du texte ne doit être mise en gras.
 
@@ -27,8 +27,8 @@ Vous devrez rédiger :
 
 - Style : Adoptez un style clinique informel, tel qu'utilisé couramment dans les notes cliniques quotidiennes, attention notamment à ne pas reprendre le style de la définition des codes CIM10.
 
-- Formulation : 
-	+ Variez la structure des phrases. 
+- Formulation :
+	+ Variez la structure des phrases.
 	+ Variez les termes médicaux (synonymes, reformulations naturelles) tout en conservant leur précision clinique. Évitez les répétitions mot à mot.
 	+ Utilisez, de manière occasionnelle et pertinente, des acronymes et abréviations médicales françaises courantes, sans en abuser.
 
@@ -41,7 +41,7 @@ Vous devrez rédiger :
 	+ Examens complémentaires : biologie, autres examens éventuels (CR de radiologie ou anatomo pathologie (conclusion et éventuellement détail))
 	+ Conclusion
 	+ Signature avec nom du médecin
-- Contenu à produire pour le Compte rendu d'accouchement: 
+- Contenu à produire pour le Compte rendu d'accouchement:
 	+ Date de l'accouchement** : ....
 	+ Sage Femme : nom de la sage femme
     + Obstricien.nne : nom de l'obstétricien
@@ -52,7 +52,7 @@ Vous devrez rédiger :
     + Conclusion
 
 	Chaque section doit commencer par un titre au format suivant : ### Nom de la section (ex. : ### Motif d'hospitalisation)
-	
+
 	Attribuez obligatoirement des dates plausibles et cohérentes aux événements majeurs (hospitalisations, diagnostics, examens, traitements...).
 
 - Commencez par le compte rendu opératoire, suivi du compte rendu d’hospitalisation associé. Séparez-les clairement à l’aide de leurs titres respectifs (ex.: ## Compte rendu opératoire et ## Compte rendu d’hospitalisation), ainsi que d’un séparateur visuel : -----.
@@ -61,13 +61,13 @@ Vous devrez rédiger :
 
 - Ne pas inclure : Clauses de non-responsabilité.
 
- 
+
 	Veillez à intégrer ces informations de façon naturelle dans le compte rendu, sans recourir à des formats semi-structurés, par exemple préférez une rédaction naturelle plutôt que « État général : ECOG 1 »).
 
 - À la fin du texte généré, fournissez :
 
 + un dictionnaire listant les formulations utilisées pour chaque diagnostic CIM-10 codable pour le patient : {"Définition officielle du code CIM-10 (code CIM-10)": ["formulation utilisée 1", "formulation utilisée 2", ...],...}
-Par exemple : {"Hypertension artérielle (primitive) (I10)": ["poussée hypertension arterielle", "poussée HTA"],...} 
+Par exemple : {"Hypertension artérielle (primitive) (I10)": ["poussée hypertension arterielle", "poussée HTA"],...}
 Attention : tous les diagnostics du patient doivent être décrit ici, attention en particulier s'il y a des divergences avec le scénario initial, elle doivent être reportées ici.
 
 + un dictionnaire listant les segments textuels utilisés pour décrire les informations suivantes, reproduits strictement à l’identique (copiés-collés depuis le texte généré, sans aucune modification ni interprétation, y compris ponctuation et orthographe) :
