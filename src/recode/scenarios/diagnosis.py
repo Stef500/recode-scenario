@@ -9,13 +9,20 @@ from loguru import logger
 from recode.models import CancerContext, Diagnosis, Profile
 from recode.referentials import ReferentialRegistry
 
+_QUERY_SKIP_COLUMNS = frozenset({"nb", "los", "los_mean", "los_sd"})
+
 
 def _build_profile_query(profile: Profile, df_columns: list[str]) -> str:
-    """Build a pandas query string filtering a DataFrame by matching profile fields."""
+    """Build a pandas query string filtering a DataFrame by matching profile fields.
+
+    Weight/count columns (``nb``, ``los``, ``los_mean``, ``los_sd``) are
+    intentionally excluded — they hold counts in the pool, not matching
+    predicates.
+    """
     profile_dict = profile.model_dump(by_alias=True)
     parts: list[str] = []
     for k, v in profile_dict.items():
-        if k not in df_columns:
+        if k not in df_columns or k in _QUERY_SKIP_COLUMNS:
             continue
         if isinstance(v, str):
             parts.append(f"{k}=={v!r}")
