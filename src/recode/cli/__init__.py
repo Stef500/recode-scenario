@@ -7,6 +7,9 @@ from pathlib import Path
 
 import typer
 
+from recode.cli.llm_cmd import app as llm_app
+from recode.cli.scenarios_cmd import app as scenarios_app
+from recode.cli.training_cmd import app as training_app
 from recode.logging import setup_logging
 
 app = typer.Typer(
@@ -14,10 +17,6 @@ app = typer.Typer(
     no_args_is_help=True,
     help="Generate clinical scenarios for LLM training",
 )
-
-scenarios_app = typer.Typer(help="Generate clinical scenarios from PMSI profiles")
-llm_app = typer.Typer(help="Run Mistral batch jobs against generated scenarios")
-training_app = typer.Typer(help="Prepare LLM-generated reports for fine-tuning")
 
 app.add_typer(scenarios_app, name="scenarios")
 app.add_typer(llm_app, name="llm")
