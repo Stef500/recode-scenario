@@ -264,4 +264,55 @@ pd.DataFrame(
     {"icd_code": ["I500"], "icd_code_description": ["Insuffisance cardiaque décompensée"]}
 ).to_parquet(OUT / "icd_synonyms.parquet", index=False)
 
+# --- CIM-10 hierarchy (mini: 4 codes représentatifs) ---
+pd.DataFrame(
+    {
+        "code": ["A048", "E119", "A049", "K219"],
+        "level": ["leaf", "leaf", "leaf", "leaf"],
+        "parent_code": ["A04", "E11", "A04", "K21"],
+        "label": [
+            "Autres infections intestinales bactériennes précisées",
+            "Diabète sucré de type 2, sans complication",
+            "Infection intestinale bactérienne, sans précision",
+            "Maladie de reflux gastro-œsophagien sans œsophagite",
+        ],
+        "chapter_code": ["I", "IV", "I", "XI"],
+        "chapter_label": [
+            "Maladies infectieuses et parasitaires",
+            "Maladies endocriniennes",
+            "Maladies infectieuses et parasitaires",
+            "Maladies de l'appareil digestif",
+        ],
+        "block_code": ["A00-A09", "E10-E14", "A00-A09", "K20-K31"],
+        "block_label": [
+            "Maladies intestinales infectieuses",
+            "Diabète sucré",
+            "Maladies intestinales infectieuses",
+            "Maladies de l'œsophage, de l'estomac et du duodénum",
+        ],
+        "category_code": ["A04", "E11", "A04", "K21"],
+        "category_label": [
+            "Autres infections intestinales bactériennes",
+            "Diabète sucré de type 2",
+            "Autres infections intestinales bactériennes",
+            "Reflux gastro-œsophagien",
+        ],
+    }
+).to_parquet(OUT / "cim10_hierarchy.parquet", index=False)
+
+# --- CIM-10 notes (mini: notes only for A048 + A049; E119/K219 absent) ---
+pd.DataFrame(
+    {
+        "code": ["A048", "A049"],
+        "inclusion_notes": [
+            "infections à Clostridium|infections à Yersinia",
+            "",
+        ],
+        "exclusion_notes": [
+            "intoxication alimentaire bactérienne (A05.-)|tuberculose intestinale (A18.3+ K93.0*)",
+            "entérite tuberculeuse (A18.3+ K93.0*)",
+        ],
+    }
+).to_parquet(OUT / "cim10_notes.parquet", index=False)
+
 print(f"Wrote mini-referentials to {OUT}")
