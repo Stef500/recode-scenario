@@ -1,0 +1,54 @@
+name: Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "docker-compose.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "src/**"
+      - "templates/**"
+      - "referentials/processed/**"
+      - "referentials/constants/**"
+      - "config/**"
+      - ".github/workflows/docker.yml"
+
+jobs:
+  build-smoke:
+    name: Build image + smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          push: false
+          tags: recode:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test — `recode --help`
+        run: docker run --rm -e RECODE_MISTRAL_API_KEY=dummy recode:ci --help
+
+      - name: Smoke test — `recode scenarios --help`
+        run: docker run --rm -e RECODE_MISTRAL_API_KEY=dummy recode:ci scenarios --help
+
+      - name: Smoke test — runtime assets present
+        run: |
+          docker run --rm -e RECODE_MISTRAL_API_KEY=dummy --entrypoint sh recode:ci -c '
+            test -d /app/templates &&
+            test -f /app/referentials/processed/cim10_hierarchy.parquet &&
+            test -f /app/referentials/processed/cim10_notes.parquet &&
+            test -f /app/config/default.yaml &&
+            python -c "import recode; print(recode.__name__)"
+          '

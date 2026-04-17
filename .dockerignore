@@ -1,0 +1,57 @@
+# Everything is excluded by default — only what the Dockerfile `COPY`s is sent
+# to the build context. Keep this file tight to minimize context size.
+
+# VCS
+.git
+.gitignore
+.gitattributes
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local env / venv
+.venv/
+.env
+.env.*
+!.env.example
+
+# uv / pip caches
+.uv-cache/
+.pip-cache/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Project outputs
+runs/
+data/
+
+# Not shipped in the image (heavy or irrelevant at runtime)
+referentials/raw/
+arXiv/
+tests/
+docs/
+.worktrees/
+.ipynb_checkpoints/
+
+# Jupyter
+*.ipynb
+
+# CI / infra (not needed inside the image)
+.github/
+.pre-commit-config.yaml
+Dockerfile
+.dockerignore
+docker-compose.yml
