@@ -46,7 +46,7 @@ def load_legacy():
     """
     if not LEGACY_PATH.exists():
         LEGACY_PATH.parent.mkdir(parents=True, exist_ok=True)
-        src = subprocess.check_output(  # noqa: S603
+        src = subprocess.check_output(
             ["git", "show", "main:utils_v2.py"],  # noqa: S607
         )
         LEGACY_PATH.write_bytes(src)
