@@ -25,6 +25,8 @@ from recode.referentials.constants import (
 from recode.referentials.schemas import (
     CancerTreatmentSchema,
     ChronicSchema,
+    Cim10HierarchySchema,
+    Cim10NotesSchema,
     DrgGroupsSchema,
     DrgStatisticsSchema,
     HospitalsSchema,
@@ -172,3 +174,42 @@ class ReferentialRegistry:
             }
             for d in data["regles"]
         }
+
+    # ---- CIM-10 enrichment ----
+
+    @cached_property
+    def cim10_hierarchy(self) -> pd.DataFrame:
+        """CIM-10 hierarchy (chapter > block > category > leaf)."""
+        return Cim10HierarchySchema.validate(self._load_parquet("cim10_hierarchy"))
+
+    @cached_property
+    def cim10_notes(self) -> pd.DataFrame:
+        """CIM-10 inclusion/exclusion notes per code."""
+        return Cim10NotesSchema.validate(self._load_parquet("cim10_notes"))
+
+    @cached_property
+    def cim10_lookups(self) -> tuple[dict[str, Any], dict[str, Any]]:
+        """Pre-built O(1) lookup dicts for format_cim10_enrichment."""
+        # Deferred import: avoids a potential circular import as
+        # ``cim10_enrichment`` grows to import other modules.
+        from recode.scenarios.cim10_enrichment import build_lookups  # noqa: PLC0415
+
+        return build_lookups(self.cim10_hierarchy, self.cim10_notes)
+
+    def has_cim10_enrichment(self) -> bool:
+        """True iff both enrichment Parquets exist (non-destructive check)."""
+        return (self._processed / "cim10_hierarchy.parquet").exists() and (
+            self._processed / "cim10_notes.parquet"
+        ).exists()
+
+    # ---- ICD description helper (used by prompts with enrichment) ----
+
+    @cached_property
+    def _icd_descriptions(self) -> dict[str, str]:
+        """Internal: ICD code → description dict, built once from icd_official."""
+        df = self.icd_official
+        return dict(zip(df["icd_code"], df["icd_code_description"], strict=True))
+
+    def icd_description_for(self, code: str) -> str:
+        """Lookup ICD-10 description; return ``""`` if code is unknown."""
+        return self._icd_descriptions.get(code, "")

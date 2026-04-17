@@ -38,6 +38,7 @@ dev = [
     "pandas-stubs>=2.2",
     "types-pyyaml>=6.0",
     "pre-commit>=3.8",
+    "rdflib>=7.0",
 ]
 
 [build-system]
@@ -89,6 +90,7 @@ ignore = [
 "tests/**/*.py" = ["D", "S101", "PLR2004", "PLC0415"]
 "scripts/**/*.py" = ["D", "T201", "PLC0415", "PLR0915", "C901", "PLR0912", "RUF002", "RUF003"]
 "src/recode/llm/batch.py" = ["PLC0415"]
+"src/recode/scenarios/prompts.py" = ["PLC0415"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

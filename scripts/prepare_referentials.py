@@ -18,6 +18,8 @@ sys.path.insert(0, "src")
 from recode.referentials.schemas import (
     CancerTreatmentSchema,
     ChronicSchema,
+    Cim10HierarchySchema,
+    Cim10NotesSchema,
     DrgGroupsSchema,
     DrgStatisticsSchema,
     HospitalsSchema,
@@ -218,6 +220,28 @@ def prepare_procedure_official() -> None:
     logger.success("procedure_official.parquet: {} rows", len(df))
 
 
+def prepare_cim10_hierarchy() -> None:
+    src = RAW / "CIM_ATIH_2025/cim10_hierarchy.csv"
+    if not src.exists():
+        logger.warning("Skip cim10_hierarchy: {} not found", src)
+        return
+    df = pd.read_csv(src, dtype=str, keep_default_na=False)
+    df = Cim10HierarchySchema.validate(df)
+    df.to_parquet(OUT / "cim10_hierarchy.parquet", index=False)
+    logger.success("cim10_hierarchy.parquet: {} rows", len(df))
+
+
+def prepare_cim10_notes() -> None:
+    src = RAW / "CIM_ATIH_2025/cim10_notes.csv"
+    if not src.exists():
+        logger.warning("Skip cim10_notes: {} not found", src)
+        return
+    df = pd.read_csv(src, dtype=str, keep_default_na=False)
+    df = Cim10NotesSchema.validate(df)
+    df.to_parquet(OUT / "cim10_notes.parquet", index=False)
+    logger.success("cim10_notes.parquet: {} rows", len(df))
+
+
 def main() -> None:
     _ensure_out()
     logger.info("Preparing referentials: {} -> {}", RAW, OUT)
@@ -232,6 +256,8 @@ def main() -> None:
     prepare_complications()
     prepare_icd_synonyms()
     prepare_procedure_official()
+    prepare_cim10_hierarchy()
+    prepare_cim10_notes()
     logger.success("All referentials prepared.")
 
 
