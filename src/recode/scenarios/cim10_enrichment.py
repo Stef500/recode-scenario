@@ -55,3 +55,44 @@ def build_lookups(
         for row in notes_df.to_dict("records")
     }
     return hierarchy, notes
+
+
+def format_cim10_enrichment(
+    code: str,
+    hierarchy: dict[str, _HierarchyRow],
+    notes: dict[str, _NotesRow],
+) -> str:
+    r"""Return the multi-line enrichment block for an ICD-10 leaf code.
+
+    Lines appear in this order, each indented with 5 spaces, each terminated
+    by ``\n``:
+
+    - ``Hiérarchie : Chapitre X — label`` (if chapter_code known)
+    - ``                 > Bloc B — label`` (if block_code known)
+    - ``                 > Catégorie C — label`` (if category_code known)
+    - ``Inclus : a ; b ; c`` (if any inclusion note)
+    - ``Exclus : a ; b`` (if any exclusion note)
+
+    Returns ``""`` when neither hierarchy nor notes are available — caller
+    can unconditionally append the result.
+    """
+    lines: list[str] = []
+
+    h = hierarchy.get(code)
+    if h and h["chapter_code"]:
+        lines.append(f"     Hiérarchie : Chapitre {h['chapter_code']} — {h['chapter_label']}")
+        if h["block_code"]:
+            lines.append(f"                  > Bloc {h['block_code']} — {h['block_label']}")
+        if h["category_code"]:
+            lines.append(
+                f"                  > Catégorie {h['category_code']} — {h['category_label']}"
+            )
+
+    n = notes.get(code)
+    if n:
+        if n["inclusion_notes"]:
+            lines.append("     Inclus : " + " ; ".join(n["inclusion_notes"]))
+        if n["exclusion_notes"]:
+            lines.append("     Exclus : " + " ; ".join(n["exclusion_notes"]))
+
+    return "\n".join(lines) + "\n" if lines else ""

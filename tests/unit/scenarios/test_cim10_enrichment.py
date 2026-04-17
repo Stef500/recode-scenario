@@ -84,3 +84,33 @@ def test_build_lookups_empty_dfs() -> None:
     )
     assert h == {}
     assert n == {}
+
+
+def test_format_hierarchy_only_no_notes() -> None:
+    from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+
+    hierarchy = {
+        "E119": {
+            "chapter_code": "IV",
+            "chapter_label": "Maladies endocriniennes",
+            "block_code": "E10-E14",
+            "block_label": "Diabète sucré",
+            "category_code": "E11",
+            "category_label": "Diabète sucré de type 2",
+        }
+    }
+    notes: dict = {}
+    result = format_cim10_enrichment("E119", hierarchy, notes)
+
+    expected = (
+        "     Hiérarchie : Chapitre IV — Maladies endocriniennes\n"
+        "                  > Bloc E10-E14 — Diabète sucré\n"
+        "                  > Catégorie E11 — Diabète sucré de type 2\n"
+    )
+    assert result == expected
+
+
+def test_format_unknown_code_returns_empty() -> None:
+    from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+
+    assert format_cim10_enrichment("ZZZZ", {}, {}) == ""
