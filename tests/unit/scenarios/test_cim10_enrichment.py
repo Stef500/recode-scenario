@@ -114,3 +114,57 @@ def test_format_unknown_code_returns_empty() -> None:
     from recode.scenarios.cim10_enrichment import format_cim10_enrichment
 
     assert format_cim10_enrichment("ZZZZ", {}, {}) == ""
+
+
+def test_format_full_dp_with_hierarchy_and_notes() -> None:
+    from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+
+    hierarchy = {
+        "A048": {
+            "chapter_code": "I",
+            "chapter_label": "Maladies infectieuses et parasitaires",
+            "block_code": "A00-A09",
+            "block_label": "Maladies intestinales infectieuses",
+            "category_code": "A04",
+            "category_label": "Autres infections intestinales bactériennes",
+        }
+    }
+    notes = {
+        "A048": {
+            "inclusion_notes": ["infections à Clostridium", "infections à Yersinia"],
+            "exclusion_notes": ["intoxication alimentaire bactérienne (A05.-)"],
+        }
+    }
+    result = format_cim10_enrichment("A048", hierarchy, notes)
+
+    expected = (
+        "     Hiérarchie : Chapitre I — Maladies infectieuses et parasitaires\n"
+        "                  > Bloc A00-A09 — Maladies intestinales infectieuses\n"
+        "                  > Catégorie A04 — Autres infections intestinales bactériennes\n"
+        "     Inclus : infections à Clostridium ; infections à Yersinia\n"
+        "     Exclus : intoxication alimentaire bactérienne (A05.-)\n"
+    )
+    assert result == expected
+
+
+def test_format_notes_only_no_hierarchy() -> None:
+    from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+
+    hierarchy: dict = {}
+    notes = {
+        "Z999": {
+            "inclusion_notes": ["only-inclusion"],
+            "exclusion_notes": [],
+        }
+    }
+    result = format_cim10_enrichment("Z999", hierarchy, notes)
+    assert result == "     Inclus : only-inclusion\n"
+
+
+def test_format_empty_notes_row_treated_as_no_notes() -> None:
+    """A notes row with both lists empty (after split filter) yields no lines."""
+    from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+
+    hierarchy: dict = {}
+    notes = {"A048": {"inclusion_notes": [], "exclusion_notes": []}}
+    assert format_cim10_enrichment("A048", hierarchy, notes) == ""
