@@ -222,18 +222,24 @@ def prepare_procedure_official() -> None:
 
 def prepare_cim10_hierarchy() -> None:
     src = RAW / "CIM_ATIH_2025/cim10_hierarchy.csv"
+    if not src.exists():
+        logger.warning("Skip cim10_hierarchy: {} not found", src)
+        return
     df = pd.read_csv(src, dtype=str, keep_default_na=False)
-    Cim10HierarchySchema.validate(df)
+    df = Cim10HierarchySchema.validate(df)
     df.to_parquet(OUT / "cim10_hierarchy.parquet", index=False)
-    logger.info("Wrote {} rows -> cim10_hierarchy.parquet", len(df))
+    logger.success("cim10_hierarchy.parquet: {} rows", len(df))
 
 
 def prepare_cim10_notes() -> None:
     src = RAW / "CIM_ATIH_2025/cim10_notes.csv"
+    if not src.exists():
+        logger.warning("Skip cim10_notes: {} not found", src)
+        return
     df = pd.read_csv(src, dtype=str, keep_default_na=False)
-    Cim10NotesSchema.validate(df)
+    df = Cim10NotesSchema.validate(df)
     df.to_parquet(OUT / "cim10_notes.parquet", index=False)
-    logger.info("Wrote {} rows -> cim10_notes.parquet", len(df))
+    logger.success("cim10_notes.parquet: {} rows", len(df))
 
 
 def main() -> None:
