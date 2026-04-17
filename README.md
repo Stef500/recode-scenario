@@ -6,9 +6,11 @@ coding model.
 
 Each scenario combines a statistical profile drawn from the French national
 hospital claims database (*Base nationale PMSI*) with a clinical narrative
-template and ATIH coding rules. A Mistral batch pipeline expands these prompts
-into complete synthetic discharge reports. A post-processing step extracts ICD
-coding targets and writes a training-ready CSV.
+template and ATIH coding rules. Prompts are enriched with the CIM-10 (ICD-10
+FR-PMSI) hierarchy and inclusion / exclusion notes from the ANS nomenclature.
+A Mistral batch pipeline expands these prompts into complete synthetic
+discharge reports. A post-processing step extracts ICD coding targets and
+writes a training-ready CSV.
 
 The pipeline is entirely deterministic: given the same profile file and seed,
 it produces byte-equivalent output at every run.
@@ -109,7 +111,7 @@ recode-scenario/
 
 | Subpackage | Role |
 |---|---|
-| `scenarios/` | Assembles `Scenario` objects from `Profile` rows using pure, RNG-threaded functions. Deterministic given `(profile, base_seed)`. |
+| `scenarios/` | Assembles `Scenario` objects from `Profile` rows using pure, RNG-threaded functions. Deterministic given `(profile, base_seed)`. Includes CIM-10 enrichment (hierarchy + Inclus / Exclus notes) injected into the user prompt for the primary diagnosis and for secondary diagnoses in the `.8` residual category. |
 | `llm/` | Wraps the Mistral batch API: JSONL serialization, upload, polling, download, retry with tenacity. |
 | `training/` | Parses LLM JSON responses, extracts ICD coding targets, merges with scenario inputs to produce a training CSV. |
 | `referentials/` | `ReferentialRegistry` provides lazy, Pandera-validated, cached access to every Parquet and YAML constant file. |
