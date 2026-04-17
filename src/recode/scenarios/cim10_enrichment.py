@@ -29,16 +29,35 @@ _INDENT = " " * 5  # Top-level line prefix (Hiérarchie / Inclus / Exclus).
 _SUBLINE = " " * 18 + "> "  # Nested hierarchy line prefix (Bloc / Catégorie).
 
 
+def _split_notes(raw: str) -> list[str]:
+    r"""Split a multi-item note field.
+
+    Real ATIH CSVs use ``\n``; legacy specs and fixtures used ``|``. Accept
+    either, and drop empty items.
+    """
+    if not raw:
+        return []
+    # Split on both separators
+    parts: list[str] = []
+    for chunk in raw.split("\n"):
+        parts.extend(chunk.split("|"))
+    return [p.strip() for p in parts if p.strip()]
+
+
 def build_lookups(
     hierarchy_df: pd.DataFrame,
     notes_df: pd.DataFrame,
 ) -> tuple[dict[str, _HierarchyRow], dict[str, _NotesRow]]:
-    """DataFrame → O(1) lookup dicts.
+    r"""DataFrame → O(1) lookup dicts.
 
-    Filters the hierarchy to ``level == "leaf"``; only leaf codes are looked
-    up at prompt format time. Notes stored as ``"|"``-joined strings are split
-    back into lists.
+    Filters the hierarchy to leaf-level codes; only leaf codes are looked
+    up at prompt format time. Accepts both the real ANS ATIH convention
+    (``category``) and the legacy mini-fixture convention (``leaf``). Notes
+    stored as ``"\n"``- or ``"|"``-joined strings are split back into lists.
     """
+    # Real ANS ATIH CIM-10 uses `category` for leaf codes (3-level hierarchy).
+    # `leaf` is kept for backward-compat with mini-fixtures / future data.
+    leaf_levels = ("category", "leaf")
     hierarchy: dict[str, _HierarchyRow] = {
         row["code"]: {
             "chapter_code": row["chapter_code"],
@@ -49,12 +68,14 @@ def build_lookups(
             "category_label": row["category_label"],
         }
         for row in hierarchy_df.to_dict("records")
-        if row["level"] == "leaf"
+        if row["level"] in leaf_levels
     }
+    # Real ATIH CSVs use "\n" as intra-field separator for multi-item notes.
+    # `|` is kept for backward-compat with docs/specs that describe the old format.
     notes: dict[str, _NotesRow] = {
         row["code"]: {
-            "inclusion_notes": [s for s in row["inclusion_notes"].split("|") if s],
-            "exclusion_notes": [s for s in row["exclusion_notes"].split("|") if s],
+            "inclusion_notes": _split_notes(row["inclusion_notes"]),
+            "exclusion_notes": _split_notes(row["exclusion_notes"]),
         }
         for row in notes_df.to_dict("records")
     }

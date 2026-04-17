@@ -33,10 +33,41 @@ def _make_notes_df() -> pd.DataFrame:
 
 
 def test_build_lookups_filters_to_leaf() -> None:
+    """Filter keeps leaf-level rows only, dropping chapter and block rows.
+
+    Both ``leaf`` (legacy mini-fixture) and ``category`` (real ANS ATIH)
+    are considered leaf-level — see ``test_build_lookups_accepts_category_level``.
+    """
     from recode.scenarios.cim10_enrichment import build_lookups
 
     h, _ = build_lookups(_make_hierarchy_df(), _make_notes_df())
-    assert list(h.keys()) == ["A048"]  # only the leaf
+    # Fixture contains chapter="I", block="A00-A09", category="A04", leaf="A048".
+    # Filter drops chapter & block; keeps category & leaf.
+    assert set(h.keys()) == {"A04", "A048"}
+
+
+def test_build_lookups_accepts_category_level() -> None:
+    from recode.scenarios.cim10_enrichment import build_lookups
+
+    df = pd.DataFrame(
+        {
+            "code": ["A048"],
+            "level": ["category"],
+            "parent_code": ["A04"],
+            "label": ["x"],
+            "chapter_code": ["I"],
+            "chapter_label": ["Mal. inf."],
+            "block_code": ["A00-A09"],
+            "block_label": ["Intest."],
+            "category_code": ["A04"],
+            "category_label": ["Autres inf."],
+        }
+    )
+    h, _ = build_lookups(
+        df,
+        pd.DataFrame(columns=["code", "inclusion_notes", "exclusion_notes"]),
+    )
+    assert "A048" in h
 
 
 def test_build_lookups_hierarchy_row_shape() -> None:
@@ -52,7 +83,38 @@ def test_build_lookups_hierarchy_row_shape() -> None:
     assert row["category_label"] == "Autres inf."
 
 
-def test_build_lookups_notes_split_pipe() -> None:
+def test_build_lookups_notes_split_supports_both_separators() -> None:
+    from recode.scenarios.cim10_enrichment import build_lookups
+
+    notes_df = pd.DataFrame(
+        {
+            "code": ["PIPE", "NL"],
+            "inclusion_notes": ["a|b|c", "x\ny\nz"],
+            "exclusion_notes": ["", ""],
+        }
+    )
+    _, n = build_lookups(
+        pd.DataFrame(
+            columns=[
+                "code",
+                "level",
+                "parent_code",
+                "label",
+                "chapter_code",
+                "chapter_label",
+                "block_code",
+                "block_label",
+                "category_code",
+                "category_label",
+            ]
+        ),
+        notes_df,
+    )
+    assert n["PIPE"]["inclusion_notes"] == ["a", "b", "c"]
+    assert n["NL"]["inclusion_notes"] == ["x", "y", "z"]
+
+
+def test_build_lookups_notes_legacy_pipe_fixture() -> None:
     from recode.scenarios.cim10_enrichment import build_lookups
 
     _, n = build_lookups(_make_hierarchy_df(), _make_notes_df())
