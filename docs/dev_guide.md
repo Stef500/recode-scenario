@@ -43,6 +43,9 @@ cp .env.example .env     # then edit RECODE_MISTRAL_API_KEY with a real key
 `uv sync` reads `pyproject.toml` and the lock file (`uv.lock`). Do not use
 `pip install` directly.
 
+For a containerized setup (runs the whole pipeline in Docker with host
+volumes for `data/` and `runs/`), see `docs/docker.md`.
+
 ### Running the test suite
 
 ```bash
@@ -139,8 +142,8 @@ stateful object, and its only mutable state is the injected `ReferentialRegistry
 | `diagnosis.py` | `build_diagnosis()`, `sample_secondary_diagnoses()` |
 | `procedures.py` | `sample_procedure()` |
 | `cancer.py` | `build_cancer_context()` |
-| `coding_rules.py` | `CODING_RULES` table, `resolve_coding_rule()` |
-| `prompts.py` | `build_user_prompt()`, `build_system_prompt()`, `build_prefix()` |
+| `coding_rules.py` | `CODING_RULES` table, `CodingInput` (raw inputs dataclass), `CodingContext` (derived state), `resolve_coding_rule()` |
+| `prompts.py` | `build_user_prompt()` (orchestrator over `_format_*` section helpers), `build_system_prompt()`, `build_prefix()` |
 | `cim10_enrichment.py` | `build_lookups()`, `format_cim10_enrichment()`, `is_enrichable_das()` |
 
 ### `llm/` — Mistral batch orchestration
@@ -410,6 +413,24 @@ argument:
 - If enrichment Parquets are present: the DP is followed by a hierarchy + notes
   block, and each 4-character DAS ending in `8` is also followed by its own
   block. See [Part 9](#9-cim10-enrichment).
+
+Internally, `build_user_prompt` is a short orchestrator that composes seven
+pure section helpers — each handles one slice of the prompt:
+
+| Helper | Responsibility |
+|---|---|
+| `_format_patient_identity` | age, gender, dates, names |
+| `_format_cancer_tumor_info` | tumor location, histology, TNM, stage, biomarkers (cancer cases only; empty string otherwise) |
+| `_format_admission_discharge` | optional admission mode and discharge disposition lines |
+| `_format_icd_coding_block` | contexte + DP + DAS, with CIM-10 enrichment injected when a registry is supplied |
+| `_format_procedure` | CCAM line, for surgery / endoscopy DRGs only |
+| `_format_physician_info` | doctor name, department, hospital |
+| `_format_cancer_instructions` | trailing cancer treatment instructions (cancer cases only) |
+
+Three constants (`_FALLBACK_HISTOLOGICAL`, `_FALLBACK_TNM`, `_FALLBACK_BIOMARKERS`)
+hold the long fallback strings emitted when a cancer field is missing. To add
+a new section to the prompt, write a `_format_xxx()` helper and insert it in
+the list inside `build_user_prompt`; no existing code needs editing.
 
 ### Determinism contract
 
@@ -883,6 +904,25 @@ uv run python scripts/compare_outputs.py
 The script prints column-by-column diff statistics. It does not assert strict
 byte-equivalence for RNG-sampled columns.
 
+### Run `compare_prompts.py`
+
+`scripts/compare_prompts.py` is the prompt-focused counterpart. It dynamically
+loads `utils_v2.py` from the `main` branch of the repo (via `git show`),
+exercises `make_prompts_marks_from_scenario` on three built-in scenarios
+(digestive non-cancer with a `.8` DAS, breast cancer, cardiac failure), and
+for each verifies:
+
+1. the legacy prompt is byte-identical to `build_user_prompt(scenario, registry=None)`;
+2. the diff between `registry=None` and `registry=reg` contains only the
+   CIM-10 enrichment block (additive-only guarantee).
+
+```bash
+uv run python scripts/compare_prompts.py
+```
+
+Exit code `0` means both invariants hold on all three scenarios. Useful as a
+sanity check after any edit to `prompts.py` or `cim10_enrichment.py`.
+
 ---
 
 ## 11. Commit and PR conventions
@@ -940,8 +980,6 @@ not type-checked by mypy.
 
 The following topics are not currently implemented and are tracked informally:
 
-- **Containerization**: no Dockerfile or Docker Compose. Deployment is via `uv`
-  in a Python 3.12 environment.
 - **Packaging and distribution**: the package is not published to PyPI.
 - **CR evaluation**: no automated metric for clinical report quality (BLEU, clinical
   NER F1, etc.).
