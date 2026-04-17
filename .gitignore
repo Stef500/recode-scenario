@@ -27,3 +27,6 @@ referentials/raw/**/source/
 # macOS Finder metadata
 .DS_Store
 **/.DS_Store
+
+# Local-only authoring workspace (not distributed)
+docs/internal/

@@ -101,8 +101,7 @@ recode-scenario/
 │   └── fixtures/        # Synthetic profiles Parquet + mini referentials
 ├── config/
 │   └── default.yaml     # Operational parameters (versioned)
-├── docs/                # Architecture notes and feature specs
-│   └── internal/specs/
+├── docs/                # Architecture notes and developer guide
 └── arXiv/legacy_v2/     # Pre-refacto monolithic code (read-only reference)
 ```
 
@@ -136,7 +135,6 @@ Coverage is measured on every `pytest` run (`--cov=src/recode`). The target is
 
 - Developer guide (internals, playbooks, testing strategy): `docs/dev_guide.md`
 - Architecture overview: `docs/architecture.md`
-- CIM-10 enrichment design: `docs/internal/specs/2026-04-17-cim10-enrichment-port-design.md`
 
 ---
 

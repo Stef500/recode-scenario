@@ -792,10 +792,6 @@ format_cim10_enrichment(code, hierarchy_dict, notes_dict)
 | `has_cim10_enrichment` | `src/recode/referentials/registry.py` | `() -> bool` — non-destructive file existence check |
 | `icd_description_for` | `src/recode/referentials/registry.py` | `(code: str) -> str` — O(1) lookup against `icd_official`, returns `""` if unknown |
 
-### Spec
-
-Full design and acceptance criteria: `docs/internal/specs/2026-04-17-cim10-enrichment-port-design.md`.
-
 ---
 
 ## 10. Operational playbooks
