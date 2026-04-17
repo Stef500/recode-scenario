@@ -8,7 +8,7 @@ from loguru import logger
 
 from recode.models import CancerContext, Diagnosis, Procedure, Profile
 from recode.referentials import ReferentialRegistry
-from recode.scenarios.coding_rules import resolve_coding_rule
+from recode.scenarios.coding_rules import CodingInput, resolve_coding_rule
 
 _QUERY_SKIP_COLUMNS = frozenset({"nb", "los", "los_mean", "los_sd"})
 
@@ -153,12 +153,14 @@ def build_diagnosis(
     )
 
     rule_id, rule_text, _template = resolve_coding_rule(
-        profile,
-        cancer,
-        registry,
-        procedure=procedure,
-        icd_primary_description=primary_desc,
-        case_management_type_description=cmt_desc,
+        CodingInput(
+            profile=profile,
+            cancer=cancer,
+            registry=registry,
+            procedure=procedure or Procedure(code="", description=""),
+            icd_primary_description=primary_desc,
+            case_management_type_description=cmt_desc,
+        ),
         rng=rng,
     )
     rule_description = ""

@@ -30,12 +30,28 @@ _BOTULIC_TOXIN_PROCEDURES: frozenset[str] = frozenset()
 
 
 @dataclass(frozen=True, slots=True)
+class CodingInput:
+    """Raw inputs to the coding-rule cascade, before any derived fields.
+
+    Carries everything that ``resolve_coding_rule`` and ``_derive_context``
+    need. Separating this from :class:`CodingContext` makes the "raw inputs"
+    vs "derived state" split explicit.
+    """
+
+    profile: Profile
+    cancer: CancerContext | None
+    registry: ReferentialRegistry
+    procedure: Procedure
+    icd_primary_description: str = ""
+    case_management_type_description: str = ""
+
+
+@dataclass(frozen=True, slots=True)
 class CodingContext:
     """State passed to each coding rule predicate.
 
-    Carries already-computed fields needed by the original cascade:
-    procedure code/description, primary ICD description, case-management
-    description.
+    Built by :func:`_derive_context` from a :class:`CodingInput`, augmented
+    with derived fields (admission-type text, template infix/suffix).
     """
 
     profile: Profile
@@ -350,17 +366,10 @@ CODING_RULES: tuple[CodingRuleResolver, ...] = (
 # --- Context construction ---------------------------------------------------
 
 
-def _derive_context(
-    profile: Profile,
-    cancer: CancerContext | None,
-    registry: ReferentialRegistry,
-    procedure: Procedure,
-    icd_primary_description: str,
-    case_management_type_description: str,
-) -> CodingContext:
-    is_cancer_primary = profile.icd_primary_code in registry.cancer_codes.all_cancer
+def _derive_context(inp: CodingInput) -> CodingContext:
+    is_cancer_primary = inp.profile.icd_primary_code in inp.registry.cancer_codes.all_cancer
     template_onco_suffix = "_onco" if is_cancer_primary else ""
-    if profile.admission_type == "Outpatient":
+    if inp.profile.admission_type == "Outpatient":
         text_admission = " en hospitalisation ambulatoire"
         template_infix = "out"
     else:
@@ -368,12 +377,12 @@ def _derive_context(
         text_admission = "en hospialisation complète"
         template_infix = "in"
     return CodingContext(
-        profile=profile,
-        cancer=cancer,
-        registry=registry,
-        procedure=procedure,
-        icd_primary_description=icd_primary_description,
-        case_management_type_description=case_management_type_description,
+        profile=inp.profile,
+        cancer=inp.cancer,
+        registry=inp.registry,
+        procedure=inp.procedure,
+        icd_primary_description=inp.icd_primary_description,
+        case_management_type_description=inp.case_management_type_description,
         text_admission_type=text_admission,
         template_infix=template_infix,
         template_onco_suffix=template_onco_suffix,
@@ -381,26 +390,18 @@ def _derive_context(
 
 
 def resolve_coding_rule(
-    profile: Profile,
-    cancer: CancerContext | None,
-    registry: ReferentialRegistry,
-    procedure: Procedure | None = None,
+    inp: CodingInput,
     *,
-    icd_primary_description: str = "",
-    case_management_type_description: str = "",
     rng: np.random.Generator | None = None,
 ) -> tuple[str, str, str]:
-    """Return ``(rule_id, text, template_name)`` for the profile.
+    """Return ``(rule_id, text, template_name)`` for the coding input.
 
     Iterates CODING_RULES in order; first match wins. Delivery (T12) and
     chronic-disease cases (T1-chemo/radio, D1/D5/D9, S1-Chronic) are handled
     explicitly because they depend on the RNG or on cancer/chronic flags.
     Falls back to the default medical template when no rule fires.
     """
-    proc = procedure or Procedure(code="", description="")
-    ctx = _derive_context(
-        profile, cancer, registry, proc, icd_primary_description, case_management_type_description
-    )
+    ctx = _derive_context(inp)
 
     # Walk the declarative table in order (first match wins).
     for rule in CODING_RULES:
@@ -539,6 +540,7 @@ def _resolve_acute(ctx: CodingContext) -> tuple[str, str, str]:
 __all__ = [
     "CODING_RULES",
     "CodingContext",
+    "CodingInput",
     "CodingRuleResolver",
     "IcdCode",
     "resolve_coding_rule",
