@@ -90,8 +90,24 @@ def build_user_prompt(  # noqa: PLR0912, PLR0915
     parts.append(
         f"   * Diagnostic principal : {d.icd_primary_description} ({d.icd_primary_code})\n"
     )
-    parts.append("   * Diagnostic associés : \n")
-    parts.append(f"{d.text_secondary_icd_official}\n")
+
+    if registry is not None and registry.has_cim10_enrichment():
+        # Deferred import: avoids a potential circular import between prompts
+        # and the enrichment helpers, which may pull from referentials later.
+        from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+
+        h, n = registry.cim10_lookups
+        parts.append(format_cim10_enrichment(d.icd_primary_code, h, n))
+
+        parts.append("   * Diagnostic associés : \n")
+        for das_code in d.icd_secondary_codes:
+            desc = registry.icd_description_for(das_code)
+            parts.append(f"- {desc} ({das_code})\n")
+            if len(das_code) == 4 and das_code.endswith("8"):
+                parts.append(format_cim10_enrichment(das_code, h, n))
+    else:
+        parts.append("   * Diagnostic associés : \n")
+        parts.append(f"{d.text_secondary_icd_official}\n")
 
     if proc.code and scenario.drg_parent_code[2:3] in ("C", "K"):
         parts.append(f"* Acte CCAM :\n{proc.description.lower()}\n")

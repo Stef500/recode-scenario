@@ -128,3 +128,115 @@ def test_build_user_prompt_without_registry_byte_identical_to_default() -> None:
     assert prompt_default == prompt_none
     assert "- Codage CIM10 :\n" in prompt_default
     assert "   * Diagnostic associés : \n" in prompt_default
+
+
+def _make_registry_with_cim10(tmp_path):  # type: ignore[no-untyped-def]
+    """Build a registry with minimal parquets to exercise the enriched branch."""
+    import pandas as pd
+
+    from recode.referentials import ReferentialRegistry
+
+    proc = tmp_path / "proc"
+    proc.mkdir()
+    const = tmp_path / "const"
+    const.mkdir()
+
+    pd.DataFrame(
+        {
+            "code": ["A048", "A049"],
+            "level": ["leaf", "leaf"],
+            "parent_code": ["A04", "A04"],
+            "label": ["l1", "l2"],
+            "chapter_code": ["I", "I"],
+            "chapter_label": ["Mal. inf.", "Mal. inf."],
+            "block_code": ["A00-A09", "A00-A09"],
+            "block_label": ["Intest.", "Intest."],
+            "category_code": ["A04", "A04"],
+            "category_label": ["Autres inf.", "Autres inf."],
+        }
+    ).to_parquet(proc / "cim10_hierarchy.parquet", index=False)
+
+    pd.DataFrame(
+        {
+            "code": ["A048"],
+            "inclusion_notes": ["inc1|inc2"],
+            "exclusion_notes": ["exc1"],
+        }
+    ).to_parquet(proc / "cim10_notes.parquet", index=False)
+
+    pd.DataFrame(
+        {
+            "icd_code": ["A048", "A049", "E119", "I10"],
+            "icd_code_description": [
+                "Autres infections bactériennes précisées",
+                "Infection bactérienne, sans précision",
+                "Diabète de type 2, sans complication",
+                "Hypertension essentielle",
+            ],
+            "aut_mco": [1, 1, 1, 1],
+        }
+    ).to_parquet(proc / "icd_official.parquet", index=False)
+
+    return ReferentialRegistry(processed_dir=proc, constants_dir=const)
+
+
+def _make_scenario_for_enrichment(*, dp_code: str, das_codes: list[str]):  # type: ignore[no-untyped-def]
+    """Scenario whose DP and DAS can be customised to exercise enrichment rules."""
+    sc = _make_scenario()
+    return sc.model_copy(
+        update={
+            "diagnosis": sc.diagnosis.model_copy(
+                update={
+                    "icd_primary_code": dp_code,
+                    "icd_primary_description": "Default DP description",
+                    "icd_secondary_codes": das_codes,
+                    "text_secondary_icd_official": "".join(f"- desc ({c})\n" for c in das_codes),
+                }
+            ),
+        }
+    )
+
+
+def test_build_user_prompt_enriched_dp_with_registry(tmp_path) -> None:
+    from recode.scenarios.prompts import build_user_prompt
+
+    reg = _make_registry_with_cim10(tmp_path)
+    sc = _make_scenario_for_enrichment(dp_code="A048", das_codes=["E119"])
+
+    prompt = build_user_prompt(sc, registry=reg)
+
+    assert "     Hiérarchie : Chapitre I — Mal. inf." in prompt
+    assert "                  > Bloc A00-A09 — Intest." in prompt
+    assert "     Inclus : inc1 ; inc2" in prompt
+    assert "     Exclus : exc1" in prompt
+
+
+def test_build_user_prompt_enriched_das_dot_eight(tmp_path) -> None:
+    from recode.scenarios.prompts import build_user_prompt
+
+    reg = _make_registry_with_cim10(tmp_path)
+    # DP I10 is not in lookups → no DP enrichment; DAS A048 ends with 8 → enriched.
+    sc = _make_scenario_for_enrichment(dp_code="I10", das_codes=["A048", "E119"])
+
+    prompt = build_user_prompt(sc, registry=reg)
+
+    # DP I10 yields no enrichment block
+    assert "- Codage CIM10 :\n   * Diagnostic principal :" in prompt
+    # A048 is 4-char ending with 8 -> enriched after its line
+    assert "     Inclus : inc1 ; inc2" in prompt
+
+
+def test_build_user_prompt_enriched_silent_when_code_unknown(tmp_path) -> None:
+    from recode.scenarios.prompts import build_user_prompt
+
+    reg = _make_registry_with_cim10(tmp_path)
+    sc = _make_scenario_for_enrichment(dp_code="ZZZZZ", das_codes=[])
+
+    prompt = build_user_prompt(sc, registry=reg)
+
+    # No parasite lines when DP is unknown
+    assert "Hiérarchie" not in prompt
+    assert "Inclus" not in prompt
+    assert "Exclus" not in prompt
+    assert "- Codage CIM10 :" in prompt
+    assert "   * Diagnostic associés :" in prompt
