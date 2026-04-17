@@ -48,7 +48,7 @@ def generate(
         profile = Profile.model_validate(raw.to_dict())
         scenario = generator.generate(profile)
         row = scenario.to_csv_row()
-        row["user_prompt"] = build_user_prompt(scenario)
+        row["user_prompt"] = build_user_prompt(scenario, registry=registry)
         row["system_prompt"] = build_system_prompt(scenario)
         prefix = build_prefix(scenario)
         row["prefix"] = prefix
