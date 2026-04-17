@@ -1,0 +1,35 @@
+apheresis:
+- 28Z16
+c_section_groups:
+- 14C06
+- 14C07
+- 14C08
+chemotherapy_root_codes:
+- 28Z07
+- 17M05
+- 17M06
+deceased:
+- 04M24
+diagnostic_workup:
+- 23M03
+palliative_care:
+- 23Z02
+radiotherapy_root_codes:
+- 17K04
+- 17K05
+stomies:
+- 06M17
+transfusion:
+- 28Z14
+transplant:
+- 27Z02
+- 27Z03
+- 27Z04
+vaginal_delivery_groups:
+- 14C03
+- 14Z09
+- 14Z10
+- 14Z11
+- 14Z12
+- 14Z13
+- 14Z14

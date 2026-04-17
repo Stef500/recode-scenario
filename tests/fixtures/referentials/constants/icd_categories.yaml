@@ -1,0 +1,28 @@
+ascites:
+- R18
+chronic_intractable_pain:
+- R5210
+- R5218
+comfort_intervention:
+- Z4180
+cosmetic_surgery:
+- Z410
+- Z411
+exclusion_specialty: []
+exclusions: []
+overnight_study:
+- Z040
+plastic_surgery:
+- Z420
+- Z421
+pleural_effusion:
+- J90
+- J91
+- J940
+- J941
+prophylactic_intervention:
+- Z400
+- Z401
+- Z408
+sensitization_tests:
+- Z012
