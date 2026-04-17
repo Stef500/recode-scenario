@@ -137,3 +137,38 @@ def test_cim10_notes_schema_rejects_duplicate_code() -> None:
     )
     with pytest.raises(pae.SchemaError):
         Cim10NotesSchema.validate(df)
+
+
+def test_cim10_hierarchy_schema_rejects_nan_in_label() -> None:
+    from recode.referentials.schemas import Cim10HierarchySchema
+
+    df = pd.DataFrame(
+        {
+            "code": ["A048"],
+            "level": ["leaf"],
+            "parent_code": ["A04"],
+            "label": ["lab"],
+            "chapter_code": [float("nan")],  # NaN must be rejected
+            "chapter_label": [""],
+            "block_code": [""],
+            "block_label": [""],
+            "category_code": [""],
+            "category_label": [""],
+        }
+    )
+    with pytest.raises(pae.SchemaError):
+        Cim10HierarchySchema.validate(df)
+
+
+def test_cim10_notes_schema_rejects_nan_in_inclusion() -> None:
+    from recode.referentials.schemas import Cim10NotesSchema
+
+    df = pd.DataFrame(
+        {
+            "code": ["A048"],
+            "inclusion_notes": [float("nan")],  # NaN must be rejected
+            "exclusion_notes": [""],
+        }
+    )
+    with pytest.raises(pae.SchemaError):
+        Cim10NotesSchema.validate(df)

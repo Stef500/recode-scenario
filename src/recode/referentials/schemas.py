@@ -223,14 +223,14 @@ class Cim10HierarchySchema(pa.DataFrameModel):
 
     code: Series[str] = pa.Field(nullable=False, unique=True)
     level: Series[str] = pa.Field(isin=["chapter", "block", "category", "leaf"])
-    parent_code: Series[str] = pa.Field(nullable=True)
+    parent_code: Series[str] = pa.Field(nullable=False)
     label: Series[str] = pa.Field(nullable=False)
-    chapter_code: Series[str] = pa.Field(nullable=True)
-    chapter_label: Series[str] = pa.Field(nullable=True)
-    block_code: Series[str] = pa.Field(nullable=True)
-    block_label: Series[str] = pa.Field(nullable=True)
-    category_code: Series[str] = pa.Field(nullable=True)
-    category_label: Series[str] = pa.Field(nullable=True)
+    chapter_code: Series[str] = pa.Field(nullable=False)
+    chapter_label: Series[str] = pa.Field(nullable=False)
+    block_code: Series[str] = pa.Field(nullable=False)
+    block_label: Series[str] = pa.Field(nullable=False)
+    category_code: Series[str] = pa.Field(nullable=False)
+    category_label: Series[str] = pa.Field(nullable=False)
 
     class Config:
         """Pandera validation config."""
@@ -242,8 +242,8 @@ class Cim10NotesSchema(pa.DataFrameModel):
     """Notes Inclus/Exclus CIM-10 par code (items joints par '|')."""
 
     code: Series[str] = pa.Field(nullable=False, unique=True)
-    inclusion_notes: Series[str] = pa.Field(nullable=True)
-    exclusion_notes: Series[str] = pa.Field(nullable=True)
+    inclusion_notes: Series[str] = pa.Field(nullable=False)
+    exclusion_notes: Series[str] = pa.Field(nullable=False)
 
     class Config:
         """Pandera validation config."""
