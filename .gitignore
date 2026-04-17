@@ -23,3 +23,7 @@ test_2.ipynb
 
 # CIM-10 RDF source (téléchargé manuellement depuis l'ANS, non redistribué)
 referentials/raw/**/source/
+
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
