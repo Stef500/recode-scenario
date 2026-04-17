@@ -25,6 +25,10 @@ class _NotesRow(TypedDict):
     exclusion_notes: list[str]
 
 
+_INDENT = " " * 5  # Top-level line prefix (Hiérarchie / Inclus / Exclus).
+_SUBLINE = " " * 18 + "> "  # Nested hierarchy line prefix (Bloc / Catégorie).
+
+
 def build_lookups(
     hierarchy_df: pd.DataFrame,
     notes_df: pd.DataFrame,
@@ -64,35 +68,37 @@ def format_cim10_enrichment(
 ) -> str:
     r"""Return the multi-line enrichment block for an ICD-10 leaf code.
 
-    Lines appear in this order, each indented with 5 spaces, each terminated
-    by ``\n``:
+    Indentation is controlled by ``_INDENT`` (5 spaces, top-level lines) and
+    ``_SUBLINE`` (18 spaces + ``"> "``, nested Bloc / Catégorie lines). The
+    canonical format is locked by the golden-string tests in
+    ``tests/unit/scenarios/test_cim10_enrichment.py``.
 
-    - ``Hiérarchie : Chapitre X — label`` (if chapter_code known)
-    - ``                 > Bloc B — label`` (if block_code known)
-    - ``                 > Catégorie C — label`` (if category_code known)
-    - ``Inclus : a ; b ; c`` (if any inclusion note)
-    - ``Exclus : a ; b`` (if any exclusion note)
+    Lines emitted in order (each terminated by ``\n``):
 
-    Returns ``""`` when neither hierarchy nor notes are available — caller
-    can unconditionally append the result.
+    - ``Hiérarchie : Chapitre X — label``  (when ``chapter_code`` known)
+    - ``> Bloc B — label``                  (when ``block_code`` known)
+    - ``> Catégorie C — label``             (when ``category_code`` known)
+    - ``Inclus : a ; b ; c``                (when at least one inclusion note)
+    - ``Exclus : a ; b``                    (when at least one exclusion note)
+
+    Returns ``""`` when nothing is known for ``code`` — caller can
+    unconditionally append the result.
     """
     lines: list[str] = []
 
     h = hierarchy.get(code)
     if h and h["chapter_code"]:
-        lines.append(f"     Hiérarchie : Chapitre {h['chapter_code']} — {h['chapter_label']}")
+        lines.append(f"{_INDENT}Hiérarchie : Chapitre {h['chapter_code']} — {h['chapter_label']}")
         if h["block_code"]:
-            lines.append(f"                  > Bloc {h['block_code']} — {h['block_label']}")
+            lines.append(f"{_SUBLINE}Bloc {h['block_code']} — {h['block_label']}")
         if h["category_code"]:
-            lines.append(
-                f"                  > Catégorie {h['category_code']} — {h['category_label']}"
-            )
+            lines.append(f"{_SUBLINE}Catégorie {h['category_code']} — {h['category_label']}")
 
     n = notes.get(code)
     if n:
         if n["inclusion_notes"]:
-            lines.append("     Inclus : " + " ; ".join(n["inclusion_notes"]))
+            lines.append(f"{_INDENT}Inclus : " + " ; ".join(n["inclusion_notes"]))
         if n["exclusion_notes"]:
-            lines.append("     Exclus : " + " ; ".join(n["exclusion_notes"]))
+            lines.append(f"{_INDENT}Exclus : " + " ; ".join(n["exclusion_notes"]))
 
     return "\n".join(lines) + "\n" if lines else ""
