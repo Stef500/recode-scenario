@@ -102,3 +102,14 @@ def format_cim10_enrichment(
             lines.append(f"{_INDENT}Exclus : " + " ; ".join(n["exclusion_notes"]))
 
     return "\n".join(lines) + "\n" if lines else ""
+
+
+def is_enrichable_das(code: str) -> bool:
+    """Return True iff ``code`` matches the CIM-10 'other specified' rule.
+
+    A DAS code is enriched iff it has 4 characters ending in ``8`` (e.g.
+    ``A048``, ``E118``). The ``.8`` codes are ATIH's 'Autres' residual
+    category — exactly the codes most prone to narrative ambiguity, hence
+    the target of enrichment.
+    """
+    return len(code) == 4 and code.endswith("8")

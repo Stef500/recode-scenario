@@ -240,3 +240,17 @@ def test_build_user_prompt_enriched_silent_when_code_unknown(tmp_path) -> None:
     assert "Exclus" not in prompt
     assert "- Codage CIM10 :" in prompt
     assert "   * Diagnostic associés :" in prompt
+
+
+def test_build_user_prompt_enriched_orphan_das_no_double_space(tmp_path) -> None:
+    """DAS absent from icd_official renders as '- (code)' not '-  (code)' (no double space)."""
+    from recode.scenarios.prompts import build_user_prompt
+
+    reg = _make_registry_with_cim10(tmp_path)
+    # UNKNOWN_CODE is not in the icd_official fixture → description == ""
+    sc = _make_scenario_for_enrichment(dp_code="I10", das_codes=["UNKN"])
+
+    prompt = build_user_prompt(sc, registry=reg)
+
+    assert "- (UNKN)\n" in prompt
+    assert "-  (UNKN)" not in prompt

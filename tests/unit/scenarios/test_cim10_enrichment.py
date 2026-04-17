@@ -168,3 +168,19 @@ def test_format_empty_notes_row_treated_as_no_notes() -> None:
     hierarchy: dict = {}
     notes = {"A048": {"inclusion_notes": [], "exclusion_notes": []}}
     assert format_cim10_enrichment("A048", hierarchy, notes) == ""
+
+
+def test_is_enrichable_das_true_for_four_char_ending_eight() -> None:
+    from recode.scenarios.cim10_enrichment import is_enrichable_das
+
+    assert is_enrichable_das("A048") is True
+    assert is_enrichable_das("E118") is True
+
+
+def test_is_enrichable_das_false_otherwise() -> None:
+    from recode.scenarios.cim10_enrichment import is_enrichable_das
+
+    assert is_enrichable_das("A04") is False  # 3 chars
+    assert is_enrichable_das("A0480") is False  # 5 chars
+    assert is_enrichable_das("E119") is False  # ends in 9
+    assert is_enrichable_das("") is False  # empty

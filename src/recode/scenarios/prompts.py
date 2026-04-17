@@ -94,7 +94,10 @@ def build_user_prompt(  # noqa: PLR0912, PLR0915
     if registry is not None and registry.has_cim10_enrichment():
         # Deferred import: avoids a potential circular import between prompts
         # and the enrichment helpers, which may pull from referentials later.
-        from recode.scenarios.cim10_enrichment import format_cim10_enrichment
+        from recode.scenarios.cim10_enrichment import (
+            format_cim10_enrichment,
+            is_enrichable_das,
+        )
 
         h, n = registry.cim10_lookups
         parts.append(format_cim10_enrichment(d.icd_primary_code, h, n))
@@ -102,8 +105,9 @@ def build_user_prompt(  # noqa: PLR0912, PLR0915
         parts.append("   * Diagnostic associés : \n")
         for das_code in d.icd_secondary_codes:
             desc = registry.icd_description_for(das_code)
-            parts.append(f"- {desc} ({das_code})\n")
-            if len(das_code) == 4 and das_code.endswith("8"):
+            das_line = f"- {desc} ({das_code})\n" if desc else f"- ({das_code})\n"
+            parts.append(das_line)
+            if is_enrichable_das(das_code):
                 parts.append(format_cim10_enrichment(das_code, h, n))
     else:
         parts.append("   * Diagnostic associés : \n")
