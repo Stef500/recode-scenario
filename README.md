@@ -52,7 +52,7 @@ parameters live in `config/default.yaml` (versioned, reviewable in PR).
 
 ## Architecture
 
-See `docs/architecture.md` and `docs/internal/specs/2026-04-15-refacto-design.md`.
+See `docs/architecture.md`.
 
 - `src/recode/scenarios/` — deterministic scenario generation (pure)
 - `src/recode/llm/` — Mistral batch orchestration
