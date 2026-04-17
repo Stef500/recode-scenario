@@ -6,15 +6,23 @@ Preserves original strings byte-for-byte for golden-file compatibility.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from recode.models import Gender, Scenario
+
+if TYPE_CHECKING:
+    from recode.referentials import ReferentialRegistry
 
 
 def _interpret_gender(gender: Gender) -> str:
     return "Masculin" if gender == 1 else "Féminin"
 
 
-def build_user_prompt(scenario: Scenario) -> str:  # noqa: PLR0912, PLR0915
+def build_user_prompt(  # noqa: PLR0912, PLR0915
+    scenario: Scenario,
+    *,
+    registry: ReferentialRegistry | None = None,
+) -> str:
     """Build the user prompt describing the clinical scenario.
 
     Reproduces the exact format of ``utils_v2.py:make_prompts_marks_from_scenario``

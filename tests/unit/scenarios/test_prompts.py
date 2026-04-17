@@ -116,3 +116,15 @@ def test_build_prefix_cancer_mentions_biomarkers() -> None:
     s = _make_scenario(is_cancer=True)
     prefix = build_prefix(s)
     assert "biomarqueurs" in prefix
+
+
+def test_build_user_prompt_without_registry_byte_identical_to_default() -> None:
+    """build_user_prompt(scenario) unchanged when registry is not provided."""
+    from recode.scenarios.prompts import build_user_prompt
+
+    sc = _make_scenario()
+    prompt_default = build_user_prompt(sc)
+    prompt_none = build_user_prompt(sc, registry=None)
+    assert prompt_default == prompt_none
+    assert "- Codage CIM10 :\n" in prompt_default
+    assert "   * Diagnostic associés : \n" in prompt_default
