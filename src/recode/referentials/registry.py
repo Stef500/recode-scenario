@@ -38,6 +38,11 @@ from recode.referentials.schemas import (
     SecondaryIcdSchema,
     SpecialtySchema,
 )
+# NB: ``cim10_enrichment`` is imported at module level; this works today
+# because that module does not import from ``recode.*``. If it ever does
+# (e.g. pulls from referentials), re-introduce a deferred import inside
+# ``cim10_lookups`` to avoid the cycle.
+from recode.scenarios.cim10_enrichment import build_lookups
 
 
 class ReferentialRegistry:
@@ -190,10 +195,6 @@ class ReferentialRegistry:
     @cached_property
     def cim10_lookups(self) -> tuple[dict[str, Any], dict[str, Any]]:
         """Pre-built O(1) lookup dicts for format_cim10_enrichment."""
-        # Deferred import: avoids a potential circular import as
-        # ``cim10_enrichment`` grows to import other modules.
-        from recode.scenarios.cim10_enrichment import build_lookups  # noqa: PLC0415
-
         return build_lookups(self.cim10_hierarchy, self.cim10_notes)
 
     def has_cim10_enrichment(self) -> bool:
