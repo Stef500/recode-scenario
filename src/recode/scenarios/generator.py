@@ -9,7 +9,7 @@ from loguru import logger
 from recode.models import Profile, Scenario
 from recode.referentials import ReferentialRegistry
 from recode.scenarios.cancer import build_cancer_context
-from recode.scenarios.coding_rules import resolve_coding_rule
+from recode.scenarios.coding_rules import CodingInput, resolve_coding_rule
 from recode.scenarios.demographics import (
     build_patient,
     build_stay,
@@ -51,12 +51,14 @@ class ScenarioGenerator:
         diagnosis = build_diagnosis(profile, self._registry, cancer, rng, procedure=procedure)
 
         _rule_id, _rule_text, template = resolve_coding_rule(
-            profile,
-            cancer,
-            self._registry,
-            procedure=procedure,
-            icd_primary_description=diagnosis.icd_primary_description,
-            case_management_type_description=diagnosis.case_management_type_description,
+            CodingInput(
+                profile=profile,
+                cancer=cancer,
+                registry=self._registry,
+                procedure=procedure,
+                icd_primary_description=diagnosis.icd_primary_description,
+                case_management_type_description=diagnosis.case_management_type_description,
+            ),
             rng=rng,
         )
 
