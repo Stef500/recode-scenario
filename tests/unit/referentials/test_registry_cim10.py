@@ -82,3 +82,46 @@ def test_cim10_lookups_cached(registry_with_cim10) -> None:
     lookups1 = registry_with_cim10.cim10_lookups
     lookups2 = registry_with_cim10.cim10_lookups
     assert lookups1 is lookups2
+
+
+def test_icd_description_for_returns_description(tmp_path) -> None:
+    from recode.referentials import ReferentialRegistry
+
+    proc = tmp_path / "proc"
+    proc.mkdir()
+    const = tmp_path / "const"
+    const.mkdir()
+
+    pd.DataFrame(
+        {
+            "icd_code": ["E119", "I10"],
+            "icd_code_description": [
+                "Diabète sucré de type 2, sans complication",
+                "Hypertension essentielle (primitive)",
+            ],
+            "aut_mco": [1, 1],
+        }
+    ).to_parquet(proc / "icd_official.parquet", index=False)
+
+    reg = ReferentialRegistry(processed_dir=proc, constants_dir=const)
+    assert reg.icd_description_for("E119") == "Diabète sucré de type 2, sans complication"
+
+
+def test_icd_description_for_unknown_returns_empty(tmp_path) -> None:
+    from recode.referentials import ReferentialRegistry
+
+    proc = tmp_path / "proc"
+    proc.mkdir()
+    const = tmp_path / "const"
+    const.mkdir()
+
+    pd.DataFrame(
+        {
+            "icd_code": ["E119"],
+            "icd_code_description": ["x"],
+            "aut_mco": [1],
+        }
+    ).to_parquet(proc / "icd_official.parquet", index=False)
+
+    reg = ReferentialRegistry(processed_dir=proc, constants_dir=const)
+    assert reg.icd_description_for("UNKNOWN") == ""

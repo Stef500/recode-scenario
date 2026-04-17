@@ -201,3 +201,15 @@ class ReferentialRegistry:
         return (self._processed / "cim10_hierarchy.parquet").exists() and (
             self._processed / "cim10_notes.parquet"
         ).exists()
+
+    # ---- ICD description helper (used by prompts with enrichment) ----
+
+    @cached_property
+    def _icd_descriptions(self) -> dict[str, str]:
+        """Internal: ICD code → description dict, built once from icd_official."""
+        df = self.icd_official
+        return dict(zip(df["icd_code"], df["icd_code_description"], strict=True))
+
+    def icd_description_for(self, code: str) -> str:
+        """Lookup ICD-10 description; return ``""`` if code is unknown."""
+        return self._icd_descriptions.get(code, "")
