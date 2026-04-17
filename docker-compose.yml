@@ -1,0 +1,17 @@
+services:
+  recode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: recode:latest
+    # Load RECODE_MISTRAL_API_KEY (and any RECODE_* overrides) from a local .env.
+    env_file:
+      - .env
+    # Mount host data + runs for round-trip I/O without rebuilding the image.
+    volumes:
+      - ./data:/app/data
+      - ./runs:/app/runs
+    # No default command — docker compose run passes the subcommand through:
+    #   docker compose run --rm recode scenarios generate --profile-file data/profiles.parquet --n 10
+    #   docker compose run --rm recode llm batch ...
+    #   docker compose run --rm recode training prepare ...

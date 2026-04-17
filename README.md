@@ -131,10 +131,24 @@ uv run pre-commit install        # install git hooks
 Coverage is measured on every `pytest` run (`--cov=src/recode`). The target is
 85%; the CI gate enforces this. For more detail see `docs/dev_guide.md`.
 
+## Docker
+
+A multi-stage `Dockerfile` + `docker-compose.yml` let the whole pipeline run
+in a container with host volumes for `data/` and `runs/`:
+
+```bash
+docker compose build
+docker compose run --rm recode scenarios generate \
+    --profile-file data/profiles.parquet --n 100
+```
+
+See `docs/docker.md` for build details, env configuration, and troubleshooting.
+
 ## More info
 
 - Developer guide (internals, playbooks, testing strategy): `docs/dev_guide.md`
 - Architecture overview: `docs/architecture.md`
+- Docker usage: `docs/docker.md`
 
 ---
 
